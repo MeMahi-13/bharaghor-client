@@ -1,0 +1,9 @@
+.container
+{
+    width: "300px"; margin: "100px auto"; text-align: "center"; }
+
+  .input{
+width: "100%"; padding: "8px"; margin: "8px 0" 
+  }  
+  .button { width: "100%"; padding: "8px" }
+  .link{ color: "blue"; cursor: "pointer" }
