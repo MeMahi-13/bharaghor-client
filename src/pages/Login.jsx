@@ -27,6 +27,6 @@ export default Login;
 const styles = {
   container: { width: "300px", margin: "100px auto", textAlign: "center" },
   input: { width: "100%", padding: "8px", margin: "8px 0" },
-  button: { width: "100%", padding: "8px" },
+  button: { width: "100%", padding: "8px",  },
   link: { color: "blue", cursor: "pointer" }
 };
