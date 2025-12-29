@@ -8,3 +8,11 @@ width: "100%"; padding: "8px"; margin: "8px 0"
   }  
   .button { width: "100%"; padding: "8px" }
   .link{ color: "blue"; cursor: "pointer" }
+
+
+
+/* Define custom theme variables here */
+@theme {
+  --color-mint-500: oklch(0.72 0.11 178);
+  /* You can add more colors, spacing, etc. */
+}
