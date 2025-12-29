@@ -23,7 +23,6 @@ const Signup = () => {
 
     if (!formData.name) newErrors.name = "Name is required";
     if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.nid) newErrors.nid = "NID is required";
     if (!formData.password) newErrors.password = "Password is required";
 
     setErrors(newErrors);
@@ -89,15 +88,7 @@ const Signup = () => {
         />
         {errors.email && <p className="text-red-500">{errors.email}</p>}
 
-        <input
-          value={formData.nid}
-          name="nid"
-          type="number"
-          placeholder="NID"
-          onChange={handleChange}
-          style={styles.input}
-        />
-        {errors.nid && <p className="text-red-500">{errors.nid}</p>}
+      
 
         <input
           value={formData.password}

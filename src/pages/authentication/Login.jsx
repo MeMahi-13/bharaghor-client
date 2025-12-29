@@ -109,7 +109,7 @@ console.log("API response:", data);
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-15" style={styles.button}>Login</button>
       <p>
         Don’t have an account?{" "}
-        <span style={styles.link} onClick={() => navigate("/signup")}>
+        <span style={styles.link} onClick={() => navigate("/register")}>
           Signup
         </span>
       </p>
