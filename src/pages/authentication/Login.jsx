@@ -34,7 +34,7 @@ const data = await res.json();
 console.log("API response:", data);
  if (res.ok) {
         alert("Login successful! Welcome " + data.user?.email);
-        navigate("/");
+        navigate("/home");
         
       } else {
         
@@ -103,7 +103,7 @@ console.log("API response:", data);
      
 {error.password && <p className="text-red-500">{error.password}</p>}
 <div className="flex justify-between">
-  <div ><p>Remember me</p></div>
+  <div class="checkbox"><p>Remember me</p></div>
   <p>Forgot Password?</p>
 </div>
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-15" style={styles.button}>Login</button>
