@@ -13,7 +13,7 @@ const Signup = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [success, setSuccess] = useState("");
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,7 +24,6 @@ const Signup = () => {
 
     if (!formData.name) newErrors.name = "Name is required";
     if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.nid) newErrors.nid = "NID is required";
     if (!formData.password) newErrors.password = "Password is required";
 
     setErrors(newErrors);
@@ -90,15 +89,7 @@ const Signup = () => {
         />
         {errors.email && <p className="text-red-500">{errors.email}</p>}
 
-        <input
-          value={formData.nid}
-          name="nid"
-          type="number"
-          placeholder="NID"
-          onChange={handleChange}
-          style={styles.input}
-        />
-        {errors.nid && <p className="text-red-500">{errors.nid}</p>}
+      
 
         <input
           value={formData.password}
@@ -111,7 +102,7 @@ const Signup = () => {
         {errors.password && <p className="text-red-500">{errors.password}</p>}
 
         {errors.api && <p className="text-red-600">{errors.api}</p>}
-        {success && <p className="text-green-600">{success}</p>}
+    
 
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
