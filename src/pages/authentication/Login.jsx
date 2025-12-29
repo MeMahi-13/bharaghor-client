@@ -1,6 +1,8 @@
+
 import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { AiOutlineMail } from "react-icons/ai";
+import { CiUser } from "react-icons/ci";
 const Login = () => {
   const navigate = useNavigate();
 const[formData,setformData]=useState({email:"",password:""});
@@ -44,31 +46,67 @@ console.log("API response:", data);
 };
   return (
     <div style={styles.container}>
-      <h2>Login</h2>
-<form action="" onSubmit={handleSubmit}>
+      <h2 class="font-semibold text-2xl leading-[135%] text-black">Login</h2>
+      <p class="font-normal text-base leading-[120%] p-black">Hello, Welcome back to your account </p>
+<form action="" onSubmit={handleSubmit} className="mt-5">
 
- <input
-  type="email"
-  name="email"
-  placeholder="Email"
-  value={formData.email}
-  onChange={handleChange}
-  style={styles.input}
-  className="border-2"
-/>
+<div className="relative w-full">
+  <AiOutlineMail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none" />
+
+  <input
+    type="email"
+    name="email"
+    placeholder="Email"
+    value={formData.email}
+    onChange={handleChange}
+    className="
+      w-full
+      pl-16
+      pr-4
+      py-2
+      border
+      rounded-3xl
+      border-brand-primary
+      placeholder-gray-500
+      text-black
+      ring-2 ring-gray-300
+      focus:ring-gray-500
+    "
+  />
+</div>
  {error.email && <p className="text-red-500">{error.email}</p>}
-      <input
+ <div className="relative w-full mt-4">
+  <CiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none" />
+
+   <input
   type="password"
   name="password"
   placeholder="Password"
   value={formData.password}
   onChange={handleChange}
-  style={styles.input}
-  className="border-2"
+  
+   className="
+      w-full
+      pl-16
+      pr-4
+      py-2
+      border
+      rounded-3xl
+      border-brand-primary
+      placeholder-gray-500
+      text-black
+      ring-2 ring-gray-300
+      focus:ring-gray-500
+    "
 />
+ </div>
+     
 {error.password && <p className="text-red-500">{error.password}</p>}
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" style={styles.button}>Login</button>
-
+<div className="flex justify-between">
+  <div ><p>Remember me</p></div>
+  <p>Forgot Password?</p>
+</div>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-15" style={styles.button}>Login</button>
       <p>
         Don’t have an account?{" "}
         <span style={styles.link} onClick={() => navigate("/signup")}>
@@ -90,3 +128,5 @@ const styles = {
   button: { width: "100%", padding: "8px",  },
   link: { color: "blue", cursor: "pointer" }
 };
+
+
