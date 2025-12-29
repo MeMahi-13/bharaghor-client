@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const navigate = useNavigate();
+  
 
   return (
     <div style={styles.container}>
