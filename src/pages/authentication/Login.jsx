@@ -43,11 +43,10 @@ function Login() {
 
         <p>
         Don’t have an account?{" "}
-        <span style={styles.link} onClick={() => navigate("/signup")}>
+        <span style={styles.link} onClick={() => navigate("/register")}>
           Signup
         </span>
       </p>
-      
     </form>
 </div>
   );
