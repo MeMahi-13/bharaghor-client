@@ -38,7 +38,7 @@ const Login = () => {
 
       if (res.ok) {
         setMessage("Login successful! Welcome " + data.user?.email);
-        navigate("/");
+        navigate("/profile");
       } else {
         setMessage(data.message || "Login failed!");
       }
