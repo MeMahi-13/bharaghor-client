@@ -34,7 +34,7 @@ const Signup = () => {
     if (!validate()) return;
 
     try {
-      const res = await fetch("https://yessghor-server.vercel.app/register", {
+      const res = await fetch("http://localhost:5000/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
