@@ -8,6 +8,7 @@ import Login from "../pages/authentication/Login"
 import SignUp from "../pages/authentication/Signup"
 import Profile from "../pages/profile/Profile";  // adjust path based on file location
 import Dashboard from "../pages/dashboard/dashboard";
+import Users from "../pages/admin/Users";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,12 @@ export const router = createBrowserRouter([
         path: "/dashboard",   // <-- new profile route
         element: <Dashboard />,
       },
+      
+      {
+        path: "/users",
+        loader:()=>fetch('https://yessghor-server.vercel.app/users'),
+        element:<Users/>
+      }
     ],
   },
    {

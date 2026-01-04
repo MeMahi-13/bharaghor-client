@@ -103,5 +103,3 @@ const styles = {
   button: { width: "80%", padding: "8px", marginTop:"27px",marginLeft:"50px"},
   link: { color: "blue", cursor: "pointer" }
 };
-
-
