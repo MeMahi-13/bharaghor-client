@@ -6,6 +6,8 @@ import Home from "../pages/home/Home";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/authentication/Login"
 import SignUp from "../pages/authentication/Signup"
+import Profile from "../pages/profile/Profile";  // adjust path based on file location
+import Dashboard from "../pages/dashboard/dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +17,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "/profile",   // <-- new profile route
+        element: <Profile />,
+      },
+       {
+        path: "/dashboard",   // <-- new profile route
+        element: <Dashboard />,
       },
     ],
   },
