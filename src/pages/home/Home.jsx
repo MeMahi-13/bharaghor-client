@@ -6,6 +6,8 @@ import { CiLocationOn } from "react-icons/ci";
 import { IoHomeOutline } from "react-icons/io5";
 import { SlCalender } from "react-icons/sl";
 import { FaBuilding } from "react-icons/fa";
+import { IoCallOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
@@ -20,6 +22,8 @@ const Home = () => {
     category: "",
     price: "",
   });
+  const navigate = useNavigate();
+
 
   // Array to track which cards are bookmarked
   const featuredPlacesInitial = [
@@ -135,7 +139,7 @@ const Home = () => {
           <div key={index} style={{ marginBottom: "20px" }}>
             {/* Image */}
             <div className="house-item-img-container" style={{ position: "relative" }}>
-              <img src={place.image} alt={place.title} style={styles.cardImageHorizontal} />              
+              <img src={place.image} alt={place.title} style={styles.cardImageHorizontal} onClick={() => navigate("/details")}/>              
               <div
                 className="add"
                 onClick={() => toggleBookmark(index)}>
@@ -151,23 +155,23 @@ const Home = () => {
               <h2 style={styles.cardTitle}>{place.title}</h2>
               <div className="flex items-center gap-0.5">
                 <CiLocationOn />
-                <p style={styles.cardlocation}>{place.location}</p>
+                <p style={styles.cardText}>{place.location}</p>
               </div>
               <div className="flex items-center gap-0.5">
                 <IoHomeOutline />
-                <p style={styles.cardhome}>{place.home}</p>
+                <p style={styles.cardText}>{place.home}</p>
               </div>
               <div className="flex items-center gap-0.5">
                 <SlCalender />
-                <p style={styles.cardDate}>{place.date}</p>
+                <p style={styles.cardText}>{place.date}</p>
               </div>
               <div className="flex items-center gap-0.5">
                 <FaBuilding />
-                <p style={styles.cardhouseType}>{place.houseType}</p>
+                <p style={styles.cardText}>{place.houseType}</p>
               </div>
-              <div className="flex gap-2 mt-2">
-                <div className="border-none py-2 px-3">TK 12000</div>
-                <button className="border py-2 px-3">Call To Rent</button>
+              <div className="flex items-center gap-2 mt-2">
+                <div style={styles.money} className="border-none py-2 px-3">TK 12000</div>
+                <button style={styles.call} className="border py-2 px-3 flex items-center"><IoCallOutline />Call</button>
               </div>
             </div>
           </div>
@@ -225,30 +229,36 @@ const styles = {
   cardTitle: {
     marginBottom: "10px",
     fontWeight:"600",
-    fontSize:"14px",
+    fontSize:"20px",
     lineHeight:"100%",
+    color:"#101828",
   },
-  cardlocation: {
+  cardText: {
     fontSize: "16px",
     color: "#555",
   },
-  cardhome: {
-    fontSize: "16px",
-    color: "#555",
-  },
-  cardDate: {
-    fontSize: "16px",
-    color: "#555",
-  },
-  cardhouseType: {
-    fontSize: "16px",
-    color: "#555",
-  },
+  
   title:{
     paddingTop:"20px",
     paddingBottom:"20px",
     fontWeight:"600",
     fontSize:"24px",
 
-  }
+  },
+  money:{
+    color:"#0988E3",
+    fontWeight:"600",
+  fontSize:"14px",  },
+  call:{
+background:"#0988E3",
+border:"none",
+color:"#FFFFFF",
+borderRadius:"6px",
+gap:"4px",
+padding:"4px 9px",
+fontWeight:"400",
+fontSize:"14px",
+cursor:"pointer",
+  },
+
 };

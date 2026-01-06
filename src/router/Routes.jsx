@@ -9,6 +9,10 @@ import SignUp from "../pages/authentication/Signup"
 import Profile from "../pages/profile/Profile";  // adjust path based on file location
 import Dashboard from "../pages/dashboard/dashboard";
 import Users from "../pages/admin/Users";
+import Details from "../pages/details/details";
+import DashboardLayout from "../layouts/DashboardLayout";
+import Sidebar from "../pages/sidebar/Sidebar";
+import Dashboardnav from "../pages/dashboardnav/dashboardnav"
 
 export const router = createBrowserRouter([
   {
@@ -20,13 +24,15 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/details",
+        element: <Details />,
+      },
+
+      {
         path: "/profile",   // <-- new profile route
         element: <Profile />,
       },
-       {
-        path: "/dashboard",   // <-- new profile route
-        element: <Dashboard />,
-      },
+      
       
       {
         path: "/users",
@@ -41,12 +47,32 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/login",
-        element: <Login></Login>,
+        element: <Login/>,
       },
        {
         path: "/register",
         element: <SignUp />,
       },
+    ],
+  },
+  {
+    path: "/",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "/sidebar",
+        element: <Sidebar/>,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard/>,
+      },
+      {
+        path: "/dashboardnav",
+        element: <Dashboardnav/>,
+      },
+
+       
     ],
   },
 ]);

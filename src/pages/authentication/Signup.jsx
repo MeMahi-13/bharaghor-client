@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { MdOutlineEmail } from "react-icons/md";
 import user_icon from '../../assets/person.png'
 import email_icon from '../../assets/email.png'
 import password_icon from '../../assets/password.png'
+import { FcGoogle } from "react-icons/fc";
+import { BsApple } from "react-icons/bs";
 import './Login.css';
 const Signup = () => {
   const navigate = useNavigate();
@@ -50,11 +51,13 @@ const Signup = () => {
 
       if (res.ok) {
         Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Registration Successfull!",
-          showConfirmButton: false,
-          timer: 1500,
+          position: "center",     
+  icon: "success",
+  title: "Registration Successful!",
+  showConfirmButton: false,
+  timer: 1500,
+  background: "white", 
+  backdrop: "rgba(0,0,0,0)", 
         });
         setErrors({});
         setTimeout(() => navigate("/"), 1000);
@@ -100,7 +103,7 @@ const Signup = () => {
             </div>
            
             
-            <button  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-15 " style={styles.button}>Signup</button>
+            <button  className="bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-15 " style={styles.button}>Signup</button>
             <div className="text-center">
               <p>
           Already have an account?{" "}
@@ -109,7 +112,24 @@ const Signup = () => {
           </span>
         </p>
             </div>
-    
+    <div>
+      
+        <button
+      className="hover:bg-blue-700  font-bold py-2 px-4 rounded-full"
+      style={styles.signinwith}
+    >
+      <FcGoogle />
+      <span>Sign in with Google</span>
+    </button>
+      
+      <button
+      className="hover:bg-blue-700  font-bold py-2 px-4 rounded-full"
+      style={styles.signinwith}
+    >
+     <BsApple />
+      <span>Sign in with Apple</span>
+    </button>
+    </div>
     
           </form>
     
@@ -122,6 +142,22 @@ const Signup = () => {
 export default Signup;
 
 const styles = {
+  signinwith: {
+  background: "#F9FAFB",
+  width: "80%",
+  padding: "8px",
+  marginTop: "27px",
+  marginLeft: "50px",
+  border: "1px solid #E5E7EB",
+  fontWeight: "600",
+  fontSize: "16px",
+  color: "#000000",
+
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "10px",
+},
   button: { width: "80%", padding: "8px", marginTop:"27px",marginLeft:"50px" },
   link: { color: "blue", cursor: "pointer" },
 };

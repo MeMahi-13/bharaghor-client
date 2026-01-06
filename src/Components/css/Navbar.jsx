@@ -24,7 +24,7 @@ const Navbar = () => {
   }, []);
     return (
         <div style={styles.container}>
-            <div className='flex gap-5'>
+            <div className='flex gap-5 items-center'>
                 <AiFillAppstore size={24} />
            <h1> Logo</h1>
             </div>
@@ -64,7 +64,7 @@ const Navbar = () => {
           {showProfileModal && (
             <div style={styles.profileModal}>
               <p  style={styles.modalItem} onClick={() => navigate("/profile")} >My Profile</p>
-              <p style={styles.modalItem} onClick={() => navigate("/dashboard")}>Dashboard</p>
+              <p style={styles.modalItem} onClick={() => navigate("/sidebar")}>Dashboard</p>
               <p style={styles.modalItem}>Settings</p>
               <p style={styles.modalItem}>Logout</p>
             </div>
@@ -80,6 +80,7 @@ const Navbar = () => {
 
 export default Navbar;
 const styles = {
+  
   container: {  width: "100%",
     backgroundColor: "#ffffff",
     display: "flex",
