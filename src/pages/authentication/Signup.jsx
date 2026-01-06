@@ -5,9 +5,10 @@ import { updateProfile, GoogleAuthProvider, signInWithPopup } from "firebase/aut
 import { auth } from "../../firebase/firebase.init";
 import { AuthContext } from "../../context/AuthContext";
 
+
 function SignUp() {
   const { createUser } = useContext(AuthContext);
-  const [errors,] = useState({});
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {
