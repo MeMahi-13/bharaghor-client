@@ -1,117 +1,98 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AiOutlineMail, AiOutlineLock } from "react-icons/ai";
+import { useContext, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import Lottie from "lottie-react";
+import Swal from "sweetalert2";
+import loginAnimation from "../../assets/Secure Login.json";
+import email_icon from "../../assets/email.png";
+import password_icon from "../../assets/password.png";
+import { AuthContext } from "../../context/AuthContext";
 
-const Login = () => {
+function Login() {
+  const { signInUser } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState({});
-  const [message, setMessage] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.password) newErrors.password = "Password is required";
-    setError(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    setMessage("");
-
-    if (!validate()) return;
 
     try {
-      const res = await fetch("http://localhost:5000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const result = await signInUser(email, password);
+      console.log(result.user);
+
+      // Success alert
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful!",
+        text: `Welcome back, ${result.user.displayName || "User"}!`,
+        timer: 1500,
+        showConfirmButton: false,
       });
 
-      const data = await res.json();
-      console.log("API response:", data);
-
-      if (res.ok) {
-        setMessage("Login successful! Welcome " + data.user?.email);
-        navigate("/profile");
-      } else {
-        setMessage(data.message || "Login failed!");
-      }
+      navigate("/"); 
     } catch (err) {
-      console.error("API error:", err);
-      setMessage("Something went wrong. Try again.");
+      console.error(err);
+
+      // Error alert
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: err.message,
+      });
     }
   };
 
   return (
-    <div style={styles.container}>
-      <h2 className="font-semibold text-2xl mb-2">Login</h2>
-      <p className="text-gray-700 mb-5">
-        Hello, welcome back to your account
-      </p>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Email */}
-        <div className="relative w-full">
-          <AiOutlineMail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none" />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full pl-12 pr-4 py-2 border rounded-3xl border-gray-300 placeholder-gray-500 text-black focus:ring-2 focus:ring-gray-400"
-          />
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4">
+      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl p-8 flex flex-col md:flex-row items-center md:gap-8">
+        <div className="w-full md:w-1/2">
+          <Lottie animationData={loginAnimation} loop />
         </div>
-        {error.email && <p className="text-red-500">{error.email}</p>}
 
-        {/* Password */}
-        <div className="relative w-full">
-          <AiOutlineLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none" />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full pl-12 pr-4 py-2 border rounded-3xl border-gray-300 placeholder-gray-500 text-black focus:ring-2 focus:ring-gray-400"
-          />
+        <div className="w-full md:w-1/2 mt-6 md:mt-0">
+          <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">Login</h2>
+
+          <form onSubmit={handleSignIn} className="space-y-4">
+            <div className="relative">
+              <img src={email_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5" />
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full pl-10 px-4 py-3 border rounded-xl"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="relative">
+              <img src={password_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5" />
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full pl-10 px-4 py-3 border rounded-xl"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button className="w-full py-3 bg-blue-600 text-white rounded-xl">Login</button>
+          </form>
+
+          <div className="flex items-center my-6">
+            <hr className="grow" />
+            <span className="mx-2 text-gray-400 text-sm">OR</span>
+            <hr className="grow" />
+          </div>
+
+          <p className="text-center mt-6 text-sm">
+            Don’t have an account? <Link to="/register" className="text-blue-600 font-semibold">Register</Link>
+          </p>
         </div>
-        {error.password && <p className="text-red-500">{error.password}</p>}
-
-        {/* Message */}
-        {message && <p className="text-red-600 py-1">{message}</p>}
-
-        {/* Submit */}
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full"
-        >
-          Login
-        </button>
-
-        <p className="mt-3">
-          Don’t have an account?{" "}
-          <span
-            style={styles.link}
-            onClick={() => navigate("/register")}
-          >
-            Signup
-          </span>
-        </p>
-      </form>
+      </div>
     </div>
   );
-};
+}
 
 export default Login;
-
-const styles = {
-  container: { width: "300px", margin: "100px auto", textAlign: "center" },
-  link: { color: "blue", cursor: "pointer" },
-};

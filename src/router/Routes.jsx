@@ -1,15 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
+
 import HomeLayout from "../layouts/HomeLayout";
-import Home from "../pages/home/Home";
 import AuthLayout from "../layouts/AuthLayout";
-import Login from "../pages/authentication/Login"
-import SignUp from "../pages/authentication/Signup"
-import Profile from "../pages/profile/Profile";
+import DashboardLayout from "../layouts/DashboardLayout";
+
+import Home from "../pages/home/Home";
+import Login from "../pages/authentication/Login";
+import SignUp from "../pages/authentication/Signup";
+
+import Dashboard from "../pages/dashboard/dashboard";
 import Users from "../pages/admin/Users";
 import UserDetails from "../pages/admin/UserDetails";
 import UpdateUser from "../pages/admin/UpdateUser";
+import Profile from "../pages/profile/Profile";
+import ProfileCard from "../pages/profile/ProfileCard";
 
 export const router = createBrowserRouter([
   {
@@ -20,45 +24,62 @@ export const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
-       {
-        path: "/profile",
-        element: <Profile />,
+      {
+        path: "users",
+        loader: () => fetch("http://localhost:5000/users"),
+        element: <Users />,
       },
       {
-        path: "/users",
-        loader:()=>fetch('http://localhost:5000/users'),
-        element:<Users/>
+        path: "users/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/users/${params.id}`),
+        element: <UserDetails />,
       },
-       {
-        path:"/users/:id",
-        loader:({params})=>fetch(`http://localhost:5000/users/${params.id}`),
-        element: <UserDetails/>
-    },
-     {
-        path:"/users/:id",
-        loader:({params})=>fetch(`http://localhost:5000/users/${params.id}`),
-        element: <UserDetails/>
-    },
-    {
-      path:"/update-user/:id",
-      loader:({params})=>fetch(`http://localhost:5000/users/${params.id}`),
-      element:<UpdateUser/>
-    }
+      {
+        path: "update-user/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/users/${params.id}`),
+        element: <UpdateUser />,
+      },
     ],
   },
 
-   {
-    path: "/",
+  {
     element: <AuthLayout />,
     children: [
       {
-        path: "/login",
-        element: <Login></Login>,
+        path: "login",
+        element: <Login />,
       },
-       {
-        path: "/register",
+      {
+        path: "register",
         element: <SignUp />,
       },
+    ],
+  },
+
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        index: true,
+        element: <Dashboard />,
+      },
+      {
+        path:"/dashboard/profile",
+         element:<Profile/>
+
+
+      },
+      // {
+      //   path: "dashboard/profile/:id",
+      //   loader: ({ params }) =>
+      //     fetch(`http://localhost:5000/users/${params.id}`),
+      //   element: <Profile />,
+      // },
+
+      {},
     ],
   },
 ]);
