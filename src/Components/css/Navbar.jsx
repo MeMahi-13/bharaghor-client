@@ -6,6 +6,7 @@ import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
+  // console.log(user)
   const [showProfileModal, setShowProfileModal] = useState(false);
   const modalRef = useRef(null);
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const Navbar = () => {
               height: "40px",
               width:"40px"
              }}>
-              <img
+              <img className="rounded-full"
                 src={user.photoURL || "/images/Ellipse 116.png"}
                 alt="Profile"
                 style={styles.avatar}
@@ -67,7 +68,7 @@ const Navbar = () => {
 
               {showProfileModal && (
                 <div style={styles.profileModal}>
-                  <p style={styles.modalItem} onClick={() => navigate("/profile")}>
+                  <p style={styles.modalItem} onClick={() => navigate("dashboard/profile")}>
                     My Profile
                   </p>
                   <p style={styles.modalItem} onClick={() => navigate("/dashboard")}>
