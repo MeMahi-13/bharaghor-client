@@ -1,15 +1,16 @@
-import { use,  } from "react";
+
 import { AuthContext } from "../context/AuthContext";
+import UseAuth from "../hooks/useAuth";
 
 const Navbar = () => {
-  const { userInfo, logOut } = use(AuthContext);
-  console.log("Navbar sees user:", userInfo); 
+  const { user, logOut } = UseAuth;
+  console.log("Navbar sees user:", user);
 
   return (
     <nav>
-      {userInfo ? (
+      {user ? (
         <>
-          <span>{userInfo.displayName || "User"}</span>
+          <span>{user.displayName || "User"}</span>
           <button onClick={logOut}>Logout</button>
         </>
       ) : (
