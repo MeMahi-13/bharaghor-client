@@ -23,7 +23,8 @@ function SignUp() {
         body: JSON.stringify({ 
           name: result.user.displayName, 
           email: result.user.email, 
-          uid: result.user.uid 
+          uid: result.user.uid ,
+          photoURL:result.user.photoURL 
         }),
       });
 
@@ -39,15 +40,13 @@ const handleSignUp = async (e) => {
   const { name, email, password } = Object.fromEntries(formData.entries());
 
   try {
-    //  Firebase signup
     const result = await createUser(email, password);
 
-    // Update Firebase profile
     await updateProfile(result.user, {
       displayName: name,
+      
     });
 
-    // Save user to DB
     const res = await fetch("http://localhost:5000/register", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -67,11 +66,14 @@ const handleSignUp = async (e) => {
         timer: 1500,
         showConfirmButton: false,
       });
+
+      navigate("/");
     }
   } catch (error) {
     console.error(error);
   }
 };
+
 
 
   return (
