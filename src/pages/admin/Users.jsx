@@ -4,8 +4,9 @@ import UserCard from '../../Components/css/admin/UserCard';
 
 const Users = () => {
     const users = useLoaderData();
+    console.log('')
     return (
-        <div>
+        <div className='max-w-6xl mx-auto'>
             <h1>Total Users</h1>
             <div>
                 {

@@ -1,16 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
+
 import HomeLayout from "../layouts/HomeLayout";
-import Home from "../pages/home/Home";
 import AuthLayout from "../layouts/AuthLayout";
-import Login from "../pages/authentication/Login"
-import SignUp from "../pages/authentication/Signup"
-import Profile from "../pages/profile/Profile";  // adjust path based on file location
-import Dashboard from "../pages/dashboard/dashboard";
-import Users from "../pages/admin/Users";
-import Details from "../pages/details/details";
 import DashboardLayout from "../layouts/DashboardLayout";
+
+import Home from "../pages/home/Home";
+import Login from "../pages/authentication/Login";
+import SignUp from "../pages/authentication/Signup";
+
+import Dashboard from "../pages/dashboard/dashboard";
+import Details from "../pages/details/details";
 import Sidebar from "../pages/sidebar/Sidebar";
 import Dashboardnav from "../pages/dashboardnav/dashboardnav"
 
@@ -35,22 +34,29 @@ export const router = createBrowserRouter([
       
       
       {
-        path: "/users",
-        loader:()=>fetch('https://yessghor-server.vercel.app/users'),
-        element:<Users/>
-      }
+        path: "users/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/users/${params.id}`),
+        element: <UserDetails />,
+      },
+      {
+        path: "update-user/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/users/${params.id}`),
+        element: <UpdateUser />,
+      },
     ],
   },
-   {
-    path: "/",
+
+  {
     element: <AuthLayout />,
     children: [
       {
         path: "/login",
         element: <Login/>,
       },
-       {
-        path: "/register",
+      {
+        path: "register",
         element: <SignUp />,
       },
     ],

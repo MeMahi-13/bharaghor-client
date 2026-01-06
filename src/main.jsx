@@ -3,9 +3,13 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom' // Ensure this is imported
 import './index.css'
 import { router } from './router/Routes.jsx'
+import { AuthContext } from './context/AuthContext.jsx'
+import AuthProvider from './provider/AuthProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+   <AuthProvider>
+     <RouterProvider router={router} />
+   </AuthProvider>
   </StrictMode>
 )

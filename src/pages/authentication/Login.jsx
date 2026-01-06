@@ -1,156 +1,100 @@
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import email_icon from '../../assets/email.png'
-import password_icon from '../../assets/password.png'
-import { FcGoogle } from "react-icons/fc";
-import { BsApple } from "react-icons/bs";
+import { useContext, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import Lottie from "lottie-react";
 import Swal from "sweetalert2";
-import './Login.css';
-const Login = () => {
+import loginAnimation from "../../assets/Secure Login.json";
+import email_icon from "../../assets/email.png";
+import password_icon from "../../assets/password.png";
+import { AuthContext } from "../../context/AuthContext";
+
+function Login() {
+  const { signInUser } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [formData, setformData] = useState({ email: "", password: "" });
-  const handleChange = (e) => {
 
-    setformData({ ...formData, [e.target.name]: e.target.value })
-  }
-  const [error, setError] = useState({});
-  const Validate = () => {
-    let newErrors = {};
-    if (!formData.email) { newErrors.email = "email is required" };
-    if (!formData.password) { newErrors.password = "password is required" }
-    setError(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }
-
-  const handleSubmit = async (e) => {
-
+  const handleSignIn = async (e) => {
     e.preventDefault();
 
-    if (!Validate())
 
-      return;
     try {
-      const res = await fetch("https://yessghor-server.vercel.app/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const result = await signInUser(email, password);
+      console.log(result.user);
+
+      // Success alert
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful!",
+        text: `Welcome back, ${result.user.displayName || "User"}!`,
+        timer: 1500,
+        showConfirmButton: false,
       });
-      const data = await res.json();
 
-      console.log("API response:", data);
-      if (res.ok) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Yeah! Welcome Back",
-          html: `<p style="margin-top:8px;">${data.user?.email}</p>`,
-          showConfirmButton: false,
-          timer: 1500,
-          background: "white",
-          backdrop: "rgba(0,0,0,0)",
-        });
-        navigate("/");
-
-      } else {
-
-        alert(data.message || "Login failed!");
-      }
+      navigate("/"); 
     } catch (err) {
-      console.error("API error:", err);
+      console.error(err);
+
+      // Error alert
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: err.message,
+      });
     }
   };
   return (
-    <div className="page">
-      <div className="container">
-
-        <div className="header">
-          <div className="text">Login</div>
-          <div className="underline"></div>
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4">
+      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl p-8 flex flex-col md:flex-row items-center md:gap-8">
+        <div className="w-full md:w-1/2">
+          <Lottie animationData={loginAnimation} loop />
         </div>
 
-        <form action="" onSubmit={handleSubmit} className="mt-5">
-          <div className="inputs">
-            <div className="input">
-              <img src={email_icon} alt="" />
-              <input type="email" placeholder="Email" name="email" value={formData.email}
-                onChange={handleChange} />
+        <div className="w-full md:w-1/2 mt-6 md:mt-0">
+          <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">Login</h2>
+
+          <form onSubmit={handleSignIn} className="space-y-4">
+            <div className="relative">
+              <img src={email_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5" />
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full pl-10 px-4 py-3 border rounded-xl"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
-            {error.email && <p className="text-red-500">{error.email}</p>}
-            <div className="input">
-              <img src={password_icon} alt="" />
-              <input type="password" name="password" placeholder="Password" value={formData.password}
-                onChange={handleChange} />
+
+            <div className="relative">
+              <img src={password_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5" />
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full pl-10 px-4 py-3 border rounded-xl"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
-            {error.password && <p className="text-red-500">{error.password}</p>}
-          </div>
-          <div className="forgot">
-            <div className="flex gap-2 items-center"><input
-              type="checkbox"
-              name="tomato"
 
-              onChange={handleChange}
-            /><p className="mb-0">Remember me</p></div>
-            <div className="forgot-password">Forgot Password? <span>click here</span></div>
+            <button className="w-full py-3 bg-blue-600 text-white rounded-xl">Login</button>
+          </form>
 
+          <div className="flex items-center my-6">
+            <hr className="grow" />
+            <span className="mx-2 text-gray-400 text-sm">OR</span>
+            <hr className="grow" />
           </div>
 
-          <button className="bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-15 " style={styles.button}>Login</button>
-          <div className="text-center">
-            <p>
-              Don’t have an account?{" "}
-              <span style={styles.link} onClick={() => navigate("/register")}>
-                Signup
-              </span>
-            </p>
-          </div>
-
-          <div>
-
-            <button
-              className="hover:bg-blue-700  font-bold py-2 px-4 rounded-full"
-              style={styles.signinwith}
-            >
-              <FcGoogle />
-              <span>Sign in with Google</span>
-            </button>
-
-            <button
-              className="hover:bg-blue-700  font-bold py-2 px-4 rounded-full"
-              style={styles.signinwith}
-            >
-              <BsApple />
-              <span>Sign in with Apple</span>
-            </button>
-          </div>
-        </form>
-
+          <p className="text-center mt-6 text-sm">
+            Don’t have an account? <Link to="/register" className="text-blue-600 font-semibold">Register</Link>
+          </p>
+        </div>
       </div>
     </div>
-
+    
+   
   );
-};
+}
 
 export default Login;
-
-const styles = {
-
-  signinwith: {
-    background: "#F9FAFB",
-    width: "80%",
-    padding: "8px",
-    marginTop: "27px",
-    marginLeft: "50px",
-    border: "1px solid #E5E7EB",
-    fontWeight: "600",
-    fontSize: "16px",
-    color: "#000000",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "10px",
-  },
-
-  button: { width: "80%", padding: "8px", marginTop: "27px", marginLeft: "50px" },
-  link: { color: "blue", cursor: "pointer" }
-};
