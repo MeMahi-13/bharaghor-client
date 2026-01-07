@@ -13,7 +13,7 @@ const Profile = () => {
     const fetchUserInfo = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/users/email/${user.email}`
+          `https://yessghor-server.vercel.app/users/email/${user.email}`
         );
         if (!res.ok) throw new Error("Failed to fetch user info");
 

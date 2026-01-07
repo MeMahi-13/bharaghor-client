@@ -1,5 +1,4 @@
-// @flow strict
-import * as React from "react";
+
 import Sidebar from "../pages/sidebar/Sidebar"
 
 import Dashboardnav from "../pages/dashboardnav/dashboardnav"

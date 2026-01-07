@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter,Navigate } from "react-router-dom";
 
 import HomeLayout from "../layouts/HomeLayout";
 import AuthLayout from "../layouts/AuthLayout";
@@ -16,7 +16,8 @@ import Profile from "../pages/profile/Profile";
 import UserDetails from "../pages/admin/UserDetails";
 import UpdateUser from "../pages/admin/UpdateUser";
 import Details from "../pages/details/details";
-
+import Post from "../pages/Post/Post";
+import User_Information from "../pages/user_information/user_information"
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -30,9 +31,20 @@ export const router = createBrowserRouter([
         path: "/details",
         element: <Details />,
       },
+      {
+        path: "user_information",
+        element: <User_Information />,
+      },
 
-     
+    {
+ path: "post",
+        element: localStorage.getItem("userInfoCompleted")
+          ? <Post />
+          : <Navigate to="/user_information" replace />,
+      },
       
+    
+     
       
       {
         path: "users/:id",
@@ -60,6 +72,7 @@ export const router = createBrowserRouter([
         path: "register",
         element: <SignUp />,
       },
+      
     ],
   },
   {

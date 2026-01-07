@@ -11,7 +11,7 @@ const Navbar = () => {
   const modalRef = useRef(null);
   const navigate = useNavigate();
 
-  // Close modal if clicked outside
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -25,8 +25,20 @@ const Navbar = () => {
   const handleLogout = async () => {
     await logOut();
     setShowProfileModal(false);
+    localStorage.removeItem("userInfoCompleted");
     navigate("/login");
   };
+const handleAddProperty = () => {
+  // user already logged in (because this block renders only when user exists)
+
+  const userInfoCompleted = localStorage.getItem("userInfoCompleted");
+
+  if (!userInfoCompleted) {
+    navigate("/user_information");
+  } else {
+    navigate("/post");
+  }
+};
 
   return (
     <div style={styles.container}>
@@ -43,14 +55,14 @@ const Navbar = () => {
           <>
             <a href="/login">Login</a>
             <a href="/register">Sign Up</a>
-            <button className="primary-btn flex items-center gap-2" onClick={() => navigate("/post")}><FaPlus />Add Property</button>
+            
           </>
         )}
 
         {/* LOGGED IN */}
         {user && (
           <>
-          <button className="primary-btn flex items-center gap-2"><FaPlus />Add Property</button>
+         <button className="primary-btn flex items-center gap-2" onClick={handleAddProperty}><FaPlus />Add Property</button>
             <LuLogOut
               size={22}
               style={{ cursor: "pointer" }}
