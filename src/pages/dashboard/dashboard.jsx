@@ -3,6 +3,8 @@ import './dashboard.css';
 import { MdOutlineEventNote } from "react-icons/md";
 import { FaHome, FaCheckCircle, FaClock, FaDollarSign } from "react-icons/fa";
 import PropertyCard from '../../Components/PropertyCard'
+import useAuth from '../../hooks/useAuth';
+import { useLoaderData } from 'react-router';
 const cards = [
   {
       title: "Total Properties",
@@ -73,12 +75,18 @@ const featuredPlaces = [
 
 
 ];
+
 const dashboard = () => {
+  
+  // const userData = useLoaderData(); 
+  const { user } = useAuth();
+  console.log(user)
+
   return (
     <>
      <div>
       <div className='user_name'>
-        <h2 className='font-medium text-2xl text-[#101828]'>Welcome back, Rana</h2>
+        <h2 className='font-medium text-2xl text-[#101828]'>Welcome back, {user?.displayName || 'User'}</h2>
         <p className='font-normal text-base text-[#4A5565]'>Here’s what’s happening with your properties today </p>
       </div>
       <div className="flex flex-wrap gap-6" style={styles.needmagin}>

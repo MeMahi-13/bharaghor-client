@@ -1,22 +1,46 @@
-import React, { useState } from 'react'
+import { useState } from "react";
+
 import './Sidebar.css'
-import  '../dashboard/dashboard';
+import useAuth from "../../hooks/useAuth";
+import { Navigate, useNavigate } from "react-router";
+
 const Sidebar = () => {
-  const [uiOpen, setUiOpen] = useState(false);
+   const auth = useAuth(); 
+  //  const user = auth?.user; 
+   const navigate = useNavigate();
+   const { user, logOut } = useAuth();
+   
+   console.log(user);
+   const [uiOpen, setUiOpen] = useState(false);
+     const [showProfileModal, setShowProfileModal] = useState(false);
+
+ const handleLogout = async () => {
+    try {
+      await logOut();
+      setShowProfileModal(false);
+      navigate("/"); 
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
 
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
         <img src="/assets/logo.svg" alt="Logo" className="logo" />
+        
       </div>
 
-      <div className="sidebar-content">
-        <div className="user-info">
-          <p className="user-name">Clyde Miles</p>
-          <p className="user-email">clydemiles@elenor.us</p>
+      {user ? (
+        <>
+          <div className="sidebar-content sidebar">
+        <div className="user-info ">
+           {/* <p className="user-name">Name:{user.uid}</p> */}
+          <p className=" text-center user-name">{user.displayName}</p>
+          <p className=" text-center user-email">{user.email}</p>
         </div>
 
-        <nav className="menu">
+        <nav className="menu ">
           <a href="/dashboard" className="menu-item">
             <span className="icon">🏠</span>
             Dashboard
@@ -28,27 +52,22 @@ const Sidebar = () => {
           </a>
 
           <div
-            className="menu-item has-submenu"
-            onClick={() => setUiOpen(!uiOpen)}
+            className="menu-item"
+            
           >
             <span className="icon">📦</span>
             Booking
-            <span className={`arrow ${uiOpen ? "open" : ""}`}>›</span>
+       
           </div>
 
-          {uiOpen && (
-            <div className="submenu">
-              <a href="/buttons">Buttons</a>
-              <a href="/typography">Typography</a>
-            </div>
-          )}
+          
 
           <a href="/tables" className="menu-item">
             <span className="icon">📊</span>
             Saved
           </a>
 
-          <a href="/charts" className="menu-item">
+          <a href="/dashboard/profile" className="menu-item">
             <span className="icon">📈</span>
             Manage Profile
           </a>
@@ -57,13 +76,18 @@ const Sidebar = () => {
         <div className="sidebar-footer">
           <a href="/settings">Settings</a>
           <span>|</span>
-          <a href="/logout">Logout</a>
+          <a onClick={handleLogout} >Logout</a>
         </div>
       </div>
-    </aside>
-
-
-  )
+    
+        </>
+      ) : (
+        <p className="user-name">Loading user...</p>
+      )}
+</aside>
+ 
+    
+  );
 }
 
-export default Sidebar
+export default Sidebar;

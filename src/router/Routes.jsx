@@ -28,13 +28,13 @@ export const router = createBrowserRouter([
       {
         path: "users/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/users/${params.id}`),
+          fetch(`https://yessghor-server.vercel.app/users/${params.id}`),
         element: <UserDetails />,
       },
       {
         path: "update-user/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/users/${params.id}`),
+          fetch(`https://yessghor-server.vercel.app/users/${params.id}`),
         element: <UpdateUser />,
       },
     ],
@@ -59,6 +59,8 @@ export const router = createBrowserRouter([
     children: [
       {
         index:true,
+        loader: ({ params }) =>
+          fetch(`https://yessghor-server.vercel.app/users/${params.id}`),
         element: <Dashboard/>,
       },
       {
