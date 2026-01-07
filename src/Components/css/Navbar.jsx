@@ -3,7 +3,7 @@ import { AiFillAppstore } from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-
+import { FaPlus } from "react-icons/fa6";
 const Navbar = () => {
   const { user, logOut } = useAuth();
   // console.log(user)
@@ -43,12 +43,14 @@ const Navbar = () => {
           <>
             <a href="/login">Login</a>
             <a href="/register">Sign Up</a>
+            <button className="primary-btn flex items-center gap-2" onClick={() => navigate("/post")}><FaPlus />Add Property</button>
           </>
         )}
 
         {/* LOGGED IN */}
         {user && (
           <>
+          <button className="primary-btn flex items-center gap-2"><FaPlus />Add Property</button>
             <LuLogOut
               size={22}
               style={{ cursor: "pointer" }}

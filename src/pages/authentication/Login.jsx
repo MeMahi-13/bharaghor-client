@@ -21,7 +21,7 @@ function Login() {
         const result = await signInWithPopup(auth, provider);
         
         // Save Google User to Backend
-        await fetch("http://localhost:5000/register", {
+        await fetch("https://yessghor-server.vercel.app/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 

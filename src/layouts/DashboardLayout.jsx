@@ -2,7 +2,6 @@
 import * as React from "react";
 import Sidebar from "../pages/sidebar/Sidebar"
 
-<<<<<<< HEAD
 import Dashboardnav from "../pages/dashboardnav/dashboardnav"
 import { Outlet } from 'react-router';
 
@@ -20,20 +19,6 @@ function DashboardLayout() {
     </div>
   );
 }
-=======
-import * as React from 'react';
-import Sidebar from '../Components/Sidebar';
-import { Outlet } from 'react-router';
-
-function DashboardLayout() {
-    return (
-        <div className='flex gap-5'>
-            <Sidebar/>
-            <Outlet/>
-        </div>
-    );
-};
->>>>>>> 82499098854eb235d763e0f10ef7dc5a845b6c03
 
 export default DashboardLayout;
 const styles = {

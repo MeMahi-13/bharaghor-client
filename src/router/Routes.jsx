@@ -9,9 +9,13 @@ import Login from "../pages/authentication/Login";
 import SignUp from "../pages/authentication/Signup";
 
 import Dashboard from "../pages/dashboard/dashboard";
-import Details from "../pages/details/details";
+
 import Sidebar from "../pages/sidebar/Sidebar";
 import Dashboardnav from "../pages/dashboardnav/dashboardnav"
+import Profile from "../pages/profile/Profile";
+import UserDetails from "../pages/admin/UserDetails";
+import UpdateUser from "../pages/admin/UpdateUser";
+import Details from "../pages/details/details";
 
 export const router = createBrowserRouter([
   {
@@ -27,10 +31,7 @@ export const router = createBrowserRouter([
         element: <Details />,
       },
 
-      {
-        path: "/profile",   // <-- new profile route
-        element: <Profile />,
-      },
+     
       
       
       {
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboardnav",
         element: <Dashboardnav/>,
+      },
+       {
+        path: "dashboard/profile",   
+        element: <Profile />,
       },
 
        

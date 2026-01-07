@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 // Import modules
 import { Navigation, Pagination } from "swiper/modules";
-function details() {
+function Details() {
     // Array to track which cards are bookmarked
   const featuredPlacesInitial = [   
     {
@@ -77,7 +77,7 @@ function details() {
         </div>
     );
 };
-export default details;
+export default Details;
 const styles = {
   slide: {
     background: "#ffffff",
