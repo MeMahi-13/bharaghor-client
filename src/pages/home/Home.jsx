@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import './Home.css';
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
-import { Swiper, SwiperSlide } from "swiper/react";
 import { CiLocationOn } from "react-icons/ci";
 import { IoHomeOutline } from "react-icons/io5";
 import { SlCalender } from "react-icons/sl";
 import { FaBuilding } from "react-icons/fa";
 import { IoCallOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import SwiperSlider from "../../Components/SwiperSlider";
 
-// Import modules
-import { Navigation, Pagination } from "swiper/modules";
+
 
 const Home = () => {
   const [values, setValues] = useState({
@@ -78,24 +73,11 @@ const Home = () => {
   };
 
   return (
-    <div className="mx-auto max-w-6xl py-5" >
-      {/* Swiper */}
-      <Swiper
-        spaceBetween={30}
-        slidesPerView={1}
-        navigation={true}
-        pagination={{ clickable: true }}
-        modules={[Navigation, Pagination]}
-      >
-        <SwiperSlide style={styles.slide}>
-          <img src="/images/slider.png" alt="" style={styles.image} />
-        </SwiperSlide>
-        <SwiperSlide style={styles.slide}>Slide 2</SwiperSlide>
-        <SwiperSlide style={styles.slide}>Slide 3</SwiperSlide>
-        <SwiperSlide style={styles.slide}>Slide 4</SwiperSlide>
-      </Swiper>
-
-      {/* Select filters */}
+    <div className="mx-auto max-w-6xl py-5">
+    
+     
+<SwiperSlider/>
+      
       <div style={styles.selectrow}>
         <select
           name="price"
@@ -183,7 +165,7 @@ const Home = () => {
 
 export default Home;
 
-// Styles remain same
+
 const styles = {
   slide: {
     background: "#ffffff",
