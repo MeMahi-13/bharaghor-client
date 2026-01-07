@@ -78,7 +78,7 @@ const Home = () => {
   };
 
   return (
-    <div >
+    <div className="mx-auto max-w-6xl py-5" >
       {/* Swiper */}
       <Swiper
         spaceBetween={30}

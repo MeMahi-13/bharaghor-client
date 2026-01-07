@@ -1,17 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
-
 import HomeLayout from "../layouts/HomeLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
-
 import Home from "../pages/home/Home";
 import Login from "../pages/authentication/Login";
 import SignUp from "../pages/authentication/Signup";
-
 import Dashboard from "../pages/dashboard/dashboard";
 import Details from "../pages/details/details";
-import Sidebar from "../pages/sidebar/Sidebar";
-import Dashboardnav from "../pages/dashboardnav/dashboardnav"
+import Profile from "../pages/profile/Profile";
+import UserDetails from "../pages/admin/UserDetails";
+import UpdateUser from "../pages/admin/UpdateUser";
 
 export const router = createBrowserRouter([
   {
@@ -27,12 +25,6 @@ export const router = createBrowserRouter([
         element: <Details />,
       },
 
-      {
-        path: "/profile",   // <-- new profile route
-        element: <Profile />,
-      },
-      
-      
       {
         path: "users/:id",
         loader: ({ params }) =>
@@ -62,23 +54,18 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/",
+    path: "/dashboard",
     element: <DashboardLayout />,
     children: [
       {
-        path: "/sidebar",
-        element: <Sidebar/>,
-      },
-      {
-        path: "/dashboard",
+        index:true,
         element: <Dashboard/>,
       },
       {
-        path: "/dashboardnav",
-        element: <Dashboardnav/>,
+        path: "/dashboard/profile",   
+        element: <Profile />,
       },
-
-       
+      
     ],
   },
 ]);

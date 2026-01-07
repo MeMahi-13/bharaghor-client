@@ -1,7 +1,5 @@
-// @flow strict
 import { FaPlus } from "react-icons/fa6";
 import { IoNotificationsOutline } from "react-icons/io5";
-import * as React from 'react';
 import "./dashboardnav.css"
 function dashboardnav() {
     return (
