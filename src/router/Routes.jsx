@@ -18,6 +18,8 @@ import UpdateUser from "../pages/admin/UpdateUser";
 import Details from "../pages/details/details";
 import Post from "../pages/Post/Post";
 import User_Information from "../pages/user_information/user_information"
+import ImageUploader from "../a/ImageUploader";
+import ImageGallery from "../a/images";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +29,15 @@ export const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
+        {
+        path: "/upload",
+        element: <ImageUploader />,
+      },
+      {
+         path: "/images",
+        element: <ImageGallery />,
+      },
+      
       {
         path: "/details",
         element: <Details />,
@@ -42,10 +53,6 @@ export const router = createBrowserRouter([
           ? <Post />
           : <Navigate to="/user_information" replace />,
       },
-      
-    
-     
-      
       {
         path: "users/:id",
         loader: ({ params }) =>
