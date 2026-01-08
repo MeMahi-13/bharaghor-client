@@ -26,6 +26,7 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+         
       },
       {
         path: "/details",
@@ -36,12 +37,14 @@ export const router = createBrowserRouter([
         element: <User_Information />,
       },
 
-    {
- path: "post",
-        element: localStorage.getItem("userInfoCompleted")
-          ? <Post />
-          : <Navigate to="/user_information" replace />,
-      },
+    
+ {
+  path: "post",
+  element: localStorage.getItem("userInfoCompleted")
+  ? <Post />
+  : <Navigate to="/user_information" replace />
+},
+
       
     
      
