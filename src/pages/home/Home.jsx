@@ -78,6 +78,7 @@ const Home = () => {
      
 <SwiperSlider/>
       
+
       <div style={styles.selectrow}>
         <select
           name="price"

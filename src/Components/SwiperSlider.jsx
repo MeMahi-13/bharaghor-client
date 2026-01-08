@@ -1,26 +1,26 @@
 // @flow strict
 import * as React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import {  Pagination, Autoplay } from "swiper/modules";
 
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 function SwiperSlider() {
   return (
     <div>
       <Swiper
+      
         spaceBetween={30}
         slidesPerView={1}
-        navigation
+        
         pagination={{ clickable: true }}
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
         }}
         loop
-        modules={[Navigation, Pagination, Autoplay]}
+        modules={[ Pagination, Autoplay]}
       >
         <SwiperSlide style={styles.slide}>
           <img src="/images/SI5.jpg" alt="" style={styles.image} />
@@ -44,7 +44,7 @@ export default SwiperSlider;
 const styles = {
   slide: {
     background: "#ffffff",
-    height: "200px",
+    height: "400px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -52,7 +52,7 @@ const styles = {
   },
   image: {
     width: "100%",
-    height: "200px",
+    height: "350px",
     objectFit: "cover",
     borderRadius: "10px",
   },

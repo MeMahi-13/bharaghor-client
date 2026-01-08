@@ -38,10 +38,11 @@ function PropertyCard({ places }) {
             }}
           >
             {/* Image */}
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative" }} >
               <img
                 src={place.image}
                 alt={place.title}
+                
                 style={styles.cardImageHorizontal}
                 onClick={() => navigate("/details")}
               />
