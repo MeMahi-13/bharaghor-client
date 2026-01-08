@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const ProfileCard = ({user}) => {
-     const { _id, name, email,createdAt
+     const { _id, name, email, createdAt
  } = user;
      console.log(user)
     return (

@@ -1,8 +1,12 @@
 import { FaPlus } from "react-icons/fa6";
 import { IoNotificationsOutline } from "react-icons/io5";
 import "./dashboardnav.css"
+import { useLoaderData } from "react-router";
 function dashboardnav() {
+
+
     return (
+
         <header className="navbar">
       
       {/* LEFT SIDE */}
