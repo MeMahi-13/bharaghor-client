@@ -11,7 +11,7 @@ const Sidebar = () => {
    const { user, logOut } = useAuth();
    
    console.log(user);
-   const [uiOpen, setUiOpen] = useState(false);
+   //const [uiOpen, setUiOpen] = useState(false);
      const [showProfileModal, setShowProfileModal] = useState(false);
 
  const handleLogout = async () => {
