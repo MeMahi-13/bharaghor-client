@@ -5,12 +5,9 @@ import { CiLocationOn } from "react-icons/ci";
 import { IoHomeOutline } from "react-icons/io5";
 import { SlCalender } from "react-icons/sl";
 import { FaBuilding } from "react-icons/fa";
-import { IoCallOutline } from "react-icons/io5";
+import { MdOutlineMessage } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import SwiperSlider from "../../Components/SwiperSlider";
-
-
-
 const Home = () => {
   const [values, setValues] = useState({
     city: "",
@@ -78,6 +75,7 @@ const Home = () => {
      
 <SwiperSlider/>
       
+
       <div style={styles.selectrow}>
         <select
           name="price"
@@ -153,7 +151,7 @@ const Home = () => {
               </div>
               <div className="flex items-center gap-2 mt-2">
                 <div style={styles.money} className="border-none py-2 px-3">TK 12000</div>
-                <button style={styles.call} className="border py-2 px-3 flex items-center"><IoCallOutline />Call</button>
+                <button style={styles.call} className="border py-2 px-3 flex items-center"><MdOutlineMessage />Message</button>
               </div>
             </div>
           </div>

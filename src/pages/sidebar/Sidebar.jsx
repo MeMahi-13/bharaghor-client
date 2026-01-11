@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { FaArrowLeft } from "react-icons/fa";
 import './Sidebar.css'
 import useAuth from "../../hooks/useAuth";
 import { Navigate, useNavigate } from "react-router";
@@ -46,7 +46,7 @@ const Sidebar = () => {
             Dashboard
           </a>
 
-          <a href="/forms" className="menu-item">
+          <a href="/dashboard/properties" className="menu-item">
             <span className="icon">📋</span>
             Propeties
           </a>
@@ -59,10 +59,7 @@ const Sidebar = () => {
             Booking
        
           </div>
-
-          
-
-          <a href="/tables" className="menu-item">
+          <a href="/dashboard/Saved" className="menu-item">
             <span className="icon">📊</span>
             Saved
           </a>
@@ -70,6 +67,10 @@ const Sidebar = () => {
           <a href="/dashboard/profile" className="menu-item">
             <span className="icon">📈</span>
             Manage Profile
+          </a>
+          <a href="/" className="menu-item">
+            <span className="icon"><FaArrowLeft /></span>
+            back to Homepage
           </a>
         </nav>
 
