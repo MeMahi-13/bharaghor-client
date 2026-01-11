@@ -1,24 +1,21 @@
 import { createBrowserRouter,Navigate } from "react-router-dom";
-
 import HomeLayout from "../layouts/HomeLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
-
 import Home from "../pages/home/Home";
 import Login from "../pages/authentication/Login";
 import SignUp from "../pages/authentication/Signup";
-
 import Dashboard from "../pages/dashboard/dashboard";
-import Saved from "../pages/Saved/Saved";
 import Sidebar from "../pages/sidebar/Sidebar";
 import Dashboardnav from "../pages/dashboardnav/dashboardnav"
 import Profile from "../pages/profile/Profile";
 import UserDetails from "../pages/admin/UserDetails";
 import UpdateUser from "../pages/admin/UpdateUser";
 import Details from "../pages/details/details";
+
 import Post from "../pages/Post/Post";
-import User_Information from "../pages/user_information/user_information"
 import Properties from "../pages/Properties/Properties";
+import UserInfo from "../pages/user_information/UserInfo";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -29,27 +26,26 @@ export const router = createBrowserRouter([
         element: <Home />,
          
       },
+      //   {
+      //   path: "/upload",
+      //   element: <ImageUploader />,
+      // },
+      // {
+      //   path: "/images",
+      //   element: <ImageGallery />,
+      // },
       {
         path: "/details",
         element: <Details />,
       },
       {
         path: "user_information",
-        element: <User_Information />,
+        element: <UserInfo />,
       },
-
-    
- {
-  path: "post",
-  element: localStorage.getItem("userInfoCompleted")
-  ? <Post />
-  : <Navigate to="/user_information" replace />
-},
-
-      
-    
-     
-      
+    {
+      path: "/post",
+        element: <Post/>
+      },
       {
         path: "users/:id",
         loader: ({ params }) =>
@@ -78,11 +74,12 @@ export const router = createBrowserRouter([
       },
     ],
   },
+
   {
-    path: "/dashboard",
+    path: "/",
     element: <DashboardLayout />,
     children: [
-      {
+       {
         index:true,
         loader: ({ params }) =>
           fetch(`https://yessghor-server.vercel.app/users/${params.id}`),
@@ -92,25 +89,7 @@ export const router = createBrowserRouter([
         path: "/dashboard/profile",   
         element: <Profile />,
       },
-      {
-        path: "/dashboard/properties",   
-        element: <Properties />,
-      },
-      {
-        path: "/dashboard/Saved",   
-        element: <Saved />,
-      },
       
-    ],
-  },
-  {
-    path: "/",
-    element: <DashboardLayout />,
-    children: [
-      {
-        path: "/sidebar",
-        element: <Sidebar/>,
-      },
       {
         path: "/dashboard",
         element: <Dashboard/>,
@@ -120,11 +99,13 @@ export const router = createBrowserRouter([
         element: <Dashboardnav/>,
       },
        {
-        path: "dashboard/profile",   
+        path: "/dashboard/profile",   
         element: <Profile />,
       },
-
-       
+      {
+        path:"/dashboard/properties",
+        element:<Properties/>
+      }
     ],
   },
 ]);

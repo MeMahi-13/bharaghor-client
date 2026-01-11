@@ -45,7 +45,7 @@ const handleAddProperty = () => {
       {/* Left */}
       <div className="flex gap-5 items-center">
         <AiFillAppstore size={24} />
-        <h1>Logo</h1>
+        <h1>Bharaghor</h1>
       </div>
 
       {/* Right */}
