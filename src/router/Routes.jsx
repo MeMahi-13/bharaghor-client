@@ -16,10 +16,12 @@ import Profile from "../pages/profile/Profile";
 import UserDetails from "../pages/admin/UserDetails";
 import UpdateUser from "../pages/admin/UpdateUser";
 import Details from "../pages/details/details";
-import Post from "../pages/Post/Post";
-import User_Information from "../pages/user_information/user_information"
+
+import User_Information from "../pages/user_information/UserInfo"
 import ImageUploader from "../a/ImageUploader";
 import ImageGallery from "../a/images";
+import UserInfo from "../pages/user_information/UserInfo";
+import Post from "../pages/Post/Post";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -28,6 +30,7 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+         
       },
         {
         path: "/upload",
@@ -44,14 +47,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "user_information",
-        element: <User_Information />,
+        element: <UserInfo />,
       },
-
     {
- path: "post",
-        element: localStorage.getItem("userInfoCompleted")
-          ? <Post />
-          : <Navigate to="/user_information" replace />,
+      path: "/post",
+        element: <Post/>
       },
       {
         path: "users/:id",

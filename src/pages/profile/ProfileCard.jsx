@@ -1,18 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router';
+const ProfileCard = ({ user }) => {
+  const backendUrl = "http://localhost:5000";
 
-const ProfileCard = ({user}) => {
-     const { _id, name, email, createdAt
- } = user;
-     console.log(user)
-    return (
-        <div className=''>
-           <h1 className=' p-3 m-3 rounded'>Name:  {_id}</h1>
-            <h1 className='p-3 m-3 rounded'>Id: {name}</h1>
-            <h1 className='p-3 m-3 rounded'>E-mail: {email}</h1>
-            <h1 className='p-3 m-3 rounded'>Became User: {createdAt}</h1>
-             </div>
-    );
+  return (
+    <div>
+      <h3>{user.uid}</h3>
+       <h3>{user.name}</h3>
+        <h3>{user.email}</h3>
+         <h3>{user.status}</h3>
+          <h3>{user.createdAt}</h3>
+
+      <div style={{ display: 'flex', gap: '20px' }}>
+        {/* Combine http://localhost:5000 + /uploads/filename... */}
+        <img 
+            src={`${backendUrl}${user.nidFront}`} 
+            alt="Front NID" 
+            style={{ width: '300px' }} 
+        />
+        <img 
+            src={`${backendUrl}${user.nidBack}`} 
+            alt="Back NID" 
+            style={{ width: '300px' }} 
+        />
+      </div>
+    </div>
+  );
 };
-
-export default ProfileCard;
+ export default ProfileCard;
