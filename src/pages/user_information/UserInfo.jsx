@@ -51,44 +51,51 @@ function UserInfo() {
   };
 
   // Submit form
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  // Submit form using native fetch
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!user?.uid) return alert("User not authenticated");
-  if (!files.nidFront || !files.nidBack) {
-    return alert("Please upload both NID front and back images.");
-  }
-
-  try {
-    setLoading(true);
-    setStatus("Submitting to database...");
-
-    const data = new FormData();
-    data.append("name", formData.name);
-    data.append("email", formData.email);
-    data.append("phone", formData.phone);
-    
-    // These keys MUST match the names in your backend upload.fields
-    data.append("nidFront", files.nidFront); 
-    data.append("nidBack", files.nidBack);
-
-    const response = await axios.put(
-      `http://localhost:5000/register/${user.uid}`,
-      data
-    );
-
-    if (response.data.success) {
-      localStorage.setItem("userInfoCompleted", "true");
-      alert("Registration & Image Save Successful!");
-      navigate("/post");
+    if (!user?.uid) return alert("User not authenticated");
+    if (!files.nidFront || !files.nidBack) {
+      return alert("Please upload both NID front and back images.");
     }
-  } catch (error) {
-    console.error(error);
-    setStatus(error?.response?.data?.message || "Submission failed.");
-  } finally {
-    setLoading(false);
-  }
-};
+
+    try {
+      setLoading(true);
+      setStatus("Submitting to database...");
+
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("email", formData.email);
+      data.append("phone", formData.phone);
+      
+      // These keys must match the names in your backend upload.fields
+      data.append("nidFront", files.nidFront); 
+      data.append("nidBack", files.nidBack);
+
+      const response = await fetch(`http://localhost:5000/register/${user.uid}`, {
+        method: 'PUT',
+        body: data,
+        // No headers needed for FormData; fetch handles it automatically
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        localStorage.setItem("userInfoCompleted", "true");
+        alert("Registration & Image Save Successful!");
+        navigate("/post");
+      } else {
+        throw new Error(result.message || "Submission failed.");
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      setStatus(error.message || "Failed to submit information.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
 
 
