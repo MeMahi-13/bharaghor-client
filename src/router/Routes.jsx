@@ -9,7 +9,7 @@ import Login from "../pages/authentication/Login";
 import SignUp from "../pages/authentication/Signup";
 
 import Dashboard from "../pages/dashboard/dashboard";
-
+import Saved from "../pages/Saved/Saved";
 import Sidebar from "../pages/sidebar/Sidebar";
 import Dashboardnav from "../pages/dashboardnav/dashboardnav"
 import Profile from "../pages/profile/Profile";
@@ -18,6 +18,7 @@ import UpdateUser from "../pages/admin/UpdateUser";
 import Details from "../pages/details/details";
 import Post from "../pages/Post/Post";
 import User_Information from "../pages/user_information/user_information"
+import Properties from "../pages/Properties/Properties";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -90,6 +91,14 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/profile",   
         element: <Profile />,
+      },
+      {
+        path: "/dashboard/properties",   
+        element: <Properties />,
+      },
+      {
+        path: "/dashboard/Saved",   
+        element: <Saved />,
       },
       
     ],
