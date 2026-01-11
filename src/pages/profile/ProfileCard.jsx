@@ -3,6 +3,7 @@ const ProfileCard = ({ user }) => {
 
   return (
     <div>
+      
       <h3>{user.uid}</h3>
        <h3>{user.name}</h3>
         <h3>{user.email}</h3>

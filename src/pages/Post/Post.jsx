@@ -4,19 +4,22 @@ import React, { useState } from "react";
 import SwiperSlider from '../../Components/SwiperSlider';
 
 function Post() {
-  const [images, setImages] = useState([null, null, null, null]);
+  const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     category: "",
   });
 
+
   // Handle image upload
-  const handleImageChange = (index, file) => {
-    const updatedImages = [...images];
-    updatedImages[index] = file;
-    setImages(updatedImages);
-  };
+ const handleImageChange = (e) => {
+  const files = Array.from(e.target.files).filter(
+    file => file instanceof File
+  );
+
+  setImages(prev => [...prev, ...files].slice(0, 4));
+};
 
   // Handle text & dropdown change
   const handleChange = (e) => {
@@ -30,358 +33,326 @@ function Post() {
   };
   return (
     <div className="mx-auto max-w-6xl py-5">
-      <SwiperSlider />
+      
       <form style={styles.container} onSubmit={handleSubmit}>
 
-        <div style={styles.imageGrid}>
-          {images.map((img, index) => (
-            <div key={index} style={styles.imageBox}>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) =>
-                  handleImageChange(index, e.target.files[0])
-                }
-              />
-              {img && (
-                <img
-                  src={URL.createObjectURL(img)}
-                  alt="preview"
-                  style={styles.preview}
-                />
-              )}
-            </div>
-          ))}
-        </div>
+      <div style={styles.grid}>
+  {[0,1,2,3].map((i)=>(
+    <div key={i} style={styles.slot}>
+      {images[i] ? (
+        <img src={URL.createObjectURL(images[i])} alt="preview" style={styles.preview}/>
+      ) : (
+        <label style={{ cursor: "pointer", width: "100%", height: "100%" }}>
+          <input 
+            type="file" 
+            accept="image/*" 
+            style={{ display: "none" }}
+            onChange={handleImageChange} 
+          />
+          <div style={styles.placeholder}>
+            <span style={styles.plus}>+</span>
+            <small>Upload</small>
+          </div>
+        </label>
+      )}
+    </div>
+  ))}
+</div>
+
+
+
         <div style={styles.flexGrid}>
-          {/* Card details */}
+{/* Card details */}
           <div style={styles.flexItem}>
             <h2 className="font-semibold text-lg">Card Details</h2>
-            <div>
-              <label>Title</label>
-              <input
-                type="text"
-                name="title"
-                placeholder="Property Title"
-                value={formData.title}
-                onChange={handleChange}
-                style={styles.input}
-                required
-              />
-            </div>
-            <div>
-              <label>Location</label>
-              <input
-                type="text"
-                name="title"
-                placeholder="Property Title"
-                value={formData.title}
-                onChange={handleChange}
-                style={styles.input}
-                required
-              />
-            </div>
-            <div>
-              <label>House No</label>
-              <input
-                type="text"
-                name="title"
-                placeholder="Property Title"
-                value={formData.title}
-                onChange={handleChange}
-                style={styles.input}
-                required
-              />
-            </div>
-            <div>
-              <label>House Type</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                style={styles.input}
-                required
-              >
-                <option value="">Select Type</option>
-                <option value="apartment">Apartment</option>
-                <option value="house">House</option>
-                <option value="office">Office</option>
-              </select>
-            </div>
-
-            <div>
-              <label>Montly Rent</label>
-              <input
-                type="text"
-                name="title"
-                placeholder="Property Title"
-                value={formData.title}
-                onChange={handleChange}
-                style={styles.input}
-                required
-              />
-            </div>
-
+<div>
+  <label>Title</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Property Title"
+              value={formData.title}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            />
+</div>
+<div>
+  <label>Location</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Property Title"
+              value={formData.title}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            />
+</div>
+<div>
+  <label>House No</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Property Title"
+              value={formData.title}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            />
+</div>
+<div>
+  <label>House Type</label>
+             <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="">Select Type</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+</div>
+            
+<div>
+  <label>Montly Rent</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Property Title"
+              value={formData.title}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            />
+</div>
+            
           </div>
-          {/* Rental Details */}
+{/* Rental Details */}
           <div style={styles.flexItem}>
             <h2 className="font-semibold text-lg">Rental Details</h2>
 
-            <div>
-              <label>Monthly Rent</label>
-              <input
-                type="text"
-                name="title"
-                placeholder="Cost of renting the property"
-                value={formData.title}
-                onChange={handleChange}
-                style={styles.input}
-                required
-              />
-            </div>
-            <div>
-              <label>Security Deposit</label>
-              <input
-                type="text"
-                name="title"
-                placeholder="Amount required as a security deposit"
-                value={formData.title}
-                onChange={handleChange}
-                style={styles.input}
-                required
-              />
-            </div>
-            <div>
-              <label>Lease Term</label>
-              <input
-                type="text"
-                name="title"
-                placeholder="Amount required as a security deposit"
-                value={formData.title}
-                onChange={handleChange}
-                style={styles.input}
-                required
-              />
-            </div>
-            <div>
-              <label>Availability Date</label>
-              <input
-                type="text"
-                name="title"
-                placeholder="Date when the property is available for rent"
-                value={formData.title}
-                onChange={handleChange}
-                style={styles.input}
-                required
-              />
-            </div>
-          </div>
+           <div>
+  <label>Monthly Rent</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Cost of renting the property"
+              value={formData.title}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            />
+</div>
+<div>
+  <label>Security Deposit</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Amount required as a security deposit"
+              value={formData.title}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            />
+</div>
+<div>
+  <label>Lease Term</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Amount required as a security deposit"
+              value={formData.title}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            />
+</div>
+<div>
+  <label>Availability Date</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Date when the property is available for rent"
+              value={formData.title}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            />
+</div>
+{/* House Details & Features */}
+         
+          
+          <h2>House Details & Features</h2>
+          <input type="text" className="border w-full h-1/7" placeholder="A brief description for the listing.." />
+         </div>
+         
+           
           {/* Property features */}
+         
           <div style={styles.flexItem} >
-            <div style={styles.flexGrid}>
-              <div style={styles.flexItem}>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Floor</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="Attatched Bath">Attatched Bath</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Furnished</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Parking Spaces</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value=""> Heating</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Heating</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Internet</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-              </div>
-
-              <div style={styles.flexItem}>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Bedroom</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="Attatched Bath">Common Bath</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Balcony</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Air Conditionar</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Laundry</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Pets</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                >
-                  <option value="">Internet</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="office">Office</option>
-                </select>
-              </div>
-
+            <h2 className="font-semibold text-lg">Rental Details</h2>
+           <div style={styles.flexGrid}>
+            <div style={styles.flexItem}>
+              <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="">Floor</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="Attatched Bath">Attatched Bath</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="">Furnished</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="">Parking Spaces</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value=""> Bedroom</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="">Common Bath</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="">Balcony</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
             </div>
+           
+              
+           
+           </div>
+          </div>
+          
+{/* Utilities and Amenities */}
+         <div style={styles.flexItem} >
+            <h2 className="font-semibold text-lg">Utilities and Amenities</h2>
+           <div style={styles.flexGrid}>
+            <div style={styles.flexItem}>
+              <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="">Water</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="Attatched Bath">Electricity</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="">Gas</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            >
+              <option value="">Security</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            
+            </div>
+           
+              
+           
+           </div>
           </div>
 
-
-          <div style={styles.flexItem}>
-            <h2>House Details & Features</h2>
-
-          </div>
-
-          <div style={styles.flexItem}>
-            <h2>Rental Details</h2>
-
-          </div>
-
-          <div style={styles.flexItem}>
-            <h2>Property Features</h2>
-
-          </div>
-
-          <div style={styles.flexItem}>
-            <h2>Utilities and Amenities</h2>
-
-          </div>
 
         </div>
-
-
         <button type="submit" style={styles.button}>
-          Submit
+          Post
         </button>
       </form>
     </div>
@@ -451,5 +422,43 @@ const styles = {
     borderRadius: "8px",
     background: "#fff",
   },
+  
+  uploadBox: {
+    border: "2px dashed #ccc",
+    padding: "16px",
+    borderRadius: "8px",
+    cursor: "pointer",
+  },
+  hiddenInput: {
+    display: "none",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "10px",
+  },
+  slot: {
+    height: "90px",
+    border: "1px dashed #ddd",
+    borderRadius: "6px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+  },
+  placeholder: {
+    textAlign: "center",
+    color: "#999",
+    fontSize: "12px",
+    paddingTop:"15px",
+  },
+  plus: {
+    fontSize: "24px",
+    display: "block",
+    lineHeight: "1",
+  },
+  
+
+
 
 };
