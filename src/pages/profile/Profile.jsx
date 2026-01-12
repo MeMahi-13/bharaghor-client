@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import ProfileCard from "./ProfileCard";
-
+import { IoIosArrowBack } from "react-icons/io";
 const Profile = () => {
   const { user } = useContext(AuthContext); 
   const [userInfo, setUserInfo] = useState(null);
@@ -33,7 +33,13 @@ const Profile = () => {
   if (!userInfo) return <p>User not found.</p>;
 
   return (
-    <div className="p-5">
+    
+    <div className="">
+      <div className="flex items-center gap-3">
+         <IoIosArrowBack />
+        <h2 className="">Manage Profile</h2>
+       
+      </div>
       <ProfileCard user={userInfo} />
     </div>
   );

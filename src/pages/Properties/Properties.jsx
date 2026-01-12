@@ -2,7 +2,8 @@
 
 import * as React from 'react';
 import { useState } from 'react';
-
+import PropertyCard from '../../Components/PropertyCard';
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 function Properties() {
         // Array to track which cards are bookmarked
         const featuredPlacesInitial = [
@@ -55,7 +56,7 @@ function Properties() {
         };
     return (
         <div>
-            <h2>Your Properties</h2>
+            <h2 className='font-medium text-2xl mb-4'>Saved Properties</h2>
             <div style={{ position: "relative" }}>
                 <PropertyCard places={featuredPlaces} />
 

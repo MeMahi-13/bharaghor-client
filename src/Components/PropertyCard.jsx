@@ -5,7 +5,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { IoHomeOutline } from "react-icons/io5";
 import { SlCalender } from "react-icons/sl";
 import { FaBuilding } from "react-icons/fa";
-import { IoCallOutline } from "react-icons/io5";
+import { MdOutlineMessage } from "react-icons/md";
 function PropertyCard({ places }) {
   const navigate = useNavigate();
 
@@ -35,6 +35,11 @@ function PropertyCard({ places }) {
               flex: "1 1 calc(25% - 15px)", // 4 cards per row
               display: "flex",
               flexDirection: "column",
+              border:"1px solid #E5E7EB",
+              borderRadius:"12px",
+              paddingBottom:"16px",
+               boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.2)",
+             background:"#ffffff",
             }}
           >
             {/* Image */}
@@ -49,17 +54,30 @@ function PropertyCard({ places }) {
             </div>
 
             {/* Content */}
-            <div style={styles.cardContent}>
-              <h2 style={styles.cardTitle}>{place.title}</h2>
-              <p style={styles.cardText}>{place.location}</p>
-              <p style={styles.cardText}>{place.home}</p>
-              <p style={styles.cardText}>{place.date}</p>
-              <p style={styles.cardText}>{place.houseType}</p>
-              <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
-                <div style={styles.money}>TK 12000</div>
-                <button style={styles.call}>Call</button>
-              </div>
-            </div>
+             {/* Description */}
+                        <div style={styles.cardContent}>
+                          <h2 style={styles.cardTitle}>{place.title}</h2>
+                          <div className="flex items-center gap-0.5">
+                            <CiLocationOn />
+                            <p style={styles.cardText}>{place.location}</p>
+                          </div>
+                          <div className="flex items-center gap-0.5">
+                            <IoHomeOutline />
+                            <p style={styles.cardText}>{place.home}</p>
+                          </div>
+                          <div className="flex items-center gap-0.5">
+                            <SlCalender />
+                            <p style={styles.cardText}>{place.date}</p>
+                          </div>
+                          <div className="flex items-center gap-0.5">
+                            <FaBuilding />
+                            <p style={styles.cardText}>{place.houseType}</p>
+                          </div>
+                          <div className="flex items-center gap-2 mt-2">
+                            <div style={styles.money} className="border-none py-2 px-3">TK 12000</div>
+                            <button style={styles.call} className="border py-2 px-3 flex items-center"><MdOutlineMessage />Message</button>
+                          </div>
+                        </div>
           </div>
         ) : (
           // Empty placeholder for missing cards
@@ -82,13 +100,16 @@ const styles = {
     height: "150px",
     objectFit: "cover",
     borderRadius: "10px",
-    marginTop:"24px",
+    marginTop:"",
   },
   cardContent: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    marginTop: "10px",
+    paddingTop: "10px",
+     paddingLeft:"13px",
+     
+      
   },
   cardTitle: {
     marginBottom: "10px",

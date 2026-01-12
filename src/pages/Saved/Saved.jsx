@@ -3,12 +3,8 @@
 import * as React from 'react';
 import PropertyCard from '../../Components/PropertyCard';
 import { useState } from 'react';
-import { CiLocationOn } from "react-icons/ci";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
-import { IoHomeOutline } from "react-icons/io5";
-import { SlCalender } from "react-icons/sl";
-import { FaBuilding } from "react-icons/fa";
-import { MdOutlineMessage } from "react-icons/md";
+
 function Saved() {
     // Array to track which cards are bookmarked
     const featuredPlacesInitial = [
@@ -61,7 +57,7 @@ function Saved() {
     };
     return (
         <div>
-            <h2>Saved Properties</h2>
+            <h2 className='font-medium text-2xl mb-4'>Saved Properties</h2>
 
             <div style={{ position: "relative" }}>
                 <PropertyCard places={featuredPlaces} />
@@ -75,7 +71,7 @@ function Saved() {
                         display: "grid",
                         gridTemplateColumns: "repeat(4, 1fr)",
                         gap: "20px",
-                        paddingTop: "24px",
+                        paddingTop: "10px",
                     }}
                 >
                     {featuredPlaces.map((place, index) => (
@@ -114,82 +110,4 @@ function Saved() {
 }
 export default Saved;
 
-const styles = {
-    slide: {
-        background: "#ffffff",
-        height: "200px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "20px",
-        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-    },
-    image: {
-        width: "100%",
-        height: "200px",
-        objectFit: "cover",
-        borderRadius: "10px",
-    },
-    select: {
-        flex: 1,
-        height: "40px",
-        padding: "8px 12px",
-        borderRadius: "8px",
-        border: "1px solid #ccc",
-        fontSize: "14px",
-    },
-    selectrow: {
-        display: "flex",
-        gap: "15px",
-        width: "100%",
-        marginTop: "18px",
-    },
-    cardImageHorizontal: {
-        width: "100%",
-        height: "150px",
-        objectFit: "cover",
-        borderRadius: "10px",
-    },
-    cardContent: {
-        width: "80%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-    },
-    cardTitle: {
-        marginBottom: "10px",
-        fontWeight: "600",
-        fontSize: "20px",
-        lineHeight: "100%",
-        color: "#101828",
-    },
-    cardText: {
-        fontSize: "16px",
-        color: "#555",
-    },
 
-    title: {
-        paddingTop: "20px",
-        paddingBottom: "20px",
-        fontWeight: "600",
-        fontSize: "24px",
-
-    },
-    money: {
-        color: "#0988E3",
-        fontWeight: "600",
-        fontSize: "14px",
-    },
-    call: {
-        background: "#0988E3",
-        border: "none",
-        color: "#FFFFFF",
-        borderRadius: "6px",
-        gap: "4px",
-        padding: "4px 9px",
-        fontWeight: "400",
-        fontSize: "14px",
-        cursor: "pointer",
-    },
-
-};
