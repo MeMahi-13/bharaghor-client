@@ -8,6 +8,7 @@ import { FaBuilding } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import SwiperSlider from "../../Components/SwiperSlider";
+import PropertyCard from "../../Components/PropertyCard";
 const Home = () => {
   const [values, setValues] = useState({
     city: "",
@@ -114,49 +115,51 @@ const Home = () => {
 
       {/* Featured Places */}
       <h5 style={styles.title}>Featured Place</h5>
-      <div className="featured-place-body">
-        {featuredPlaces.map((place, index) => (
-          <div key={index} style={{ marginBottom: "20px" }}>
-            {/* Image */}
-            <div className="house-item-img-container" style={{ position: "relative" }}>
-              <img src={place.image} alt={place.title} style={styles.cardImageHorizontal} onClick={() => navigate("/details")}/>              
-              <div
-                className="add"
-                onClick={() => toggleBookmark(index)}>
-                {place.bookmarked ? (
-                  <BsBookmarkFill color="#007BFF" size={20} />
-                ) : (
-                  <BsBookmark color="#A1A8B0" size={20} />
-                )}
-              </div>
-            </div>
-            {/* Description */}
-            <div style={styles.cardContent}>
-              <h2 style={styles.cardTitle}>{place.title}</h2>
-              <div className="flex items-center gap-0.5">
-                <CiLocationOn />
-                <p style={styles.cardText}>{place.location}</p>
-              </div>
-              <div className="flex items-center gap-0.5">
-                <IoHomeOutline />
-                <p style={styles.cardText}>{place.home}</p>
-              </div>
-              <div className="flex items-center gap-0.5">
-                <SlCalender />
-                <p style={styles.cardText}>{place.date}</p>
-              </div>
-              <div className="flex items-center gap-0.5">
-                <FaBuilding />
-                <p style={styles.cardText}>{place.houseType}</p>
-              </div>
-              <div className="flex items-center gap-2 mt-2">
-                <div style={styles.money} className="border-none py-2 px-3">TK 12000</div>
-                <button style={styles.call} className="border py-2 px-3 flex items-center"><MdOutlineMessage />Message</button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <div style={{ position: "relative" }}>
+                      <PropertyCard places={featuredPlaces} />
+      
+                      {/* Bookmark layer */}
+                      <div
+                          style={{
+                              position: "absolute",
+                              inset: 0,
+                              pointerEvents: "none",
+                              display: "grid",
+                              gridTemplateColumns: "repeat(4, 1fr)",
+                              gap: "20px",
+                              paddingTop: "10px",
+                          }}
+                      >
+                          {featuredPlaces.map((place, index) => (
+                              <div
+                                  key={index}
+                                  style={{
+                                      position: "relative",
+                                      pointerEvents: "auto",
+                                  }}
+                              >
+                                  <div
+                                      style={{
+                                          position: "absolute",
+                                          top: "10px",
+                                          right: "10px",
+                                          cursor: "pointer",
+                                          background: "#fff",
+                                          borderRadius: "50%",
+                                          padding: "6px",
+                                      }}
+                                      onClick={() => toggleBookmark(index)}
+                                  >
+                                      {place.bookmarked ? (
+                                          <BsBookmarkFill color="#007BFF" size={18} />
+                                      ) : (
+                                          <BsBookmark color="#A1A8B0" size={18} />
+                                      )}
+                                  </div>
+                              </div>
+                          ))}
+                      </div>
+                  </div>
     </div>
   );
 };
@@ -201,17 +204,19 @@ const styles = {
     borderRadius: "10px",
   },
   cardContent: {
-    width: "80%",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
   },
   cardTitle: {
     marginBottom: "10px",
+    marginTop:"10px",
     fontWeight:"600",
     fontSize:"20px",
     lineHeight:"100%",
     color:"#101828",
+    
   },
   cardText: {
     fontSize: "16px",

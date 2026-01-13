@@ -51,14 +51,14 @@ const Sidebar = () => {
             Propeties
           </a>
 
-          <div
+          <a href="/dashboard/booking"
             className="menu-item"
             
           >
             <span className="icon">📦</span>
             Booking
        
-          </div>
+          </a>
           <a href="/dashboard/Saved" className="menu-item">
             <span className="icon">📊</span>
             Saved

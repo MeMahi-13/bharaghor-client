@@ -12,10 +12,11 @@ import Profile from "../pages/profile/Profile";
 import UserDetails from "../pages/admin/UserDetails";
 import UpdateUser from "../pages/admin/UpdateUser";
 import Details from "../pages/details/details";
-
+import Saved from "../pages/Saved/Saved";
 import Post from "../pages/Post/Post";
 import Properties from "../pages/Properties/Properties";
 import UserInfo from "../pages/user_information/UserInfo";
+import Booking from "../pages/booking/booking";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -105,7 +106,15 @@ export const router = createBrowserRouter([
       {
         path:"/dashboard/properties",
         element:<Properties/>
-      }
+      },
+       {
+        path:"/dashboard/saved",
+        element:<Saved/>
+      },
+      {
+        path:"/dashboard/booking",
+        element:<Booking/>
+      },
     ],
   },
 ]);

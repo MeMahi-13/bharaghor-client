@@ -380,12 +380,7 @@ const styles = {
     padding: "10px",
     textAlign: "center",
   },
-  preview: {
-    width: "100%",
-    height: "100px",
-    objectFit: "cover",
-    marginTop: "8px",
-  },
+ 
   input: {
     width: "100%",
     padding: "10px",
@@ -457,7 +452,12 @@ const styles = {
     display: "block",
     lineHeight: "1",
   },
-  
+  preview: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    marginTop: "8px",
+  },
 
 
 
