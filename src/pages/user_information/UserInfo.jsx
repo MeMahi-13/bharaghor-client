@@ -100,14 +100,14 @@ function UserInfo() {
 
 
   return (
-    <div className="mx-auto max-w-6xl py-6 px-4">
+    <div className="mx-auto max-w-6xl  py-6 px-4">
       <h2 className="font-semibold text-2xl text-center mb-6 uppercase">
         User Information
       </h2>
 
       <form
         onSubmit={handleSubmit}
-        className="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow border"
+        className="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow border-none"
       >
         {/* Name */}
         <label className="font-semibold text-gray-700 block mb-2">
@@ -122,7 +122,7 @@ function UserInfo() {
           <input
             name="name"
             type="text"
-            className="w-full pl-10 px-4 py-3 border rounded-xl"
+            className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-xl"
             value={formData.name}
             onChange={handleChange}
             required
@@ -142,7 +142,7 @@ function UserInfo() {
           <input
             name="email"
             type="email"
-            className="w-full pl-10 px-4 py-3 border rounded-xl"
+            className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-xl"
             value={formData.email}
             onChange={handleChange}
             required
@@ -161,8 +161,9 @@ function UserInfo() {
           />
           <input
             name="phone"
+            placeholder="Enter your phone number"
             type="tel"
-            className="w-full pl-10 px-4 py-3 border rounded-xl"
+            className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-xl"
             value={formData.phone}
             onChange={handleChange}
             required

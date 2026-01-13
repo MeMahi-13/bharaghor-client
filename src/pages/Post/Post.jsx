@@ -33,7 +33,9 @@ function Post() {
   };
   return (
     <div className="mx-auto max-w-6xl py-5">
-      
+      <h2 className="font-semibold text-2xl text-center mb-6 uppercase">
+        Add Post
+      </h2>
       <form style={styles.container} onSubmit={handleSubmit}>
 
       <div style={styles.grid}>
@@ -194,7 +196,7 @@ function Post() {
           {/* Property features */}
          
           <div style={styles.flexItem} >
-            <h2 className="font-semibold text-lg">Rental Details</h2>
+            <h2 className="font-semibold text-lg">Property Features</h2>
            <div style={styles.flexGrid}>
             <div style={styles.flexItem}>
               <select
@@ -229,9 +231,9 @@ function Post() {
               required
             >
               <option value="">Furnished</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
+              <option value="apartment">Yes</option>
+              <option value="house">No</option>
+              
             </select>
             <select
               name="category"
@@ -295,15 +297,14 @@ function Post() {
             <div style={styles.flexItem}>
               <select
               name="category"
-              value={formData.category}
+              value={formData.water}
               onChange={handleChange}
               style={styles.input}
               required
             >
               <option value="">Water</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </select>
             <select
               name="category"
@@ -325,9 +326,9 @@ function Post() {
               required
             >
               <option value="">Gas</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
+               <option value="">Water</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </select>
             <select
               name="category"
@@ -402,6 +403,7 @@ const styles = {
     border: "none",
     borderRadius: "6px",
     cursor: "pointer",
+    marginTop:"12px",
   },
   flexGrid: {
     display: "flex",
