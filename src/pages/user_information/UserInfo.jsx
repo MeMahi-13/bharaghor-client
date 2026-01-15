@@ -40,7 +40,7 @@ function UserInfo() {
       if (!user?._id) return;
 
       try {
-        const res = await fetch(`http://localhost:5000/users/${user._id}`);
+        const res = await fetch(`https://yessghor-server.vercel.app/users/${user._id}`);
         const data = await res.json();
 
         if (res.ok && data.user) {
@@ -98,7 +98,7 @@ function UserInfo() {
       submitData.append("nidBack", files.nidBack);
 
       const res = await fetch(
-        `http://localhost:5000/register/${user._id}`,
+        `https://yessghor-server.vercel.app/register/${user._id}`,
         {
           method: "PUT",
           body: submitData,
@@ -177,12 +177,12 @@ function UserInfo() {
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <img
-                src={`http://localhost:5000${formData.nidFront}`}
+                src={`https://yessghor-server.vercel.app${formData.nidFront}`}
                 className="h-32 w-full object-cover rounded-xl border"
                 alt="NID Front"
               />
               <img
-                src={`http://localhost:5000${formData.nidBack}`}
+                src={`https://yessghor-server.vercel.app${formData.nidBack}`}
                 className="h-32 w-full object-cover rounded-xl border"
                 alt="NID Back"
               />

@@ -17,7 +17,7 @@ function SignUp() {
       const result = await signInWithPopup(auth, provider);
       
       // Save Google User to Backend
-      await fetch("http://localhost:5000/register", {
+      await fetch("https://yessghor-server.vercel.app/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
@@ -41,7 +41,7 @@ function SignUp() {
   const { name, email, phone, password } = Object.fromEntries(formData.entries());
 
   try {
-    const API_URL = "http://localhost:5000/register"; 
+    const API_URL = "https://yessghor-server.vercel.app/register"; 
 
     const res = await fetch(API_URL, {
       method: "POST",
