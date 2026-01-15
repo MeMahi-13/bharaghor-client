@@ -1,4 +1,4 @@
-import { createBrowserRouter,Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import HomeLayout from "../layouts/HomeLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -7,7 +7,7 @@ import Login from "../pages/authentication/Login";
 import SignUp from "../pages/authentication/Signup";
 import Dashboard from "../pages/dashboard/dashboard";
 import Sidebar from "../pages/sidebar/Sidebar";
-import Dashboardnav from "../pages/dashboardnav/dashboardnav"
+import Dashboardnav from "../pages/dashboardnav/dashboardnav";
 import Profile from "../pages/profile/Profile";
 import UserDetails from "../pages/admin/UserDetails";
 import UpdateUser from "../pages/admin/UpdateUser";
@@ -17,6 +17,9 @@ import Post from "../pages/Post/Post";
 import Properties from "../pages/Properties/Properties";
 import UserInfo from "../pages/user_information/UserInfo";
 import Booking from "../pages/booking/booking";
+import AdminUsers from "../pages/admin/AdminUsers";
+import AdminPendingPosts from "../pages/admin/post/AdminPendingPost";
+import PendingPostsByUser from "../pages/admin/post/AdminPendingPost";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -25,7 +28,6 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-         
       },
       //   {
       //   path: "/upload",
@@ -43,9 +45,21 @@ export const router = createBrowserRouter([
         path: "user_information",
         element: <UserInfo />,
       },
-    {
-      path: "/post",
-        element: <Post/>
+      {
+        path: "/post",
+        element: <Post />,
+      },
+      {
+        path: "/adminUsers",
+        element: <AdminUsers />,
+      },
+      {
+        path: "/admin/posts/pending",
+        element: <AdminPendingPosts />,
+      },
+      {
+        path: "/admin/posts/pending/:userId",
+        element: <PendingPostsByUser />,
       },
       {
         path: "users/:id",
@@ -67,7 +81,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/login",
-        element: <Login/>,
+        element: <Login />,
       },
       {
         path: "register",
@@ -80,40 +94,40 @@ export const router = createBrowserRouter([
     path: "/",
     element: <DashboardLayout />,
     children: [
-       {
-        index:true,
+      {
+        index: true,
         loader: ({ params }) =>
           fetch(`https://yessghor-server.vercel.app/users/${params.id}`),
-        element: <Dashboard/>,
+        element: <Dashboard />,
       },
       {
-        path: "/dashboard/profile",   
+        path: "/dashboard/profile",
         element: <Profile />,
       },
-      
+
       {
         path: "/dashboard",
-        element: <Dashboard/>,
+        element: <Dashboard />,
       },
       {
         path: "/dashboardnav",
-        element: <Dashboardnav/>,
+        element: <Dashboardnav />,
       },
-       {
-        path: "/dashboard/profile",   
+      {
+        path: "/dashboard/profile",
         element: <Profile />,
       },
       {
-        path:"/dashboard/properties",
-        element:<Properties/>
-      },
-       {
-        path:"/dashboard/saved",
-        element:<Saved/>
+        path: "/dashboard/properties",
+        element: <Properties />,
       },
       {
-        path:"/dashboard/booking",
-        element:<Booking/>
+        path: "/dashboard/saved",
+        element: <Saved />,
+      },
+      {
+        path: "/dashboard/booking",
+        element: <Booking />,
       },
     ],
   },

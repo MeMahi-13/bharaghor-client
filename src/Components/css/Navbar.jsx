@@ -41,11 +41,11 @@ const handleAddProperty = () => {
 };
 
   return (
-    <div style={styles.container}>
+    <div className="fixed z-99" style={styles.container}>
       {/* Left */}
-      <div className="flex gap-5 items-center">
-        <AiFillAppstore size={24} />
-        <h1>Bharaghor</h1>
+      <div className="flex gap-2 items-center">
+       <img className="h-8 w-10" src="src\assets\logo bharaghor.png" alt="" />
+       <img className="h-5 w-20" src="src\assets\name.png" alt="" />
       </div>
 
       {/* Right */}

@@ -1,406 +1,196 @@
 // @flow strict
-import React, { useState,useEffect } from "react";
-
-import SwiperSlider from '../../Components/SwiperSlider';
+import React, { useState } from "react";
 
 function Post() {
   const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
-    description: "",
+    location: "",
+    houseNo: "",
     category: "",
+    rent: "",
+    deposit: "",
+    leaseTerm: "",
+    availableDate: "",
+    description: "",
+    floor: "",
+    furnished: "",
+    parking: "",
+    bedroom: "",
+    commonBath: "",
+    balcony: "",
+    water: "",
+    electricity: "",
+    gas: "",
+    security: ""
   });
   
-  const [previewUrls, setPreviewUrls] = useState([]); // preview URLs
+  
 
-  // Handle file selection
+  // Handle image upload (max 4)
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImages(files);
-  };
-// Generate image previews whenever images change
-  useEffect(() => {
-    if (images.length === 0) return;
-
-    const urls = images.map((img) => URL.createObjectURL(img));
-    setPreviewUrls(urls);
-
-    // Cleanup to prevent memory leaks
-    return () => {
-      urls.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [images]);
-
-  // Upload images using fetch
-  const handleUpload = async () => {
-    if (images.length === 0) return alert("No images selected!");
-
-    const formData = new FormData();
-    images.forEach((img) => formData.append("images", img));
-     try {
-      const response = await fetch("/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error("Upload failed");
-
-      const data = await response.json();
-      console.log("Upload successful:", data);
-      alert("Images uploaded successfully!");
-    } catch (err) {
-      console.error(err);
-      alert("Upload failed!");
-    }
+    setImages(prev => [...prev, ...files].slice(0, 4));
   };
 
-  // Handle image upload
- 
-
-  // Handle text & dropdown change
+  // Handle text/select change
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
+
   // Submit form
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Images:", images);
-    console.log("Form Data:", formData);
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user?._id) {
+    alert("User not logged in");
+    return;
+  }
+
+  const data = new FormData();
+
+  // add form fields
+  Object.keys(formData).forEach(key => {
+    data.append(key, formData[key]);
+  });
+
+  // add images
+  images.forEach(img => data.append("images", img));
+
+  // 🔥 ADD USER ID
+  data.append("userId", user._id);
+
+  try {
+    const res = await fetch("http://localhost:5000/posts", {
+      method: "POST",
+      body: data
+    });
+
+    const result = await res.json();
+    alert("Post submitted for admin approval");
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong");
+  }
+};
+
+
   return (
-    <div className="mx-auto max-w-6xl py-5">
-      <h2 className="font-semibold text-2xl text-center mb-6 uppercase">
-        Add Post
-      </h2>
-      <form style={styles.container} onSubmit={handleSubmit}>
+    <div className="mx-auto max-w-6xl py-10">
+      <form onSubmit={handleSubmit} style={styles.container}>
 
-       <div style={{ padding: "20px" }}>
-      <h2></h2>
-
-      <input
-        type="file"
-        multiple
-        accept="image/*"
-        onChange={handleImageChange}
-        style={{ marginBottom: "20px" }}
-      />
-
-      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-        {previewUrls.map((url, idx) => (
-          <img
-            key={idx}
-            src={url}
-            alt={`preview ${idx}`}
-            style={{ width: "100px", height: "100px", objectFit: "cover" }}
-          />
-        ))}
-      </div>
-       <button
-        onClick={handleUpload}
-        style={{ marginTop: "20px", padding: "10px 20px", cursor: "pointer" }}
-      >
-        Upload Images
-      </button>
-    </div>
-
-
-
-        <div style={styles.flexGrid}>
-{/* Card details */}
-          <div style={styles.flexItem}>
-            <h2 className="font-semibold text-lg">Card Details</h2>
-<div>
-  <label>Title</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Property Title"
-              value={formData.title}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-</div>
-<div>
-  <label>Location</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Property Title"
-              value={formData.title}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-</div>
-<div>
-  <label>House No</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Property Title"
-              value={formData.title}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-</div>
-<div>
-  <label>House Type</label>
-             <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="">Select Type</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
-            </select>
-</div>
-            
-<div>
-  <label>Montly Rent</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Property Title"
-              value={formData.title}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-</div>
-            
-          </div>
-{/* Rental Details */}
-          <div style={styles.flexItem}>
-            <h2 className="font-semibold text-lg">Rental Details</h2>
-
-           <div>
-  <label>Monthly Rent</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Cost of renting the property"
-              value={formData.title}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-</div>
-<div>
-  <label>Security Deposit</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Amount required as a security deposit"
-              value={formData.title}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-</div>
-<div>
-  <label>Lease Term</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Amount required as a security deposit"
-              value={formData.title}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-</div>
-<div>
-  <label>Availability Date</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Date when the property is available for rent"
-              value={formData.title}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-</div>
-{/* House Details & Features */}
-         
-          
-          <h2>House Details & Features</h2>
-          <input type="text" className="border w-full h-1/7" placeholder="A brief description for the listing.." />
-         </div>
-         
-           
-          {/* Property features */}
-         
-          <div style={styles.flexItem} >
-            <h2 className="font-semibold text-lg">Property Features</h2>
-           <div style={styles.flexGrid}>
-            <div style={styles.flexItem}>
-              <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="">Floor</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
-            </select>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="Attatched Bath">Attatched Bath</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
-            </select>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="">Furnished</option>
-              <option value="apartment">Yes</option>
-              <option value="house">No</option>
-              
-            </select>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="">Parking Spaces</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
-            </select>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value=""> Bedroom</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
-            </select>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="">Common Bath</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
-            </select>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="">Balcony</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
-            </select>
+        {/* IMAGE UPLOAD */}
+        <div style={styles.grid}>
+          {[0, 1, 2, 3].map(i => (
+            <div key={i} style={styles.slot}>
+              {images[i] ? (
+                <img
+                  src={URL.createObjectURL(images[i])}
+                  alt="preview"
+                  style={styles.preview}
+                />
+              ) : (
+                <label style={styles.placeholder}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={handleImageChange}
+                  />
+                  <span style={styles.plus}>+</span>
+                  Upload
+                </label>
+              )}
             </div>
-           
-              
-           
-           </div>
-          </div>
-          
-{/* Utilities and Amenities */}
-         <div style={styles.flexItem} >
-            <h2 className="font-semibold text-lg">Utilities and Amenities</h2>
-           <div style={styles.flexGrid}>
-            <div style={styles.flexItem}>
-              <select
-              name="category"
-              value={formData.water}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="">Water</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="Attatched Bath">Electricity</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
-            </select>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="">Gas</option>
-               <option value="">Water</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            >
-              <option value="">Security</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
-            </select>
-            
-            </div>
-           
-              
-           
-           </div>
-          </div>
-
-
+          ))}
         </div>
-        <button type="submit" style={styles.button}>
-          Post
-        </button>
+
+    <div className="flex gap-10 py-5">
+          {/* CARD DETAILS */}
+        <section style={styles.section}>
+          <h3>Card Details</h3>
+          <input name="title" placeholder="Title" value={formData.title} onChange={handleChange} style={styles.input} />
+          <input name="location" placeholder="Location" value={formData.location} onChange={handleChange} style={styles.input} />
+          <input name="houseNo" placeholder="House No" value={formData.houseNo} onChange={handleChange} style={styles.input} />
+
+          <select name="category" value={formData.category} onChange={handleChange} style={styles.input}>
+            <option value="">House Type</option>
+            <option value="apartment">Apartment</option>
+            <option value="house">House</option>
+            <option value="office">Office</option>
+            <option value="hostel">Hostel</option>
+            <option value="duplex">Duplex</option>
+            <option value="studio">Studio Apartment</option>
+            <option value="commercial">Commercial Space</option>
+            <option value="showroom">Showroom</option>
+            <option value="shop">Shop</option>
+          </select>
+        </section>
+
+        {/* RENTAL DETAILS */}
+        <section style={styles.section}>
+          <h3>Rental Details</h3>
+          <input name="rent" placeholder="Monthly Rent" value={formData.rent} onChange={handleChange} style={styles.input} />
+          <input name="deposit" placeholder="Deposit" value={formData.deposit} onChange={handleChange} style={styles.input} />
+          <input name="leaseTerm" placeholder="Lease Term" value={formData.leaseTerm} onChange={handleChange} style={styles.input} />
+          <input name="availableDate" placeholder="Available Date" value={formData.availableDate} onChange={handleChange} style={styles.input} />
+        </section>
+
+    </div>
+       <div className="flex gap-10 py-5">
+         {/* HOUSE FEATURES */}
+        <section className="w-1/2" style={styles.section}>
+          <h3>House Details</h3>
+          <input name="floor" placeholder="Floor" value={formData.floor} onChange={handleChange} style={styles.input} />
+          <input name="bedroom" placeholder="Bedroom" value={formData.bedroom} onChange={handleChange} style={styles.input} />
+          <input name="commonBath" placeholder="Common Bath" value={formData.commonBath} onChange={handleChange} style={styles.input} />
+          <input name="balcony" placeholder="Balcony" value={formData.balcony} onChange={handleChange} style={styles.input} />
+
+          <select name="furnished" value={formData.furnished} onChange={handleChange} style={styles.input}>
+            <option value="">Furnished</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+
+          <select name="parking" value={formData.parking} onChange={handleChange} style={styles.input}>
+            <option value="">Parking</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </section>
+
+        {/* UTILITIES */}
+        <section style={styles.section}>
+          <h3>Utilities</h3>
+          {["water", "electricity", "gas", "security"].map(item => (
+            <select key={item} name={item} value={formData[item]} onChange={handleChange} style={styles.input}>
+              <option value="">{item.toUpperCase()}</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          ))}
+        </section>
+
+       </div>
+        {/* DESCRIPTION
+        <section style={styles.section}>
+          <textarea
+            name="description"
+            placeholder="Property description..."
+            value={formData.description}
+            onChange={handleChange}
+            style={styles.textarea}
+          />
+        </section> */}
+
+        <button type="submit" style={styles.button}>POST</button>
       </form>
     </div>
   );
-};
+}
 
 export default Post;
 const styles = {
@@ -423,7 +213,7 @@ const styles = {
     padding: "10px",
     textAlign: "center",
   },
- 
+
   input: {
     width: "100%",
     padding: "10px",
@@ -461,7 +251,7 @@ const styles = {
     borderRadius: "8px",
     background: "#fff",
   },
-  
+
   uploadBox: {
     border: "2px dashed #ccc",
     padding: "16px",
@@ -489,7 +279,7 @@ const styles = {
     textAlign: "center",
     color: "#999",
     fontSize: "12px",
-    paddingTop:"15px",
+    paddingTop: "15px",
   },
   plus: {
     fontSize: "24px",

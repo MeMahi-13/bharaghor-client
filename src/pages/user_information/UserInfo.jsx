@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import useAuth from "../../hooks/useAuth";
 
 // Assets
@@ -14,9 +13,12 @@ function UserInfo() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: user?.displayName || "",
-    email: user?.email || "",
+    name: "",
+    email: "",
     phone: "",
+    nidFront: "",
+    nidBack: "",
+    nidStatus: "",
   });
 
   const [files, setFiles] = useState({
@@ -29,79 +31,98 @@ function UserInfo() {
     nidBack: null,
   });
 
-  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("");
 
-  // Handle text input
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  /* ================= Fetch user info ================= */
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!user?._id) return;
 
-  // Handle image input
+      try {
+        const res = await fetch(`http://localhost:5000/users/${user._id}`);
+        const data = await res.json();
+
+        if (res.ok && data.user) {
+          setFormData({
+            name: data.user.name || "",
+            email: data.user.email || "",
+            phone: data.user.phone || "",
+            nidFront: data.user.nidFront || "",
+            nidBack: data.user.nidBack || "",
+            nidStatus: data.user.nidStatus || "",
+          });
+        }
+      } catch (error) {
+        console.error("Failed to load user data", error);
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
+
+  const hasNID = formData.nidFront && formData.nidBack;
+  const canReupload = formData.nidStatus === "rejected";
+
+  /* ================= Handle image upload ================= */
   const handleImageChange = (e) => {
     const { name, files } = e.target;
+
     if (files && files[0]) {
-      const file = files[0];
-      setFiles((prev) => ({ ...prev, [name]: file }));
+      setFiles((prev) => ({
+        ...prev,
+        [name]: files[0],
+      }));
+
       setPreviews((prev) => ({
         ...prev,
-        [name]: URL.createObjectURL(file),
+        [name]: URL.createObjectURL(files[0]),
       }));
     }
   };
 
-  // Submit form
-  // Submit form using native fetch
+  /* ================= Submit NID ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!user?.uid) return alert("User not authenticated");
     if (!files.nidFront || !files.nidBack) {
-      return alert("Please upload both NID front and back images.");
+      return alert("Please upload both NID front and back images");
     }
 
     try {
       setLoading(true);
-      setStatus("Submitting to database...");
+      setStatus("Submitting NID...");
 
-      const data = new FormData();
-      data.append("name", formData.name);
-      data.append("email", formData.email);
-      data.append("phone", formData.phone);
-      
-      // These keys must match the names in your backend upload.fields
-      data.append("nidFront", files.nidFront); 
-      data.append("nidBack", files.nidBack);
+      const submitData = new FormData();
+      submitData.append("nidFront", files.nidFront);
+      submitData.append("nidBack", files.nidBack);
 
-      const response = await fetch(`http://localhost:5000/register/${user.uid}`, {
-        method: 'PUT',
-        body: data,
-        // No headers needed for FormData; fetch handles it automatically
-      });
+      const res = await fetch(
+        `http://localhost:5000/register/${user._id}`,
+        {
+          method: "PUT",
+          body: submitData,
+        }
+      );
 
-      const result = await response.json();
+      const result = await res.json();
 
-      if (response.ok && result.success) {
-        localStorage.setItem("userInfoCompleted", "true");
-        alert("Registration & Image Save Successful!");
-        navigate("/post");
+      if (res.ok && result.success) {
+        setStatus("NID submitted. Waiting for admin approval.");
       } else {
-        throw new Error(result.message || "Submission failed.");
+        throw new Error(result.message || "Submission failed");
       }
     } catch (error) {
-      console.error("Fetch Error:", error);
-      setStatus(error.message || "Failed to submit information.");
+      console.error(error);
+      setStatus(error.message);
     } finally {
       setLoading(false);
     }
   };
 
-
-
-
   return (
-    <div className="mx-auto max-w-6xl  py-6 px-4">
-      <h2 className="font-semibold text-2xl text-center mb-6 uppercase">
+    <div className="mx-auto max-w-6xl py-6 px-4">
+      <h2 className="text-2xl font-semibold text-center mb-6 uppercase">
         User Information
       </h2>
 
@@ -109,121 +130,121 @@ function UserInfo() {
         onSubmit={handleSubmit}
         className="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow border-none"
       >
-        {/* Name */}
-        <label className="font-semibold text-gray-700 block mb-2">
+        {/* ================= Name ================= */}
+        <label className="block mb-2 font-semibold text-gray-700">
           Full Name
         </label>
         <div className="relative mb-4">
-          <img
-            src={person_icon}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70"
-            alt=""
-          />
+          <img src={person_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70" alt="" />
           <input
-            name="name"
             type="text"
-            className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-xl"
             value={formData.name}
-            onChange={handleChange}
-            required
+            readOnly
+            className="w-full pl-10 px-4 py-3 border rounded-xl bg-gray-100 cursor-not-allowed"
           />
         </div>
 
-        {/* Email */}
-        <label className="font-semibold text-gray-700 block mb-2">
-          Gmail
-        </label>
+        {/* ================= Email ================= */}
+        <label className="block mb-2 font-semibold text-gray-700">Email</label>
         <div className="relative mb-4">
-          <img
-            src={email_icon}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70"
-            alt=""
-          />
+          <img src={email_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70" alt="" />
           <input
-            name="email"
             type="email"
-            className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-xl"
             value={formData.email}
-            onChange={handleChange}
-            required
+            readOnly
+            className="w-full pl-10 px-4 py-3 border rounded-xl bg-gray-100 cursor-not-allowed"
           />
         </div>
 
-        {/* Phone */}
-        <label className="font-semibold text-gray-700 block mb-2">
-          Phone Number
-        </label>
+        {/* ================= Phone ================= */}
+        <label className="block mb-2 font-semibold text-gray-700">Phone</label>
         <div className="relative mb-4">
-          <img
-            src={telephone_icon}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70"
-            alt=""
-          />
+          <img src={telephone_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70" alt="" />
           <input
-            name="phone"
-            placeholder="Enter your phone number"
             type="tel"
-            className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-xl"
             value={formData.phone}
-            onChange={handleChange}
-            required
+            readOnly
+            className="w-full pl-10 px-4 py-3 border rounded-xl bg-gray-100 cursor-not-allowed"
           />
         </div>
 
-        {/* NID Upload */}
-        <label className="font-semibold text-gray-700 block mt-6 mb-1">
-          NID Photos
-        </label>
-        <p className="text-xs text-gray-500 mb-4">
-          Upload clear NID front & back images
-        </p>
-
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          {["nidFront", "nidBack"].map((side) => (
-            <label
-              key={side}
-              className="relative flex items-center justify-center h-32 border-2 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100"
-            >
-              {previews[side] ? (
-                <img
-                  src={previews[side]}
-                  className="h-full w-full object-cover rounded-xl"
-                  alt=""
-                />
-              ) : (
-                <div className="text-center">
-                  <img
-                    src={camera_icon}
-                    className="w-6 mx-auto opacity-40 mb-1"
-                    alt=""
-                  />
-                  <span className="text-[10px] uppercase text-gray-400 font-bold">
-                    {side === "nidFront" ? "NID FRONT" : "NID BACK"}
-                  </span>
-                </div>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                name={side}
-                className="hidden"
-                onChange={handleImageChange}
-                required
-              />
+        {/* ================= NID SECTION ================= */}
+        {hasNID && !canReupload ? (
+          <>
+            <label className="block mt-6 mb-2 font-semibold text-gray-700">
+              Your NID Photos
             </label>
-          ))}
-        </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition disabled:opacity-50"
-        >
-          {loading ? "Submitting..." : "SUBMIT INFORMATION"}
-        </button>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <img
+                src={`http://localhost:5000${formData.nidFront}`}
+                className="h-32 w-full object-cover rounded-xl border"
+                alt="NID Front"
+              />
+              <img
+                src={`http://localhost:5000${formData.nidBack}`}
+                className="h-32 w-full object-cover rounded-xl border"
+                alt="NID Back"
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => navigate("/post")}
+              className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700"
+            >
+              CONTINUE TO ADD PROPERTY
+            </button>
+          </>
+        ) : (
+          <>
+            <label className="block mt-6 mb-1 font-semibold text-gray-700">
+              NID Photos
+            </label>
+            <p className="mb-4 text-xs text-gray-500">
+              Upload clear NID front & back images
+            </p>
+
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              {["nidFront", "nidBack"].map((side) => (
+                <label
+                  key={side}
+                  className="relative flex items-center justify-center h-32 border-2 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100"
+                >
+                  {previews[side] ? (
+                    <img src={previews[side]} className="h-full w-full object-cover rounded-xl" alt="" />
+                  ) : (
+                    <div className="text-center">
+                      <img src={camera_icon} className="w-6 mx-auto opacity-40 mb-1" alt="" />
+                      <span className="text-[10px] uppercase text-gray-400 font-bold">
+                        {side === "nidFront" ? "NID FRONT" : "NID BACK"}
+                      </span>
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    name={side}
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageChange}
+                    required
+                  />
+                </label>
+              ))}
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition disabled:opacity-50"
+            >
+              {loading ? "Submitting..." : "SUBMIT NID"}
+            </button>
+          </>
+        )}
 
         {status && (
-          <p className="text-center mt-4 text-sm font-medium text-blue-600">
+          <p className="mt-4 text-center text-sm font-medium text-blue-600">
             {status}
           </p>
         )}

@@ -3,70 +3,64 @@ import { useNavigate, Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import Swal from "sweetalert2";
 import loginAnimation from "../../assets/Secure Login.json";
-import email_icon from "../../assets/email.png";
+import telephone_icon from "../../assets/telephone.png";
 import password_icon from "../../assets/password.png";
 import { AuthContext } from "../../context/AuthContext";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase/firebase.init";
 
 function Login() {
-  const { signInUser } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
+  const { setUser } = useContext(AuthContext);
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
-    const handleGoogleSignIn = async () => {
-      const provider = new GoogleAuthProvider();
-      try {
-        const result = await signInWithPopup(auth, provider);
-        
-        // Save Google User to Backend
-        await fetch("https://yessghor-server.vercel.app/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            name: result.user.displayName, 
-            email: result.user.email, 
-            uid: result.user.uid ,
-            
-          }),
-        });
-  
-        navigate("/");
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
 
   const handleSignIn = async (e) => {
     e.preventDefault();
 
-
     try {
-      const result = await signInUser(email, password);
-      console.log(result.user);
-
-      // Success alert
-      Swal.fire({
-        icon: "success",
-        title: "Login Successful!",
-        text: `Welcome back, ${result.user.displayName || "User"}!`,
-        timer: 1500,
-        showConfirmButton: false,
+      const response = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: phone.trim(), password: password.trim() }),
+      
       });
+        console.log(phone,password);
 
-      navigate("/"); 
+      const data = await response.json();
+      console.log(data)
+
+      if (response.ok) {
+        // ✅ Login successful
+        setUser(data.user);
+        console.log(data.user)
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: `Welcome back, ${data.user.name}!`,
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        navigate("/");
+      } else if (response.status === 401) {
+        // ❌ Unauthorized: phone not found or incorrect password
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: data.message, // Shows exact backend message
+        });
+      } else {
+        // Other errors
+        throw new Error(data.message || "Login failed");
+      }
     } catch (err) {
-      console.error(err);
-
-      // Error alert
+      console.error("Login error:", err);
       Swal.fire({
         icon: "error",
-        title: "Login Failed",
+        title: "Server Error",
         text: err.message,
       });
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4">
       <div className="w-full max-w-4xl bg-white rounded-xl shadow-2xl p-8 flex flex-col md:flex-row items-center md:gap-8">
@@ -78,20 +72,22 @@ function Login() {
           <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">Login</h2>
 
           <form onSubmit={handleSignIn} className="space-y-4">
+            {/* Phone input */}
             <div className="relative">
-              <img src={email_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5" />
+              <img src={telephone_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5" alt="phone" />
               <input
-                type="email"
-                placeholder="Email"
+                type="text"
+                placeholder="Phone Number"
                 className="w-full pl-10 px-4 py-3 border rounded-xl"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
               />
             </div>
 
+            {/* Password input */}
             <div className="relative">
-              <img src={password_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5" />
+              <img src={password_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5" alt="password" />
               <input
                 type="password"
                 placeholder="Password"
@@ -102,18 +98,13 @@ function Login() {
               />
             </div>
 
-            <button className="w-full py-3 bg-blue-600 text-white rounded-lg">Login</button>
+            <button
+              type="submit"
+              className="w-full py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition"
+            >
+              Login
+            </button>
           </form>
-
-          <div className="flex items-center my-6">
-            <hr className="grow" />
-            <span className="mx-2 text-gray-400 text-sm">OR</span>
-            <hr className="grow" />
-          </div>
-            <button onClick={handleGoogleSignIn} className="w-full py-3 border border-gray-300 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 transition">
-          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" className="w-5 h-5" />
-          Continue with Google
-        </button>
 
           <p className="text-center mt-6 text-sm">
             Don’t have an account? <Link to="/register" className="text-blue-600 font-semibold">Register</Link>
@@ -121,8 +112,6 @@ function Login() {
         </div>
       </div>
     </div>
-    
-   
   );
 }
 

@@ -34,47 +34,50 @@ function SignUp() {
     }
   };
 
-const handleSignUp = async (e) => {
+  const handleSignUp = async (e) => {
   e.preventDefault();
   const formData = new FormData(e.target);
-  const { name, email, password } = Object.fromEntries(formData.entries());
+  // Destructure 'number' which is your phone input
+  const { name, email, phone, password } = Object.fromEntries(formData.entries());
 
   try {
-    const result = await createUser(email, password);
+    const API_URL = "http://localhost:5000/register"; 
 
-    await updateProfile(result.user, {
-      displayName: name,
-      
-    });
-
-    const res = await fetch("https://yessghor-server.vercel.app/register", {
+    const res = await fetch(API_URL, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         name,
         email,
-        uid: result.user.uid,
+        phone, 
+        password,      
+        createdAt: new Date()
       }),
     });
 
     const data = await res.json();
 
-    if (data.insertedId) {
+    if (res.ok) {
       Swal.fire({
         icon: "success",
-        title: "Your Account has been created!",
-        timer: 1500,
+        title: "Registration Successful!",
+        text: "Your Account Has Been Created",
+        timer: 2000,
         showConfirmButton: false,
       });
-
       navigate("/");
+    } else {
+      throw new Error(data.message || "Failed to save to database");
     }
   } catch (error) {
-    console.error(error);
+    console.error("Registration Error:", error.message);
+    Swal.fire({
+      icon: "error",
+      title: "Registration Failed",
+      text: error.message,
+    });
   }
 };
-
-
 
   return (
     <div className="p-10 flex items-center justify-center bg-gray-100 min-h-screen">
@@ -84,6 +87,7 @@ const handleSignUp = async (e) => {
         <form onSubmit={handleSignUp} className="space-y-4">
           <input type="text" name="name" placeholder="Full Name" required className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
           <input type="email" name="email" placeholder="Email Address" required className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+           <input type="phone" name="phone" placeholder="Phone Number" required className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
           <input type="password" name="password" placeholder="Password" required className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
 
           {errors.api && <p className="text-red-500 text-sm">{errors.api}</p>}
