@@ -128,7 +128,7 @@ function UserInfo() {
 
       <form
         onSubmit={handleSubmit}
-        className="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow border"
+        className="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow border-none"
       >
         {/* ================= Name ================= */}
         <label className="block mb-2 font-semibold text-gray-700">

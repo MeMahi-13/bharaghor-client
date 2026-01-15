@@ -233,6 +233,7 @@ const styles = {
     border: "none",
     borderRadius: "6px",
     cursor: "pointer",
+    marginTop:"12px",
   },
   flexGrid: {
     display: "flex",
