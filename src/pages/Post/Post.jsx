@@ -1,5 +1,5 @@
 // @flow strict
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 
 import SwiperSlider from '../../Components/SwiperSlider';
 
@@ -10,16 +10,52 @@ function Post() {
     description: "",
     category: "",
   });
+  
+  const [previewUrls, setPreviewUrls] = useState([]); // preview URLs
 
+  // Handle file selection
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(files);
+  };
+// Generate image previews whenever images change
+  useEffect(() => {
+    if (images.length === 0) return;
+
+    const urls = images.map((img) => URL.createObjectURL(img));
+    setPreviewUrls(urls);
+
+    // Cleanup to prevent memory leaks
+    return () => {
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [images]);
+
+  // Upload images using fetch
+  const handleUpload = async () => {
+    if (images.length === 0) return alert("No images selected!");
+
+    const formData = new FormData();
+    images.forEach((img) => formData.append("images", img));
+     try {
+      const response = await fetch("/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Upload failed");
+
+      const data = await response.json();
+      console.log("Upload successful:", data);
+      alert("Images uploaded successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Upload failed!");
+    }
+  };
 
   // Handle image upload
- const handleImageChange = (e) => {
-  const files = Array.from(e.target.files).filter(
-    file => file instanceof File
-  );
-
-  setImages(prev => [...prev, ...files].slice(0, 4));
-};
+ 
 
   // Handle text & dropdown change
   const handleChange = (e) => {
@@ -38,28 +74,34 @@ function Post() {
       </h2>
       <form style={styles.container} onSubmit={handleSubmit}>
 
-      <div style={styles.grid}>
-  {[0,1,2,3].map((i)=>(
-    <div key={i} style={styles.slot}>
-      {images[i] ? (
-        <img src={URL.createObjectURL(images[i])} alt="preview" style={styles.preview}/>
-      ) : (
-        <label style={{ cursor: "pointer", width: "100%", height: "100%" }}>
-          <input 
-            type="file" 
-            accept="image/*" 
-            style={{ display: "none" }}
-            onChange={handleImageChange} 
+       <div style={{ padding: "20px" }}>
+      <h2></h2>
+
+      <input
+        type="file"
+        multiple
+        accept="image/*"
+        onChange={handleImageChange}
+        style={{ marginBottom: "20px" }}
+      />
+
+      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+        {previewUrls.map((url, idx) => (
+          <img
+            key={idx}
+            src={url}
+            alt={`preview ${idx}`}
+            style={{ width: "100px", height: "100px", objectFit: "cover" }}
           />
-          <div style={styles.placeholder}>
-            <span style={styles.plus}>+</span>
-            <small>Upload</small>
-          </div>
-        </label>
-      )}
+        ))}
+      </div>
+       <button
+        onClick={handleUpload}
+        style={{ marginTop: "20px", padding: "10px 20px", cursor: "pointer" }}
+      >
+        Upload Images
+      </button>
     </div>
-  ))}
-</div>
 
 
 
@@ -431,7 +473,7 @@ const styles = {
   },
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
+    gridTemplateColumns: "repeat(1, 1fr)",
     gap: "10px",
   },
   slot: {
