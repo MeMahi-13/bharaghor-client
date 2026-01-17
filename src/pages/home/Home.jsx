@@ -9,6 +9,7 @@ import { MdOutlineMessage } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import SwiperSlider from "../../Components/SwiperSlider";
 import PropertyCard from "../../Components/PropertyCard";
+import ApprovedPosts from "./ApprovedPost";
 const Home = () => {
   const [values, setValues] = useState({
     city: "",
@@ -160,6 +161,9 @@ const Home = () => {
                           ))}
                       </div>
                   </div>
+
+                  {/* fetch post */}
+                <ApprovedPosts/>
     </div>
   );
 };

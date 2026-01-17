@@ -58,7 +58,7 @@ const handleSubmit = async (e) => {
   // add images
   images.forEach(img => data.append("images", img));
 
-  // 🔥 ADD USER ID
+  //  ADD USER ID
   data.append("userId", user._id);
 
   try {
@@ -131,10 +131,10 @@ const handleSubmit = async (e) => {
         {/* RENTAL DETAILS */}
         <section style={styles.section}>
           <h3>Rental Details</h3>
-          <input name="rent" placeholder="Monthly Rent" value={formData.rent} onChange={handleChange} style={styles.input} />
+          <input type="number" name="rent" placeholder="Monthly Rent" value={formData.rent} onChange={handleChange} style={styles.input} />
           <input name="deposit" placeholder="Deposit" value={formData.deposit} onChange={handleChange} style={styles.input} />
           <input name="leaseTerm" placeholder="Lease Term" value={formData.leaseTerm} onChange={handleChange} style={styles.input} />
-          <input name="availableDate" placeholder="Available Date" value={formData.availableDate} onChange={handleChange} style={styles.input} />
+          <input type="date" name="availableDate" placeholder="Available Date" value={formData.availableDate} onChange={handleChange} style={styles.input} />
         </section>
 
     </div>
@@ -142,10 +142,11 @@ const handleSubmit = async (e) => {
          {/* HOUSE FEATURES */}
         <section className="w-1/2" style={styles.section}>
           <h3>House Details</h3>
-          <input name="floor" placeholder="Floor" value={formData.floor} onChange={handleChange} style={styles.input} />
-          <input name="bedroom" placeholder="Bedroom" value={formData.bedroom} onChange={handleChange} style={styles.input} />
-          <input name="commonBath" placeholder="Common Bath" value={formData.commonBath} onChange={handleChange} style={styles.input} />
-          <input name="balcony" placeholder="Balcony" value={formData.balcony} onChange={handleChange} style={styles.input} />
+          <input type="number" name="floor" placeholder="Floor" value={formData.floor} onChange={handleChange} style={styles.input} />
+          <input type="number" name="bedroom" placeholder="Bedroom" value={formData.bedroom} onChange={handleChange} style={styles.input} />
+          <input
+          type="number" name="commonBath" placeholder="Common Bath" value={formData.commonBath} onChange={handleChange} style={styles.input} />
+          <input type="number" name="balcony" placeholder="Balcony" value={formData.balcony} onChange={handleChange} style={styles.input} />
 
           <select name="furnished" value={formData.furnished} onChange={handleChange} style={styles.input}>
             <option value="">Furnished</option>

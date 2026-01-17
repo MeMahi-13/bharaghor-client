@@ -20,6 +20,7 @@ import Booking from "../pages/booking/booking";
 import AdminUsers from "../pages/admin/AdminUsers";
 import AdminPendingPosts from "../pages/admin/post/AdminPendingPost";
 import PendingPostsByUser from "../pages/admin/post/AdminPendingPost";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -33,10 +34,7 @@ export const router = createBrowserRouter([
       //   path: "/upload",
       //   element: <ImageUploader />,
       // },
-      // {
-      //   path: "/images",
-      //   element: <ImageGallery />,
-      // },
+     
       {
         path: "/details",
         element: <Details />,
