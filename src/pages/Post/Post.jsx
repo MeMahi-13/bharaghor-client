@@ -7,6 +7,9 @@ function Post() {
   const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
+    divisions:"",
+    districts:"",
+    upazilas:"",
     location: "",
     houseNo: "",
     category: "",
@@ -25,9 +28,7 @@ function Post() {
     electricity: "",
     gas: "",
     security: "",
-    division: "",
-    district: "",
-    thana: "",
+   
   });
 
   const [divisions, setDivisions] = useState([]);
@@ -54,7 +55,7 @@ function Post() {
     setSelectedUpazila("");
     setDistricts([]);
     setUpazilas([]);
-    setFormData(prev => ({ ...prev, division: divisionId, district: "", thana: "" }));
+    setFormData(prev => ({ ...prev, division: divisionId, district: "",upazila : "" }));
 
     if (!divisionId) return;
 
@@ -70,7 +71,7 @@ function Post() {
     setSelectedDistrict(districtId);
     setSelectedUpazila("");
     setUpazilas([]);
-    setFormData(prev => ({ ...prev, district: districtId, thana: "" }));
+    setFormData(prev => ({ ...prev, district: districtId, upazila: "" }));
 
     if (!districtId) return;
 
@@ -84,7 +85,7 @@ function Post() {
   const handleUpazilaChange = (e) => {
     const upazilaName = e.target.value;
     setSelectedUpazila(upazilaName);
-    setFormData(prev => ({ ...prev, thana: upazilaName }));
+    setFormData(prev => ({ ...prev, upazila: upazilaName }));
   };
 
   // Handle image upload (max 4)
