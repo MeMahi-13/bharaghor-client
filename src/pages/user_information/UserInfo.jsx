@@ -34,7 +34,7 @@ function UserInfo() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
 
-  const API_URL = "http://localhost:5000"; // Local backend URL
+  const API_URL = "https://yessghor-server.vercel.app"; 
 
   /* ================= Fetch user info ================= */
   useEffect(() => {

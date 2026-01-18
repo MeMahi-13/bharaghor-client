@@ -8,7 +8,7 @@ const ProfileCard = ({ user }) => {
         <img 
             src={`${backendUrl}${user.Profileimage}`} 
             alt="Profile image" 
-            style={{ width: '300px' }} 
+            style={{ width: '160px',height:"160px",borderRadius:"100%",border:'1px solid #E9EBF8' }} 
         />
       </div>
   <div style={styles.formGroup}>

@@ -132,7 +132,7 @@ function Post() {
     data.append("userId", user._id);
 
     try {
-      const res = await fetch("http://localhost:5000/posts", {
+      const res = await fetch("https://yessghor-server.vercel.app/posts", {
         method: "POST",
         body: data,
       });

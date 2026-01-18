@@ -12,7 +12,7 @@ function ApprovedPosts() {
     const fetchPosts = async () => {
       try {
         // Fetch approved posts
-        const resPosts = await fetch("http://localhost:5000/posts");
+        const resPosts = await fetch("https://yessghor-server.vercel.app/posts");
         const postsData = await resPosts.json();
 
         let bookmarkedIds = [];
@@ -20,7 +20,7 @@ function ApprovedPosts() {
         // Fetch user's bookmarks if logged in
         if (user) {
           const resBookmarks = await fetch(
-            `http://localhost:5000/users/${user._id}/bookmarks`
+            `https://yessghor-server.vercel.app/users/${user._id}/bookmarks`
           );
           const bookmarks = await resBookmarks.json();
           bookmarkedIds = bookmarks.map((post) => post._id);
@@ -40,7 +40,7 @@ function ApprovedPosts() {
             : "",
           houseType: post.category || "",
           image: post.images?.length
-            ? `http://localhost:5000${post.images[0]}`
+            ? `https://yessghor-server.vercel.app${post.images[0]}`
             : "/no-image.png",
           price: post.rent,
           bookmarked: bookmarkedIds.includes(post._id),
@@ -63,7 +63,7 @@ function ApprovedPosts() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/users/${user._id}/bookmark/${postId}`,
+        `https://yessghor-server.vercel.app/users/${user._id}/bookmark/${postId}`,
         { method: "PATCH" }
       );
       const data = await res.json();

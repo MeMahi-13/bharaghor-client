@@ -16,7 +16,7 @@ function Saved() {
 
     const fetchBookmarks = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/users/${user._id}/bookmarks`);
+        const res = await fetch(`https://yessghor-server.vercel.app/users/${user._id}/bookmarks`);
         if (!res.ok) throw new Error("Failed to fetch bookmarks");
 
         const data = await res.json();
@@ -28,7 +28,7 @@ function Saved() {
           houseNo: post.houseNo,
           date: post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "",
           houseType: post.houseType,
-          image: post.images?.length ? `http://localhost:5000${post.images[0]}` : "/no-image.png",
+          image: post.images?.length ? `https://yessghor-server.vercel.app${post.images[0]}` : "/no-image.png",
           price: post.rent,
           bookmarked: true,
         }));
@@ -52,7 +52,7 @@ function Saved() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/users/${user._id}/bookmark/${place._id}`,
+        `https://yessghor-server.vercel.app/users/${user._id}/bookmark/${place._id}`,
         { method: "PATCH" }
       );
 

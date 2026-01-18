@@ -10,7 +10,7 @@ function SwiperSlider() {
   return (
     <div>
       <Swiper
-      
+      className="custom-swiper"
         spaceBetween={30}
         slidesPerView={1}
         
@@ -22,6 +22,13 @@ function SwiperSlider() {
         loop
         modules={[ Pagination, Autoplay]}
       >
+        <style>
+{`
+  .custom-swiper .swiper-pagination {
+    bottom: 10px; 
+  }
+`}
+</style>
         <SwiperSlide style={styles.slide}>
           <img src="/images/SI5.jpg" alt="" style={styles.image} />
         </SwiperSlide>
@@ -44,11 +51,11 @@ export default SwiperSlider;
 const styles = {
   slide: {
     background: "#ffffff",
-    height: "400px",
+    height: "450px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)", 
   },
   image: {
     width: "100%",
