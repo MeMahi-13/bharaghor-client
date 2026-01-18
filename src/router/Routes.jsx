@@ -20,6 +20,10 @@ import Booking from "../pages/booking/booking";
 import AdminUsers from "../pages/admin/AdminUsers";
 import AdminPendingPosts from "../pages/admin/post/AdminPendingPost";
 import PendingPostsByUser from "../pages/admin/post/AdminPendingPost";
+
+import CardDetails from "../pages/card_details/Card_Details"; 
+// adjust path if needed
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -29,6 +33,11 @@ export const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
+    {
+  path: "/card_details",
+  element: <CardDetails />,
+},
+
       //   {
       //   path: "/upload",
       //   element: <ImageUploader />,

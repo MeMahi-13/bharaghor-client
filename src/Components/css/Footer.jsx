@@ -3,7 +3,7 @@ import React from "react";
 //import logo from "../assets/logo.png"; // replace with your logo path
 
 const Footer = ({ user }) => {
-  const backendUrl = "http://localhost:5000";
+  const backendUrl = "https://yessghor-server.vercel.app/";
   return (
     <footer className="bg-gray-900 text-white py-10">
       <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">

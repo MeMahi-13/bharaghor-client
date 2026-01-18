@@ -8,7 +8,7 @@ function AdminUsers() {
 
   /* ================= Fetch users ================= */
   useEffect(() => {
-    fetch("http://localhost:5000/admin/users")
+    fetch("https://yessghor-server.vercel.app//admin/users")
       .then((res) => res.json())
       .then((data) => {
         setUsers(data);
@@ -22,7 +22,7 @@ function AdminUsers() {
 
   /* ================= Approve / Reject ================= */
   const updateStatus = async (id, action) => {
-    await fetch(`http://localhost:5000/admin/users/${id}/${action}-nid`, {
+    await fetch(`https://yessghor-server.vercel.app//admin/users/${id}/${action}-nid`, {
       method: "PATCH",
     });
 
@@ -91,12 +91,12 @@ function AdminUsers() {
             {user.nidFront && user.nidBack && (
               <div className="flex gap-4 mb-4">
                 <img
-                  src={`http://localhost:5000${user.nidFront}`}
+                  src={`https://yessghor-server.vercel.app/${user.nidFront}`}
                   alt="NID Front"
                   className="w-40 h-28 object-cover border rounded"
                 />
                 <img
-                  src={`http://localhost:5000${user.nidBack}`}
+                  src={`https://yessghor-server.vercel.app/${user.nidBack}`}
                   alt="NID Back"
                   className="w-40 h-28 object-cover border rounded"
                 />

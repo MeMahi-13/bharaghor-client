@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import './Home.css';
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
-import { CiLocationOn } from "react-icons/ci";
-import { IoHomeOutline } from "react-icons/io5";
-import { SlCalender } from "react-icons/sl";
-import { FaBuilding } from "react-icons/fa";
-import { MdOutlineMessage } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import SwiperSlider from "../../Components/SwiperSlider";
 import PropertyCard from "../../Components/PropertyCard";
@@ -52,6 +47,22 @@ const Home = () => {
       date: "Date: 10-10-2025",
       houseType: "Family Flat",
     },
+    {
+      image: "/images/slider.png",
+      title: "Apartment 2",
+      location: "Road No 7, Sector 10, Uttara",
+      home: "House No: 10",
+      date: "Date: 10-10-2025",
+      houseType: "Family Flat",
+    },
+    {
+      image: "/images/slider.png",
+      title: "Apartment 2",
+      location: "Road No 7, Sector 10, Uttara",
+      home: "House No: 80",
+      date: "Date: 10-10-2025",
+      houseType: "Family Flat",
+    },
   ];
 
   // Add a bookmarked state for each card
@@ -72,10 +83,10 @@ const Home = () => {
 
   return (
     <div className="mx-auto max-w-6xl py-5">
-    
-     
-<SwiperSlider/>
-      
+
+
+      <SwiperSlider />
+
 
       <div style={styles.selectrow}>
         <select
@@ -115,51 +126,51 @@ const Home = () => {
 
       {/* Featured Places */}
       <h5 style={styles.title}>Featured Place</h5>
-      <div style={{ position: "relative" }}>
-                      <PropertyCard places={featuredPlaces} />
-      
-                      {/* Bookmark layer */}
-                      <div
-                          style={{
-                              position: "absolute",
-                              inset: 0,
-                              pointerEvents: "none",
-                              display: "grid",
-                              gridTemplateColumns: "repeat(4, 1fr)",
-                              gap: "20px",
-                              paddingTop: "10px",
-                          }}
-                      >
-                          {featuredPlaces.map((place, index) => (
-                              <div
-                                  key={index}
-                                  style={{
-                                      position: "relative",
-                                      pointerEvents: "auto",
-                                  }}
-                              >
-                                  <div
-                                      style={{
-                                          position: "absolute",
-                                          top: "10px",
-                                          right: "10px",
-                                          cursor: "pointer",
-                                          background: "#fff",
-                                          borderRadius: "50%",
-                                          padding: "6px",
-                                      }}
-                                      onClick={() => toggleBookmark(index)}
-                                  >
-                                      {place.bookmarked ? (
-                                          <BsBookmarkFill color="#007BFF" size={18} />
-                                      ) : (
-                                          <BsBookmark color="#A1A8B0" size={18} />
-                                      )}
-                                  </div>
-                              </div>
-                          ))}
-                      </div>
-                  </div>
+      <div style={{ position: "relative" }} >
+        <PropertyCard places={featuredPlaces} />
+
+        {/* Bookmark layer */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "20px",
+            paddingTop: "10px",
+          }}
+        >
+          {featuredPlaces.map((place, index) => (
+            <div
+              key={index}
+              style={{
+                position: "relative",
+                pointerEvents: "auto",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  cursor: "pointer",
+                  background: "#fff",
+                  borderRadius: "50%",
+                  padding: "6px",
+                }}
+                onClick={() => toggleBookmark(index)}
+              >
+                {place.bookmarked ? (
+                  <BsBookmarkFill color="#007BFF" size={18} />
+                ) : (
+                  <BsBookmark color="#A1A8B0" size={18} />
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -195,7 +206,7 @@ const styles = {
     display: "flex",
     gap: "15px",
     width: "100%",
-    marginTop:"18px",
+    marginTop: "18px",
   },
   cardImageHorizontal: {
     width: "100%",
@@ -211,39 +222,40 @@ const styles = {
   },
   cardTitle: {
     marginBottom: "10px",
-    marginTop:"10px",
-    fontWeight:"600",
-    fontSize:"20px",
-    lineHeight:"100%",
-    color:"#101828",
-    
+    marginTop: "10px",
+    fontWeight: "600",
+    fontSize: "20px",
+    lineHeight: "100%",
+    color: "#101828",
+
   },
   cardText: {
     fontSize: "16px",
     color: "#555",
   },
-  
-  title:{
-    paddingTop:"20px",
-    paddingBottom:"20px",
-    fontWeight:"600",
-    fontSize:"24px",
+
+  title: {
+    paddingTop: "20px",
+    paddingBottom: "20px",
+    fontWeight: "600",
+    fontSize: "24px",
 
   },
-  money:{
-    color:"#0988E3",
-    fontWeight:"600",
-  fontSize:"14px",  },
-  call:{
-background:"#0988E3",
-border:"none",
-color:"#FFFFFF",
-borderRadius:"6px",
-gap:"4px",
-padding:"4px 9px",
-fontWeight:"400",
-fontSize:"14px",
-cursor:"pointer",
+  money: {
+    color: "#0988E3",
+    fontWeight: "600",
+    fontSize: "14px",
+  },
+  call: {
+    background: "#0988E3",
+    border: "none",
+    color: "#FFFFFF",
+    borderRadius: "6px",
+    gap: "4px",
+    padding: "4px 9px",
+    fontWeight: "400",
+    fontSize: "14px",
+    cursor: "pointer",
   },
 
 };

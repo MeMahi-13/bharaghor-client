@@ -6,6 +6,8 @@ import { IoHomeOutline } from "react-icons/io5";
 import { SlCalender } from "react-icons/sl";
 import { FaBuilding } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
+import { Link } from "react-router-dom";
+
 function PropertyCard({ places }) {
   const navigate = useNavigate();
 
@@ -22,9 +24,9 @@ function PropertyCard({ places }) {
     <div
       className="featured-place-body"
       style={{
-        display: "flex",
+        display: "flex-1",
         gap: "20px",
-        flexWrap: "wrap", // wrap in one row
+        flexWrap: "wrap", 
       }}
     >
       {displayPlaces.map((place, index) =>
@@ -32,7 +34,7 @@ function PropertyCard({ places }) {
           <div
             key={index}
             style={{
-              flex: "1 1 calc(25% - 15px)", // 4 cards per row
+              flex: "1 1 calc(25% - 15px)", 
               display: "flex",
               flexDirection: "column",
               border:"1px solid #E5E7EB",
@@ -43,18 +45,27 @@ function PropertyCard({ places }) {
             }}
           >
             {/* Image */}
-            <div style={{ position: "relative" }} >
-              <img
-                src={place.image}
-                alt={place.title}
-                
-                style={styles.cardImageHorizontal}
-                onClick={() => navigate("/details")}
-              />
-            </div>
+            <div style={{ position: "relative" }}>
+  <Link
+    to="/card_details"
+    state={{ place }}
+    style={{ display: "block" }}
+  >
+    <img
+      src={place.image}
+      alt={place.title}
+      style={{
+        ...styles.cardImageHorizontal,
+        cursor: "pointer",
+      }}
+    />
+  </Link>
+</div>
+
 
             {/* Content */}
              {/* Description */}
+
                         <div style={styles.cardContent}>
                           <h2 style={styles.cardTitle}>{place.title}</h2>
                           <div className="flex items-center gap-0.5">

@@ -1,9 +1,16 @@
 const ProfileCard = ({ user }) => {
-  const backendUrl = "http://localhost:5000";
+  const backendUrl = "https://yessghor-server.vercel.app/";
 
   return (
     <div>
      <div style={styles.container}>
+      <div>
+        <img 
+            src={`${backendUrl}${user.Profileimage}`} 
+            alt="Profile image" 
+            style={{ width: '300px' }} 
+        />
+      </div>
   <div style={styles.formGroup}>
     <label style={styles.label} htmlFor="name">Name:</label>
     <input style={styles.input} type="text" id="name" value={user.name} readOnly />
@@ -29,7 +36,7 @@ const ProfileCard = ({ user }) => {
 <h2>NID</h2>
       <div style={{ display: 'flex', gap: '20px',border:'1px solid #E9EBF8',marginTop:'12px' }}>
 
-        {/* Combine http://localhost:5000 + /uploads/filename... */}
+        
         <img 
             src={`${backendUrl}${user.nidFront}`} 
             alt="Front NID" 
@@ -52,9 +59,8 @@ const ProfileCard = ({ user }) => {
     maxWidth: "100%",
     margin: "0 auto",
     padding: "20px",
-    border: "1px solid #ddd",
-    borderRadius: "10px",
-    backgroundColor: "#f9f9f9",
+    
+   
   },
   formGroup: {
     display: "flex",
