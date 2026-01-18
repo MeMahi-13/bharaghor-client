@@ -16,7 +16,7 @@ const ProfileCard = ({ user }) => {
 
   <div style={styles.formGroup}>
     <label style={styles.label} htmlFor="status">Status:</label>
-    <input style={styles.input} type="text" id="status" value={user.status} readOnly />
+    <input style={styles.input} type="text" id="status" value={user.nidStatus} readOnly />
   </div>
 
   <div style={styles.formGroup}>

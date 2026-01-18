@@ -11,31 +11,34 @@ function ApprovedPosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // 1️⃣ Fetch approved posts
+        // Fetch approved posts
         const resPosts = await fetch("http://localhost:5000/posts");
         const postsData = await resPosts.json();
 
         let bookmarkedIds = [];
 
-        // 2️⃣ Fetch user's bookmarks if logged in
+        // Fetch user's bookmarks if logged in
         if (user) {
           const resBookmarks = await fetch(
             `http://localhost:5000/users/${user._id}/bookmarks`
           );
           const bookmarks = await resBookmarks.json();
-          bookmarkedIds = bookmarks.map(post => post._id);
+          bookmarkedIds = bookmarks.map((post) => post._id);
         }
 
-        // 3️⃣ Format posts
+        // Format posts
         const formattedData = postsData.map((post) => ({
           _id: post._id,
           title: post.title,
+          division: post.division || "",    
+          district: post.district || "",    
+          upazila: post.upazila || "",
           location: post.location,
           houseNo: post.houseNo,
           date: post.createdAt
             ? new Date(post.createdAt).toLocaleDateString()
             : "",
-          houseType: post.houseType,
+          houseType: post.category || "",
           image: post.images?.length
             ? `http://localhost:5000${post.images[0]}`
             : "/no-image.png",

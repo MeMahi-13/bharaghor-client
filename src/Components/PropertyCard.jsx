@@ -17,8 +17,8 @@ function PropertyCard({ places, onToggleBookmark }) {
 
   return (
     <div
-      className="featured-place-body"
-      style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}
+      className=" featured-place-body"
+      style={{ display: "flex-1", gap: "20px", flexWrap: "wrap" }}
     >
       {displayPlaces.map((place, index) =>
         place ? (

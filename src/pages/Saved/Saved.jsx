@@ -6,7 +6,7 @@ import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { AuthContext } from "../../context/AuthContext";
 
 function Saved() {
-  const { user } = useContext(AuthContext); // logged-in user
+  const { user } = useContext(AuthContext); 
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,6 +17,8 @@ function Saved() {
     const fetchBookmarks = async () => {
       try {
         const res = await fetch(`http://localhost:5000/users/${user._id}/bookmarks`);
+        if (!res.ok) throw new Error("Failed to fetch bookmarks");
+
         const data = await res.json();
 
         const formattedData = data.map(post => ({
@@ -28,7 +30,7 @@ function Saved() {
           houseType: post.houseType,
           image: post.images?.length ? `http://localhost:5000${post.images[0]}` : "/no-image.png",
           price: post.rent,
-          bookmarked: true, // all are bookmarked
+          bookmarked: true,
         }));
 
         setFeaturedPlaces(formattedData);
@@ -53,12 +55,17 @@ function Saved() {
         `http://localhost:5000/users/${user._id}/bookmark/${place._id}`,
         { method: "PATCH" }
       );
+
+      if (!res.ok) throw new Error("Failed to toggle bookmark");
+
       const data = await res.json();
 
-      // Update frontend state
-      const updatedPlaces = [...featuredPlaces];
-      updatedPlaces[index].bookmarked = data.bookmarked;
-      setFeaturedPlaces(updatedPlaces);
+      // Remove from frontend if unbookmarked
+      setFeaturedPlaces(prev => 
+        prev.map((p, i) => 
+          i === index ? { ...p, bookmarked: data.bookmarked } : p
+        ).filter(p => p.bookmarked)
+      );
     } catch (err) {
       console.error("Failed to toggle bookmark:", err);
     }
@@ -75,7 +82,6 @@ function Saved() {
       <div style={{ position: "relative" }}>
         <PropertyCard places={featuredPlaces} />
 
-        {/* Bookmark layer */}
         <div
           style={{
             position: "absolute",

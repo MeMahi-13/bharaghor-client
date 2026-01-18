@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
 
     try {
       const token = await firebaseUser.getIdToken();
-      const res = await fetch("http://localhost:5000/register", {
+      const res = await fetch("https://yessghor-server.vercel.app/register", {
         method: "POST",
         headers: {
           "content-type": "application/json",
