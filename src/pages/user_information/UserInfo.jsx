@@ -34,13 +34,15 @@ function UserInfo() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
 
+  const API_URL = "http://localhost:5000"; // Local backend URL
+
   /* ================= Fetch user info ================= */
   useEffect(() => {
     const fetchUserData = async () => {
       if (!user?._id) return;
 
       try {
-        const res = await fetch(`https://yessghor-server.vercel.app/users/${user._id}`);
+        const res = await fetch(`${API_URL}/users/${user._id}`);
         const data = await res.json();
 
         if (res.ok && data.user) {
@@ -97,13 +99,10 @@ function UserInfo() {
       submitData.append("nidFront", files.nidFront);
       submitData.append("nidBack", files.nidBack);
 
-      const res = await fetch(
-        `https://yessghor-server.vercel.app/register/${user._id}`,
-        {
-          method: "PUT",
-          body: submitData,
-        }
-      );
+      const res = await fetch(`${API_URL}/register/${user._id}`, {
+        method: "PUT",
+        body: submitData,
+      });
 
       const result = await res.json();
 
@@ -135,7 +134,11 @@ function UserInfo() {
           Full Name
         </label>
         <div className="relative mb-4">
-          <img src={person_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70" alt="" />
+          <img
+            src={person_icon}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70"
+            alt=""
+          />
           <input
             type="text"
             value={formData.name}
@@ -147,7 +150,11 @@ function UserInfo() {
         {/* ================= Email ================= */}
         <label className="block mb-2 font-semibold text-gray-700">Email</label>
         <div className="relative mb-4">
-          <img src={email_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70" alt="" />
+          <img
+            src={email_icon}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70"
+            alt=""
+          />
           <input
             type="email"
             value={formData.email}
@@ -159,7 +166,11 @@ function UserInfo() {
         {/* ================= Phone ================= */}
         <label className="block mb-2 font-semibold text-gray-700">Phone</label>
         <div className="relative mb-4">
-          <img src={telephone_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70" alt="" />
+          <img
+            src={telephone_icon}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-5 opacity-70"
+            alt=""
+          />
           <input
             type="tel"
             value={formData.phone}
@@ -177,12 +188,12 @@ function UserInfo() {
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <img
-                src={`https://yessghor-server.vercel.app${formData.nidFront}`}
+                src={`${API_URL}${formData.nidFront}`}
                 className="h-32 w-full object-cover rounded-xl border"
                 alt="NID Front"
               />
               <img
-                src={`https://yessghor-server.vercel.app${formData.nidBack}`}
+                src={`${API_URL}${formData.nidBack}`}
                 className="h-32 w-full object-cover rounded-xl border"
                 alt="NID Back"
               />
@@ -212,10 +223,18 @@ function UserInfo() {
                   className="relative flex items-center justify-center h-32 border-2 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100"
                 >
                   {previews[side] ? (
-                    <img src={previews[side]} className="h-full w-full object-cover rounded-xl" alt="" />
+                    <img
+                      src={previews[side]}
+                      className="h-full w-full object-cover rounded-xl"
+                      alt=""
+                    />
                   ) : (
                     <div className="text-center">
-                      <img src={camera_icon} className="w-6 mx-auto opacity-40 mb-1" alt="" />
+                      <img
+                        src={camera_icon}
+                        className="w-6 mx-auto opacity-40 mb-1"
+                        alt=""
+                      />
                       <span className="text-[10px] uppercase text-gray-400 font-bold">
                         {side === "nidFront" ? "NID FRONT" : "NID BACK"}
                       </span>

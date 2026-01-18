@@ -42,10 +42,7 @@ export const router = createBrowserRouter([
       //   path: "/upload",
       //   element: <ImageUploader />,
       // },
-      // {
-      //   path: "/images",
-      //   element: <ImageGallery />,
-      // },
+     
       {
         path: "/details",
         element: <Details />,

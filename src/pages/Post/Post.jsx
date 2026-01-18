@@ -7,9 +7,9 @@ function Post() {
   const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
-    divisions:"",
-    districts:"",
-    upazilas:"",
+    division: "",
+    district: "",
+    upazila: "",
     location: "",
     houseNo: "",
     category: "",
@@ -28,7 +28,6 @@ function Post() {
     electricity: "",
     gas: "no",
     security: "",
-   
   });
 
   const [divisions, setDivisions] = useState([]);
@@ -42,62 +41,77 @@ function Post() {
   // Fetch Divisions on mount
   useEffect(() => {
     fetch(`${baseUrl}/divisions`)
-      .then(res => res.json())
-      .then(res => setDivisions(res.data || []))
-      .catch(err => console.error(err));
+      .then((res) => res.json())
+      .then((res) => setDivisions(res.data || []))
+      .catch((err) => console.error(err));
   }, []);
 
   // Handle Division change
   const handleDivisionChange = (e) => {
     const divisionId = e.target.value;
+    const divisionObj = divisions.find((d) => d.id === divisionId);
+
     setSelectedDivision(divisionId);
     setSelectedDistrict("");
     setSelectedUpazila("");
     setDistricts([]);
     setUpazilas([]);
-    setFormData(prev => ({ ...prev, division: divisionId, district: "",upazila : "" }));
+
+    setFormData((prev) => ({
+      ...prev,
+      division: divisionObj?.name || "",
+      district: "",
+      upazila: "",
+    }));
 
     if (!divisionId) return;
 
     fetch(`${baseUrl}/districts/${divisionId}`)
-      .then(res => res.json())
-      .then(res => setDistricts(res.data || []))
-      .catch(err => console.error(err));
+      .then((res) => res.json())
+      .then((res) => setDistricts(res.data || []))
+      .catch((err) => console.error(err));
   };
 
   // Handle District change
   const handleDistrictChange = (e) => {
     const districtId = e.target.value;
+    const districtObj = districts.find((d) => d.id === districtId);
+
     setSelectedDistrict(districtId);
     setSelectedUpazila("");
     setUpazilas([]);
-    setFormData(prev => ({ ...prev, district: districtId, upazila: "" }));
+
+    setFormData((prev) => ({
+      ...prev,
+      district: districtObj?.name || "",
+      upazila: "",
+    }));
 
     if (!districtId) return;
 
     fetch(`${baseUrl}/upazilas/${districtId}`)
-      .then(res => res.json())
-      .then(res => setUpazilas(res.data || []))
-      .catch(err => console.error(err));
+      .then((res) => res.json())
+      .then((res) => setUpazilas(res.data || []))
+      .catch((err) => console.error(err));
   };
 
   // Handle Upazila change
   const handleUpazilaChange = (e) => {
     const upazilaName = e.target.value;
     setSelectedUpazila(upazilaName);
-    setFormData(prev => ({ ...prev, upazila: upazilaName }));
+    setFormData((prev) => ({ ...prev, upazila: upazilaName }));
   };
 
   // Handle image upload (max 4)
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImages(prev => [...prev, ...files].slice(0, 4));
+    setImages((prev) => [...prev, ...files].slice(0, 4));
   };
 
   // Handle text/select change
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // Submit form
@@ -111,14 +125,14 @@ function Post() {
     }
 
     const data = new FormData();
-    Object.keys(formData).forEach(key => {
+    Object.keys(formData).forEach((key) => {
       data.append(key, formData[key]);
     });
-    images.forEach(img => data.append("images", img));
+    images.forEach((img) => data.append("images", img));
     data.append("userId", user._id);
 
     try {
-      const res = await fetch("https://yessghor-server.vercel.app/posts", {
+      const res = await fetch("http://localhost:5000/posts", {
         method: "POST",
         body: data,
       });
@@ -135,7 +149,7 @@ function Post() {
       <form onSubmit={handleSubmit} style={styles.container}>
         {/* IMAGE UPLOAD */}
         <div style={styles.grid}>
-          {[0, 1, 2, 3].map(i => (
+          {[0, 1, 2, 3].map((i) => (
             <div key={i} style={styles.slot}>
               {images[i] ? (
                 <img
@@ -159,33 +173,59 @@ function Post() {
           ))}
         </div>
 
+        {/* FORM FIELDS */}
         <div className="flex gap-10 py-5">
-          {/* CARD DETAILS */}
           <section style={styles.section}>
             <h3>Card Details</h3>
-            <input name="title" placeholder="Title" value={formData.title} onChange={handleChange} style={styles.input} />
+            <input
+              name="title"
+              placeholder="Title"
+              value={formData.title}
+              onChange={handleChange}
+              style={styles.input}
+            />
 
             {/* Division */}
-            <select value={selectedDivision} onChange={handleDivisionChange} style={styles.input}>
+            <select
+              value={selectedDivision}
+              onChange={handleDivisionChange}
+              style={styles.input}
+            >
               <option value="">Select Division</option>
-              {divisions.map(d => (
-                <option key={d.id} value={d.id}>{d.name}</option>
+              {divisions.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.name}
+                </option>
               ))}
             </select>
 
             {/* District */}
-            <select value={selectedDistrict} onChange={handleDistrictChange} disabled={!districts.length} style={styles.input}>
+            <select
+              value={selectedDistrict}
+              onChange={handleDistrictChange}
+              disabled={!districts.length}
+              style={styles.input}
+            >
               <option value="">Select District</option>
-              {districts.map(d => (
-                <option key={d.id} value={d.id}>{d.name}</option>
+              {districts.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.name}
+                </option>
               ))}
             </select>
 
             {/* Upazila */}
-            <select value={selectedUpazila} onChange={handleUpazilaChange} disabled={!upazilas.length} style={styles.input}>
+            <select
+              value={selectedUpazila}
+              onChange={handleUpazilaChange}
+              disabled={!upazilas.length}
+              style={styles.input}
+            >
               <option value="">Select Upazila</option>
-              {upazilas.map(u => (
-                <option key={u.id} value={u.name}>{u.name}</option>
+              {upazilas.map((u) => (
+                <option key={u.id} value={u.name}>
+                  {u.name}
+                </option>
               ))}
             </select>
 
@@ -208,7 +248,12 @@ function Post() {
 
             <input name="houseNo" placeholder="House No" value={formData.houseNo} onChange={handleChange} style={styles.input} />
 
-            <select name="category" value={formData.category} onChange={handleChange} style={styles.input}>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              style={styles.input}
+            >
               <option value="">House Type</option>
               <option value="apartment">Apartment</option>
               <option value="house">House</option>
@@ -225,10 +270,34 @@ function Post() {
           {/* RENTAL DETAILS */}
           <section style={styles.section}>
             <h3>Rental Details</h3>
-            <input name="rent" placeholder="Monthly Rent" value={formData.rent} onChange={handleChange} style={styles.input} />
-            <input name="deposit" placeholder="Deposit" value={formData.deposit} onChange={handleChange} style={styles.input} />
-            <input name="leaseTerm" placeholder="Lease Term" value={formData.leaseTerm} onChange={handleChange} style={styles.input} />
-            <input name="availableDate" placeholder="Available Date" value={formData.availableDate} onChange={handleChange} style={styles.input} />
+            <input
+              name="rent"
+              placeholder="Monthly Rent"
+              value={formData.rent}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              name="deposit"
+              placeholder="Deposit"
+              value={formData.deposit}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              name="leaseTerm"
+              placeholder="Lease Term"
+              value={formData.leaseTerm}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              name="availableDate"
+              placeholder="Available Date"
+              value={formData.availableDate}
+              onChange={handleChange}
+              style={styles.input}
+            />
           </section>
         </div>
 
@@ -236,18 +305,52 @@ function Post() {
         <div className="flex gap-10 py-5">
           <section style={styles.section}>
             <h3>House Details</h3>
-            <input name="floor" placeholder="Floor" value={formData.floor} onChange={handleChange} style={styles.input} />
-            <input name="bedroom" placeholder="Bedroom" value={formData.bedroom} onChange={handleChange} style={styles.input} />
-            <input name="commonBath" placeholder="Common Bath" value={formData.commonBath} onChange={handleChange} style={styles.input} />
-            <input name="balcony" placeholder="Balcony" value={formData.balcony} onChange={handleChange} style={styles.input} />
+            <input
+              name="floor"
+              placeholder="Floor"
+              value={formData.floor}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              name="bedroom"
+              placeholder="Bedroom"
+              value={formData.bedroom}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              name="commonBath"
+              placeholder="Common Bath"
+              value={formData.commonBath}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              name="balcony"
+              placeholder="Balcony"
+              value={formData.balcony}
+              onChange={handleChange}
+              style={styles.input}
+            />
 
-            <select name="furnished" value={formData.furnished} onChange={handleChange} style={styles.input}>
+            <select
+              name="furnished"
+              value={formData.furnished}
+              onChange={handleChange}
+              style={styles.input}
+            >
               <option value="">Furnished</option>
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select>
 
-            <select name="parking" value={formData.parking} onChange={handleChange} style={styles.input}>
+            <select
+              name="parking"
+              value={formData.parking}
+              onChange={handleChange}
+              style={styles.input}
+            >
               <option value="">Parking</option>
               <option value="yes">Yes</option>
               <option value="no">No</option>
@@ -256,8 +359,14 @@ function Post() {
 
           <section style={styles.section}>
             <h3>Utilities</h3>
-            {["water", "electricity", "gas", "security"].map(item => (
-              <select key={item} name={item} value={formData[item]} onChange={handleChange} style={styles.input}>
+            {["water", "electricity", "gas", "security"].map((item) => (
+              <select
+                key={item}
+                name={item}
+                value={formData[item]}
+                onChange={handleChange}
+                style={styles.input}
+              >
                 <option value="">{item.toUpperCase()}</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
@@ -342,6 +451,6 @@ const styles = {
     border: "none",
     borderRadius: "6px",
     cursor: "pointer",
-    marginTop:"12px",
+    marginTop: "12px",
   },
 };

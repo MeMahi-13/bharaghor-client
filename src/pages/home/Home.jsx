@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import './Home.css';
+import "./Home.css";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import SwiperSlider from "../../Components/SwiperSlider";
-import PropertyCard from "../../Components/PropertyCard";
+import ApprovedPosts from "./ApprovedPost";
 const Home = () => {
   const [values, setValues] = useState({
     city: "",
@@ -11,64 +11,6 @@ const Home = () => {
     price: "",
   });
   const navigate = useNavigate();
-
-
-  // Array to track which cards are bookmarked
-  const featuredPlacesInitial = [
-    {
-      image: "/images/slider.png",
-      title: "2 Bedroom Flat For Rent",
-      location: "Road No 7, Sector 10, Uttara",
-      home: "House No: 10",
-      date: "Date: 10-10-2025",
-      houseType: "Family Flat",
-    },
-    {
-      image: "/images/slider.png",
-      title: "2 Bedroom Flat For Rent",
-      location: "Road No 7, Sector 10, Uttara",
-      home: "House No: 10",
-      date: "Date: 10-10-2025",
-      houseType: "Family Flat",
-    },
-    {
-      image: "/images/slider.png",
-      title: "2 Bedroom Flat For Rent",
-      location: "Road No 7, Sector 10, Uttara",
-      home: "House No: 10",
-      date: "Date: 10-10-2025",
-      houseType: "Family Flat",
-    },
-    {
-      image: "/images/slider.png",
-      title: "Apartment 2",
-      location: "Road No 7, Sector 10, Uttara",
-      home: "House No: 10",
-      date: "Date: 10-10-2025",
-      houseType: "Family Flat",
-    },
-    {
-      image: "/images/slider.png",
-      title: "Apartment 2",
-      location: "Road No 7, Sector 10, Uttara",
-      home: "House No: 10",
-      date: "Date: 10-10-2025",
-      houseType: "Family Flat",
-    },
-    {
-      image: "/images/slider.png",
-      title: "Apartment 2",
-      location: "Road No 7, Sector 10, Uttara",
-      home: "House No: 80",
-      date: "Date: 10-10-2025",
-      houseType: "Family Flat",
-    },
-  ];
-
-  // Add a bookmarked state for each card
-  const [featuredPlaces, setFeaturedPlaces] = useState(
-    featuredPlacesInitial.map(place => ({ ...place, bookmarked: false }))
-  );
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -171,12 +113,13 @@ const Home = () => {
           ))}
         </div>
       </div>
+      {/* fetch post */}
+      <ApprovedPosts />
     </div>
   );
 };
 
 export default Home;
-
 
 const styles = {
   slide: {
@@ -227,7 +170,6 @@ const styles = {
     fontSize: "20px",
     lineHeight: "100%",
     color: "#101828",
-
   },
   cardText: {
     fontSize: "16px",
@@ -239,7 +181,6 @@ const styles = {
     paddingBottom: "20px",
     fontWeight: "600",
     fontSize: "24px",
-
   },
   money: {
     color: "#0988E3",
@@ -257,5 +198,4 @@ const styles = {
     fontSize: "14px",
     cursor: "pointer",
   },
-
 };

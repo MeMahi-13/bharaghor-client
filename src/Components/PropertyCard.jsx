@@ -1,5 +1,4 @@
-// PropertyCard.js
-import * as React from 'react';
+import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { CiLocationOn } from "react-icons/ci";
 import { IoHomeOutline } from "react-icons/io5";
@@ -11,14 +10,10 @@ import { Link } from "react-router-dom";
 function PropertyCard({ places }) {
   const navigate = useNavigate();
 
-  // Always make an array of 4 slots
   const totalSlots = 4;
   const displayPlaces = [...places];
 
-  // Fill empty slots with null
-  while (displayPlaces.length < totalSlots) {
-    displayPlaces.push(null);
-  }
+  while (displayPlaces.length < totalSlots) displayPlaces.push(null);
 
   return (
     <div
@@ -37,11 +32,12 @@ function PropertyCard({ places }) {
               flex: "1 1 calc(25% - 15px)", 
               display: "flex",
               flexDirection: "column",
-              border:"1px solid #E5E7EB",
-              borderRadius:"12px",
-              paddingBottom:"16px",
-               boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.2)",
-             background:"#ffffff",
+              border: "1px solid #E5E7EB",
+              borderRadius: "12px",
+              paddingBottom: "16px",
+              boxShadow:
+                "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.2)",
+              background: "#ffffff",
             }}
           >
             {/* Image */}
@@ -91,11 +87,7 @@ function PropertyCard({ places }) {
                         </div>
           </div>
         ) : (
-          // Empty placeholder for missing cards
-          <div
-            key={index}
-            style={{ flex: "1 1 calc(25% - 15px)" }}
-          ></div>
+          <div key={index} style={{ flex: "1 1 calc(25% - 15px)" }} />
         )
       )}
     </div>
@@ -104,48 +96,11 @@ function PropertyCard({ places }) {
 
 export default PropertyCard;
 
-// same styles as before
 const styles = {
-  cardImageHorizontal: {
-    width: "100%",
-    height: "150px",
-    objectFit: "cover",
-    borderRadius: "10px",
-    marginTop:"",
-  },
-  cardContent: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    paddingTop: "10px",
-     paddingLeft:"13px",
-     
-      
-  },
-  cardTitle: {
-    marginBottom: "10px",
-    fontWeight: "600",
-    fontSize: "20px",
-    color: "#101828",
-  },
-  cardText: {
-    fontSize: "16px",
-    color: "#555",
-  },
-  money: {
-    color: "#0988E3",
-    fontWeight: "600",
-    fontSize: "14px",
-  },
-  call: {
-    background: "#0988E3",
-    border: "none",
-    color: "#FFFFFF",
-    borderRadius: "6px",
-    gap: "4px",
-    padding: "4px 9px",
-    fontWeight: "400",
-    fontSize: "14px",
-    cursor: "pointer",
-  },
+  cardImageHorizontal: { width: "100%", height: "150px", objectFit: "cover", borderRadius: "10px" },
+  cardContent: { display: "flex", flexDirection: "column", paddingTop: "10px", paddingLeft: "13px" },
+  cardTitle: { marginBottom: "10px", fontWeight: "600", fontSize: "20px", color: "#101828" },
+  cardText: { fontSize: "16px", color: "#555" },
+  money: { color: "#0988E3", fontWeight: "600", fontSize: "14px" },
+  call: { background: "#0988E3", border: "none", color: "#fff", borderRadius: "6px", gap: "4px", padding: "4px 9px", fontSize: "14px", cursor: "pointer" },
 };
