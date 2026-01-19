@@ -3,9 +3,11 @@ import PropertyCard from "../../Components/PropertyCard";
 import { AuthContext } from "../../context/AuthContext";
 
 function ApprovedPosts() {
-  const { user } = useContext(AuthContext); // logged-in user
+  const { user } = useContext(AuthContext);
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const API_URL = "https://yessghor-server.vercel.app";
 
   // Fetch approved posts and user's bookmarks
   useEffect(() => {
@@ -17,21 +19,24 @@ function ApprovedPosts() {
 
         let bookmarkedIds = [];
 
-        // Fetch user's bookmarks if logged in
-        if (user) {
+        // 2️⃣ Fetch user's bookmarks if logged in
+        if (user?._id) {
           const resBookmarks = await fetch(
             `https://yessghor-server.vercel.app/users/${user._id}/bookmarks`
           );
-          const bookmarks = await resBookmarks.json();
-          bookmarkedIds = bookmarks.map((post) => post._id);
+          if (resBookmarks.ok) {
+            const bookmarksData = await resBookmarks.json();
+            // Store only the post IDs
+            bookmarkedIds = bookmarksData.map((post) => post._id);
+          }
         }
 
-        // Format posts
+        // 3️⃣ Format posts with bookmarked info
         const formattedData = postsData.map((post) => ({
           _id: post._id,
           title: post.title,
-          division: post.division || "",    
-          district: post.district || "",    
+          division: post.division || "",
+          district: post.district || "",
           upazila: post.upazila || "",
           location: post.location,
           houseNo: post.houseNo,
@@ -47,9 +52,9 @@ function ApprovedPosts() {
         }));
 
         setPlaces(formattedData);
-        setLoading(false);
       } catch (err) {
         console.error("Failed to fetch posts or bookmarks:", err);
+      } finally {
         setLoading(false);
       }
     };
@@ -59,13 +64,16 @@ function ApprovedPosts() {
 
   // Toggle bookmark
   const toggleBookmark = async (postId, index) => {
-    if (!user) return alert("Please login first to bookmark");
+    if (!user?._id) return alert("Please login first to bookmark");
 
     try {
       const res = await fetch(
         `https://yessghor-server.vercel.app/users/${user._id}/bookmark/${postId}`,
         { method: "PATCH" }
       );
+
+      if (!res.ok) throw new Error("Failed to toggle bookmark");
+
       const data = await res.json();
 
       // Update local state
@@ -85,10 +93,7 @@ function ApprovedPosts() {
     <div style={{}}>
       <h2 style={{ marginBottom: "20px" }}>Available Properties</h2>
 
-      <PropertyCard
-        places={places}
-        onToggleBookmark={toggleBookmark}
-      />
+      <PropertyCard places={places} onToggleBookmark={toggleBookmark} />
     </div>
   );
 }

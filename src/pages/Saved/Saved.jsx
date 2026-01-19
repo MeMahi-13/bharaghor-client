@@ -1,16 +1,16 @@
-// @flow strict
-import * as React from 'react';
-import PropertyCard from '../../Components/PropertyCard';
-import { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
+import PropertyCard from "../../Components/PropertyCard";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { AuthContext } from "../../context/AuthContext";
 
+const API_URL = "https://yessghor-server.vercel.app";
+
 function Saved() {
-  const { user } = useContext(AuthContext); 
+  const { user } = useContext(AuthContext);
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch bookmarked posts from backend
+  // Fetch bookmarks
   useEffect(() => {
     if (!user?._id) return;
 
@@ -34,9 +34,9 @@ function Saved() {
         }));
 
         setFeaturedPlaces(formattedData);
-        setLoading(false);
       } catch (err) {
         console.error("Failed to fetch bookmarks:", err);
+      } finally {
         setLoading(false);
       }
     };
@@ -44,10 +44,9 @@ function Saved() {
     fetchBookmarks();
   }, [user]);
 
-  // Toggle bookmark: remove from backend
-  const toggleBookmark = async (index) => {
+  // Toggle bookmark
+  const toggleBookmark = async index => {
     const place = featuredPlaces[index];
-
     if (!user?._id) return;
 
     try {
@@ -60,11 +59,10 @@ function Saved() {
 
       const data = await res.json();
 
-      // Remove from frontend if unbookmarked
-      setFeaturedPlaces(prev => 
-        prev.map((p, i) => 
-          i === index ? { ...p, bookmarked: data.bookmarked } : p
-        ).filter(p => p.bookmarked)
+      // Update frontend
+      setFeaturedPlaces(prev =>
+        prev.map((p, i) => (i === index ? { ...p, bookmarked: data.bookmarked } : p))
+          .filter(p => p.bookmarked)
       );
     } catch (err) {
       console.error("Failed to toggle bookmark:", err);
@@ -96,10 +94,7 @@ function Saved() {
           {featuredPlaces.map((place, index) => (
             <div
               key={index}
-              style={{
-                position: "relative",
-                pointerEvents: "auto",
-              }}
+              style={{ position: "relative", pointerEvents: "auto" }}
             >
               <div
                 style={{

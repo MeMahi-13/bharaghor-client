@@ -25,7 +25,7 @@ function SignUp() {
           name,
           email,
           phone,
-          password,          // plain text for now
+          password,         
           role: "user",
           bookmarks: [],
           createdAt: new Date(),
