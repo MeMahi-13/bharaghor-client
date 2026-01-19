@@ -82,7 +82,7 @@ function ApprovedPosts() {
   if (loading) return <p>Loading approved posts...</p>;
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{}}>
       <h2 style={{ marginBottom: "20px" }}>Available Properties</h2>
 
       <PropertyCard

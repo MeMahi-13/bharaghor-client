@@ -1,16 +1,26 @@
+import profile from "../../../public/images/Ellipse 116.png";
+import { SlCamera } from "react-icons/sl";
 const ProfileCard = ({ user }) => {
   const backendUrl = "https://yessghor-server.vercel.app/";
 
   return (
     <div>
      <div style={styles.container}>
-      <div>
-        <img 
-            src={`${backendUrl}${user.Profileimage}`} 
-            alt="Profile image" 
-            style={{ width: '160px',height:"160px",borderRadius:"100%",border:'1px solid #E9EBF8' }} 
-        />
-      </div>
+      <div className="flex flex-col items-center justify-center">
+  <div className="w-full flex justify-center">
+    <img 
+      src={profile}
+      alt="Profile image"
+      className="w-40 h-40 rounded-full border border-[#E9EBF8] object-cover"
+    />
+  </div>
+
+  <div className="flex items-center justify-center gap-2 mt-2 cursor-pointer">
+    <SlCamera />
+    <p>Change Photo</p>
+  </div>
+</div>
+
   <div style={styles.formGroup}>
     <label style={styles.label} htmlFor="name">Name:</label>
     <input style={styles.input} type="text" id="name" value={user.name} readOnly />
@@ -30,10 +40,7 @@ const ProfileCard = ({ user }) => {
     <label style={styles.label} htmlFor="createdAt">Created At:</label>
     <input style={styles.input} type="text" id="createdAt" value={user.createdAt} readOnly />
   </div>
-</div>
-
-
-<h2>NID</h2>
+  <h2>NID</h2>
       <div style={{ display: 'flex', gap: '20px',border:'1px solid #E9EBF8',marginTop:'12px' }}>
 
         
@@ -48,6 +55,10 @@ const ProfileCard = ({ user }) => {
             style={{ width: '300px' }} 
         />
       </div>
+</div>
+
+
+
     </div>
   );
 };

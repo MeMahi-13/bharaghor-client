@@ -36,8 +36,8 @@ const Profile = () => {
     
     <div className="">
       <div className="flex items-center gap-3">
-         <IoIosArrowBack />
-        <h2 className="">Manage Profile</h2>
+         <IoIosArrowBack className="w-5 h-10 flex items-center justify-center" />
+        <h2 className="font-medium text-2xl text-[#101828]">Manage Profile</h2>
        
       </div>
       <ProfileCard user={userInfo} />
