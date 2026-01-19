@@ -1,9 +1,5 @@
 const ProfileCard = ({ user }) => {
-<<<<<<< HEAD
   const backendUrl = "https://yessghor-server.vercel.app";
-=======
-  const backendUrl = "https://yessghor-server.vercel.app/";
->>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
 
   return (
     <div>
@@ -54,24 +50,6 @@ const ProfileCard = ({ user }) => {
   )}
 </div>
 
-<<<<<<< HEAD
-=======
-<h2>NID</h2>
-      <div style={{ display: 'flex', gap: '20px',border:'1px solid #E9EBF8',marginTop:'12px' }}>
-
-        
-        <img 
-            src={`${backendUrl}${user.nidFront}`} 
-            alt="Front NID" 
-            style={{ width: '300px' }} 
-        />
-        <img 
-            src={`${backendUrl}${user.nidBack}`} 
-            alt="Back NID" 
-            style={{ width: '300px' }} 
-        />
-      </div>
->>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
     </div>
   );
 };

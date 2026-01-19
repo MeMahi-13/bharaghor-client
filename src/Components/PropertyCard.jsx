@@ -21,7 +21,7 @@ function PropertyCard({ places }) {
       style={{
         display: "flex-1",
         gap: "20px",
-        flexWrap: "wrap", 
+        flexWrap: "wrap",
       }}
     >
       {displayPlaces.map((place, index) =>
@@ -29,7 +29,7 @@ function PropertyCard({ places }) {
           <div
             key={index}
             style={{
-              flex: "1 1 calc(25% - 15px)", 
+              flex: "1 1 calc(25% - 15px)",
               display: "flex",
               flexDirection: "column",
               border: "1px solid #E5E7EB",
@@ -42,53 +42,60 @@ function PropertyCard({ places }) {
           >
             {/* Image */}
             <div style={{ position: "relative" }}>
-  <Link
-    to="/card_details"
-    state={{ place }}
-    style={{ display: "block" }}
-  >
-    <img
-      src={place.image}
-      alt={place.title}
-      style={{
-        ...styles.cardImageHorizontal,
-        cursor: "pointer",
-      }}
-    />
-  </Link>
-</div>
-
+              <Link
+                to="/card_details"
+                state={{ place }}
+                style={{ display: "block" }}
+              >
+                <img
+                  src={place.image}
+                  alt={place.title}
+                  style={{
+                    ...styles.cardImageHorizontal,
+                    cursor: "pointer",
+                  }}
+                />
+              </Link>
+            </div>
 
             {/* Content */}
-             {/* Description */}
+            {/* Description */}
 
-                        <div style={styles.cardContent}>
-                          <h2 style={styles.cardTitle}>{place.title}</h2>
-                          <div className="flex items-center gap-0.5">
-                            <CiLocationOn />
-                            <p style={styles.cardText}>{place.location}</p>
-                          </div>
-                          <div className="flex items-center gap-0.5">
-                            <IoHomeOutline />
-                            <p style={styles.cardText}>{place.home}</p>
-                          </div>
-                          <div className="flex items-center gap-0.5">
-                            <SlCalender />
-                            <p style={styles.cardText}>{place.date}</p>
-                          </div>
-                          <div className="flex items-center gap-0.5">
-                            <FaBuilding />
-                            <p style={styles.cardText}>{place.houseType}</p>
-                          </div>
-                          <div className="flex items-center gap-2 mt-2">
-                            <div style={styles.money} className="border-none py-2 px-3">TK 12000</div>
-                            <button style={styles.call} className="border py-2 px-3 flex items-center"><MdOutlineMessage />Message</button>
-                          </div>
-                        </div>
+            <div style={styles.cardContent}>
+              <h2 style={styles.cardTitle}>{place.title}</h2>
+              <div className="flex items-center gap-0.5">
+                <CiLocationOn />
+                <p style={styles.cardText}>{place.location}</p>
+              </div>
+              <div className="flex items-center gap-0.5">
+                <IoHomeOutline />
+                <p style={styles.cardText}>{place.houseNo}</p>
+              </div>
+              <div className="flex items-center gap-0.5">
+                <SlCalender />
+                <p style={styles.cardText}>{place.date}</p>
+              </div>
+              <div className="flex items-center gap-0.5">
+                <FaBuilding />
+                <p style={styles.cardText}>{place.houseType}</p>
+              </div>
+              <div className="flex items-center gap-2 mt-2">
+                <div style={styles.money} className="border-none py-2 px-3">
+                  TK 12000
+                </div>
+                <button
+                  style={styles.call}
+                  className="border py-2 px-3 flex items-center"
+                >
+                  <MdOutlineMessage />
+                  Message
+                </button>
+              </div>
+            </div>
           </div>
         ) : (
           <div key={index} style={{ flex: "1 1 calc(25% - 15px)" }} />
-        )
+        ),
       )}
     </div>
   );
@@ -97,10 +104,34 @@ function PropertyCard({ places }) {
 export default PropertyCard;
 
 const styles = {
-  cardImageHorizontal: { width: "100%", height: "150px", objectFit: "cover", borderRadius: "10px" },
-  cardContent: { display: "flex", flexDirection: "column", paddingTop: "10px", paddingLeft: "13px" },
-  cardTitle: { marginBottom: "10px", fontWeight: "600", fontSize: "20px", color: "#101828" },
+  cardImageHorizontal: {
+    width: "100%",
+    height: "150px",
+    objectFit: "cover",
+    borderRadius: "10px",
+  },
+  cardContent: {
+    display: "flex",
+    flexDirection: "column",
+    paddingTop: "10px",
+    paddingLeft: "13px",
+  },
+  cardTitle: {
+    marginBottom: "10px",
+    fontWeight: "600",
+    fontSize: "20px",
+    color: "#101828",
+  },
   cardText: { fontSize: "16px", color: "#555" },
   money: { color: "#0988E3", fontWeight: "600", fontSize: "14px" },
-  call: { background: "#0988E3", border: "none", color: "#fff", borderRadius: "6px", gap: "4px", padding: "4px 9px", fontSize: "14px", cursor: "pointer" },
+  call: {
+    background: "#0988E3",
+    border: "none",
+    color: "#fff",
+    borderRadius: "6px",
+    gap: "4px",
+    padding: "4px 9px",
+    fontSize: "14px",
+    cursor: "pointer",
+  },
 };
