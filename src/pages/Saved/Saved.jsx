@@ -1,22 +1,22 @@
-// @flow strict
-import * as React from 'react';
-import PropertyCard from '../../Components/PropertyCard';
-import { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
+import PropertyCard from "../../Components/PropertyCard";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { AuthContext } from "../../context/AuthContext";
 
+const API_URL = "https://yessghor-server.vercel.app";
+
 function Saved() {
-  const { user } = useContext(AuthContext); 
+  const { user } = useContext(AuthContext);
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch bookmarked posts from backend
+  // Fetch bookmarks
   useEffect(() => {
     if (!user?._id) return;
 
     const fetchBookmarks = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/users/${user._id}/bookmarks`);
+        const res = await fetch(`${API_URL}/users/${user._id}/bookmarks`);
         if (!res.ok) throw new Error("Failed to fetch bookmarks");
 
         const data = await res.json();
@@ -28,15 +28,15 @@ function Saved() {
           houseNo: post.houseNo,
           date: post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "",
           houseType: post.houseType,
-          image: post.images?.length ? `http://localhost:5000${post.images[0]}` : "/no-image.png",
+          image: post.images?.length ? post.images[0] : "/no-image.png",
           price: post.rent,
           bookmarked: true,
         }));
 
         setFeaturedPlaces(formattedData);
-        setLoading(false);
       } catch (err) {
         console.error("Failed to fetch bookmarks:", err);
+      } finally {
         setLoading(false);
       }
     };
@@ -44,27 +44,23 @@ function Saved() {
     fetchBookmarks();
   }, [user]);
 
-  // Toggle bookmark: remove from backend
-  const toggleBookmark = async (index) => {
+  // Toggle bookmark
+  const toggleBookmark = async index => {
     const place = featuredPlaces[index];
-
     if (!user?._id) return;
 
     try {
-      const res = await fetch(
-        `http://localhost:5000/users/${user._id}/bookmark/${place._id}`,
-        { method: "PATCH" }
-      );
-
+      const res = await fetch(`${API_URL}/users/${user._id}/bookmark/${place._id}`, {
+        method: "PATCH",
+      });
       if (!res.ok) throw new Error("Failed to toggle bookmark");
 
       const data = await res.json();
 
-      // Remove from frontend if unbookmarked
-      setFeaturedPlaces(prev => 
-        prev.map((p, i) => 
-          i === index ? { ...p, bookmarked: data.bookmarked } : p
-        ).filter(p => p.bookmarked)
+      // Update frontend
+      setFeaturedPlaces(prev =>
+        prev.map((p, i) => (i === index ? { ...p, bookmarked: data.bookmarked } : p))
+          .filter(p => p.bookmarked)
       );
     } catch (err) {
       console.error("Failed to toggle bookmark:", err);
@@ -96,10 +92,7 @@ function Saved() {
           {featuredPlaces.map((place, index) => (
             <div
               key={index}
-              style={{
-                position: "relative",
-                pointerEvents: "auto",
-              }}
+              style={{ position: "relative", pointerEvents: "auto" }}
             >
               <div
                 style={{

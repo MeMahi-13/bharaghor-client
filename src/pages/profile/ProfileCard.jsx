@@ -1,5 +1,5 @@
 const ProfileCard = ({ user }) => {
-  const backendUrl = "http://localhost:5000";
+  const backendUrl = "https://yessghor-server.vercel.app";
 
   return (
     <div>
@@ -25,22 +25,24 @@ const ProfileCard = ({ user }) => {
   </div>
 </div>
 
+<h2>Your NID Photoes</h2>
+<div style={{ display: 'flex', gap: '20px', border: '1px solid #E9EBF8', marginTop: '12px' }}>
+  {user.nidFront && (
+    <img 
+      src={user.nidFront} 
+      alt="Front NID" 
+      style={{ width: '300px', borderRadius: '8px', objectFit: 'cover' }}
+    />
+  )}
+  {user.nidBack && (
+    <img 
+      src={user.nidBack} 
+      alt="Back NID" 
+      style={{ width: '300px', borderRadius: '8px', objectFit: 'cover' }}
+    />
+  )}
+</div>
 
-<h2>NID</h2>
-      <div style={{ display: 'flex', gap: '20px',border:'1px solid #E9EBF8',marginTop:'12px' }}>
-
-        {/* Combine http://localhost:5000 + /uploads/filename... */}
-        <img 
-            src={`${backendUrl}${user.nidFront}`} 
-            alt="Front NID" 
-            style={{ width: '300px' }} 
-        />
-        <img 
-            src={`${backendUrl}${user.nidBack}`} 
-            alt="Back NID" 
-            style={{ width: '300px' }} 
-        />
-      </div>
     </div>
   );
 };
