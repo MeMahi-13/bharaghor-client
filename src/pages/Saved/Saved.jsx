@@ -16,7 +16,11 @@ function Saved() {
 
     const fetchBookmarks = async () => {
       try {
+<<<<<<< HEAD
         const res = await fetch(`${API_URL}/users/${user._id}/bookmarks`);
+=======
+        const res = await fetch(`https://yessghor-server.vercel.app/users/${user._id}/bookmarks`);
+>>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
         if (!res.ok) throw new Error("Failed to fetch bookmarks");
 
         const data = await res.json();
@@ -28,7 +32,11 @@ function Saved() {
           houseNo: post.houseNo,
           date: post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "",
           houseType: post.houseType,
+<<<<<<< HEAD
           image: post.images?.length ? post.images[0] : "/no-image.png",
+=======
+          image: post.images?.length ? `https://yessghor-server.vercel.app${post.images[0]}` : "/no-image.png",
+>>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
           price: post.rent,
           bookmarked: true,
         }));
@@ -50,9 +58,17 @@ function Saved() {
     if (!user?._id) return;
 
     try {
+<<<<<<< HEAD
       const res = await fetch(`${API_URL}/users/${user._id}/bookmark/${place._id}`, {
         method: "PATCH",
       });
+=======
+      const res = await fetch(
+        `https://yessghor-server.vercel.app/users/${user._id}/bookmark/${place._id}`,
+        { method: "PATCH" }
+      );
+
+>>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
       if (!res.ok) throw new Error("Failed to toggle bookmark");
 
       const data = await res.json();

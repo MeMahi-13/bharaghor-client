@@ -23,9 +23,15 @@ function UserInfo() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
 
+<<<<<<< HEAD
   // -------------------
   // FETCH USER
   // -------------------
+=======
+  const API_URL = "https://yessghor-server.vercel.app"; 
+
+  /* ================= Fetch user info ================= */
+>>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
   useEffect(() => {
     if (!user?._id) return;
 

@@ -6,7 +6,7 @@ const UserCard = ({ user }) => {
 
   const handleDelete = (_id) => {
     console.log(_id);
-    fetch(`http://localhost:5000/users/${_id}`, {
+    fetch(`https://yessghor-server.vercel.app//users/${_id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())

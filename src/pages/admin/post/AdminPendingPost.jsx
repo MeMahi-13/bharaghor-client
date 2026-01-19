@@ -8,7 +8,7 @@ function AdminPendingPosts() {
 
   // Fetch all pending posts
   useEffect(() => {
-  fetch("http://localhost:5000/admin/posts/pending")
+  fetch("https://yessghor-server.vercel.app//admin/posts/pending")
       .then(res => res.json())
       .then(data => {
         setPosts(data);
@@ -22,7 +22,7 @@ function AdminPendingPosts() {
 
   // Approve / Reject post
   const updatePost = async (postId, action) => {
-    await fetch(`http://localhost:5000/admin/posts/${postId}/${action}`, {
+    await fetch(`https://yessghor-server.vercel.app//admin/posts/${postId}/${action}`, {
       method: "PATCH",
     });
 

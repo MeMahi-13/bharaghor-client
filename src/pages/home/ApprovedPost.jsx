@@ -13,8 +13,13 @@ function ApprovedPosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+<<<<<<< HEAD
         // 1️⃣ Fetch approved posts
         const resPosts = await fetch(`${API_URL}/posts`);
+=======
+        // Fetch approved posts
+        const resPosts = await fetch("https://yessghor-server.vercel.app/posts");
+>>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
         const postsData = await resPosts.json();
 
         let bookmarkedIds = [];
@@ -22,7 +27,11 @@ function ApprovedPosts() {
         // 2️⃣ Fetch user's bookmarks if logged in
         if (user?._id) {
           const resBookmarks = await fetch(
+<<<<<<< HEAD
             `${API_URL}/users/${user._id}/bookmarks`
+=======
+            `https://yessghor-server.vercel.app/users/${user._id}/bookmarks`
+>>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
           );
           if (resBookmarks.ok) {
             const bookmarksData = await resBookmarks.json();
@@ -45,7 +54,11 @@ function ApprovedPosts() {
             : "",
           houseType: post.category || "",
           image: post.images?.length
+<<<<<<< HEAD
             ? `${post.images[0]}` // or include full URL if needed
+=======
+            ? `https://yessghor-server.vercel.app${post.images[0]}`
+>>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
             : "/no-image.png",
           price: post.rent,
           bookmarked: bookmarkedIds.includes(post._id),
@@ -68,7 +81,11 @@ function ApprovedPosts() {
 
     try {
       const res = await fetch(
+<<<<<<< HEAD
         `${API_URL}/users/${user._id}/bookmark/${postId}`,
+=======
+        `https://yessghor-server.vercel.app/users/${user._id}/bookmark/${postId}`,
+>>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
         { method: "PATCH" }
       );
 

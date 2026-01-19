@@ -5,9 +5,9 @@ import { IoHomeOutline } from "react-icons/io5";
 import { SlCalender } from "react-icons/sl";
 import { FaBuilding } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
-import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
-function PropertyCard({ places, onToggleBookmark }) {
+function PropertyCard({ places }) {
   const navigate = useNavigate();
 
   const totalSlots = 4;
@@ -17,15 +17,19 @@ function PropertyCard({ places, onToggleBookmark }) {
 
   return (
     <div
-      className=" featured-place-body"
-      style={{ display: "flex-1", gap: "20px", flexWrap: "wrap" }}
+      className="featured-place-body"
+      style={{
+        display: "flex-1",
+        gap: "20px",
+        flexWrap: "wrap", 
+      }}
     >
       {displayPlaces.map((place, index) =>
         place ? (
           <div
             key={index}
             style={{
-              flex: "1 1 calc(25% - 15px)",
+              flex: "1 1 calc(25% - 15px)", 
               display: "flex",
               flexDirection: "column",
               border: "1px solid #E5E7EB",
@@ -36,62 +40,51 @@ function PropertyCard({ places, onToggleBookmark }) {
               background: "#ffffff",
             }}
           >
+            {/* Image */}
             <div style={{ position: "relative" }}>
-              <img
-                src={place.image}
-                alt={place.title}
-                style={styles.cardImageHorizontal}
-                onClick={() => navigate("/details")}
-              />
-              {/* Bookmark icon inside the card */}
-              {onToggleBookmark && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    right: "10px",
-                    cursor: "pointer",
-                    background: "#fff",
-                    borderRadius: "50%",
-                    padding: "6px",
-                  }}
-                  onClick={() => onToggleBookmark(place._id, index)}
-                >
-                  {place.bookmarked ? (
-                    <BsBookmarkFill color="#007BFF" size={18} />
-                  ) : (
-                    <BsBookmark color="#A1A8B0" size={18} />
-                  )}
-                </div>
-              )}
-            </div>
+  <Link
+    to="/card_details"
+    state={{ place }}
+    style={{ display: "block" }}
+  >
+    <img
+      src={place.image}
+      alt={place.title}
+      style={{
+        ...styles.cardImageHorizontal,
+        cursor: "pointer",
+      }}
+    />
+  </Link>
+</div>
 
-            <div style={styles.cardContent}>
-              <h2 style={styles.cardTitle}>{place.title}</h2>
-              <div className="flex items-center gap-0.5">
-                <CiLocationOn />
-                <p style={styles.cardText}>{place.location}</p>
-              </div>
-              <div className="flex items-center gap-0.5">
-                <IoHomeOutline />
-                <p style={styles.cardText}>{place.houseNo}</p>
-              </div>
-              <div className="flex items-center gap-0.5">
-                <SlCalender />
-                <p style={styles.cardText}>{place.date}</p>
-              </div>
-              <div className="flex items-center gap-0.5">
-                <FaBuilding />
-                <p style={styles.cardText}>{place.houseType}</p>
-              </div>
-              <div className="flex items-center gap-2 mt-2">
-                <div style={styles.money}>TK {place.price}</div>
-                <button style={styles.call} className="flex items-center">
-                  <MdOutlineMessage />
-                  Message
-                </button>
-              </div>
-            </div>
+
+            {/* Content */}
+             {/* Description */}
+
+                        <div style={styles.cardContent}>
+                          <h2 style={styles.cardTitle}>{place.title}</h2>
+                          <div className="flex items-center gap-0.5">
+                            <CiLocationOn />
+                            <p style={styles.cardText}>{place.location}</p>
+                          </div>
+                          <div className="flex items-center gap-0.5">
+                            <IoHomeOutline />
+                            <p style={styles.cardText}>{place.home}</p>
+                          </div>
+                          <div className="flex items-center gap-0.5">
+                            <SlCalender />
+                            <p style={styles.cardText}>{place.date}</p>
+                          </div>
+                          <div className="flex items-center gap-0.5">
+                            <FaBuilding />
+                            <p style={styles.cardText}>{place.houseType}</p>
+                          </div>
+                          <div className="flex items-center gap-2 mt-2">
+                            <div style={styles.money} className="border-none py-2 px-3">TK 12000</div>
+                            <button style={styles.call} className="border py-2 px-3 flex items-center"><MdOutlineMessage />Message</button>
+                          </div>
+                        </div>
           </div>
         ) : (
           <div key={index} style={{ flex: "1 1 calc(25% - 15px)" }} />

@@ -13,7 +13,7 @@ const UpdateUser = () => {
     console.log(updatedUser)
 
     // send user to the db
-    fetch(`http://localhost:5000/users/${_id}`,
+    fetch(`https://yessghor-server.vercel.app//users/${_id}`,
         {
             method:'PUT',
             headers:{

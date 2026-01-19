@@ -1,6 +1,6 @@
 // @flow strict
 import React, { useState, useEffect } from "react";
-
+import { Link } from "react-router-dom";
 function Post() {
   const baseUrl = "https://bdapis.vercel.app/geo/v2.0";
 
@@ -19,14 +19,14 @@ function Post() {
     availableDate: "",
     description: "",
     floor: "",
-    furnished: "",
+    furnished: "no",
     parking: "",
     bedroom: "",
     commonBath: "",
     balcony: "",
     water: "",
     electricity: "",
-    gas: "",
+    gas: "no",
     security: "",
   });
 
@@ -132,7 +132,7 @@ function Post() {
     data.append("userId", user._id);
 
     try {
-      const res = await fetch("http://localhost:5000/posts", {
+      const res = await fetch("https://yessghor-server.vercel.app/posts", {
         method: "POST",
         body: data,
       });
@@ -229,20 +229,24 @@ function Post() {
               ))}
             </select>
 
-            <input
-              name="location"
-              placeholder="Location Details"
-              value={formData.location}
-              onChange={handleChange}
-              style={styles.input}
-            />
-            <input
-              name="houseNo"
-              placeholder="House No"
-              value={formData.houseNo}
-              onChange={handleChange}
-              style={styles.input}
-            />
+           
+
+<Link
+  to="/card-details"
+  state={{ locationDetails: formData.location }}
+  style={{
+    ...styles.input,
+    display: "flex",
+    alignItems: "center",
+    textDecoration: "none",
+    color: "#000",
+    cursor: "pointer",
+  }}
+>
+  {formData.location || "Location Details"}
+</Link>
+
+            <input name="houseNo" placeholder="House No" value={formData.houseNo} onChange={handleChange} style={styles.input} />
 
             <select
               name="category"
@@ -370,10 +374,15 @@ function Post() {
             ))}
           </section>
         </div>
-
-        <button type="submit" style={styles.button}>
-          POST
-        </button>
+{/* Post BUTTON */}
+      <Link
+        to="/Card_Details"
+        state={{ place: formData }}
+        className="bg-blue-600 text-white px-6 py-3 rounded inline-block w-full text-center"
+      >
+       POST
+      </Link>
+        {/* <button type="submit" style={styles.button}>POST</button> */}
       </form>
     </div>
   );

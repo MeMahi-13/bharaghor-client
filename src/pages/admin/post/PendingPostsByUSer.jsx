@@ -8,7 +8,7 @@ function PendingPostsByUser() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/admin/posts/pending/${userId}`)
+    fetch(`https://yessghor-server.vercel.app//admin/posts/pending/${userId}`)
       .then(res => {
         if (!res.ok) throw new Error("Failed to fetch posts");
         return res.json();
@@ -24,7 +24,7 @@ function PendingPostsByUser() {
   }, [userId]);
 
   const updatePost = async (postId, action) => {
-    await fetch(`http://localhost:5000/admin/posts/${postId}/${action}`, {
+    await fetch(`https://yessghor-server.vercel.app//admin/posts/${postId}/${action}`, {
       method: "PATCH",
     });
     setPosts(prev => prev.filter(p => p._id !== postId));

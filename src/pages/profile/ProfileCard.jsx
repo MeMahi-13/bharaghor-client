@@ -1,9 +1,20 @@
 const ProfileCard = ({ user }) => {
+<<<<<<< HEAD
   const backendUrl = "https://yessghor-server.vercel.app";
+=======
+  const backendUrl = "https://yessghor-server.vercel.app/";
+>>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
 
   return (
     <div>
      <div style={styles.container}>
+      <div>
+        <img 
+            src={`${backendUrl}${user.Profileimage}`} 
+            alt="Profile image" 
+            style={{ width: '160px',height:"160px",borderRadius:"100%",border:'1px solid #E9EBF8' }} 
+        />
+      </div>
   <div style={styles.formGroup}>
     <label style={styles.label} htmlFor="name">Name:</label>
     <input style={styles.input} type="text" id="name" value={user.name} readOnly />
@@ -43,6 +54,24 @@ const ProfileCard = ({ user }) => {
   )}
 </div>
 
+<<<<<<< HEAD
+=======
+<h2>NID</h2>
+      <div style={{ display: 'flex', gap: '20px',border:'1px solid #E9EBF8',marginTop:'12px' }}>
+
+        
+        <img 
+            src={`${backendUrl}${user.nidFront}`} 
+            alt="Front NID" 
+            style={{ width: '300px' }} 
+        />
+        <img 
+            src={`${backendUrl}${user.nidBack}`} 
+            alt="Back NID" 
+            style={{ width: '300px' }} 
+        />
+      </div>
+>>>>>>> 2143951f930a6a6b636a0a4f5b953ff91a302e11
     </div>
   );
 };
@@ -54,9 +83,8 @@ const ProfileCard = ({ user }) => {
     maxWidth: "100%",
     margin: "0 auto",
     padding: "20px",
-    border: "1px solid #ddd",
-    borderRadius: "10px",
-    backgroundColor: "#f9f9f9",
+    
+   
   },
   formGroup: {
     display: "flex",
