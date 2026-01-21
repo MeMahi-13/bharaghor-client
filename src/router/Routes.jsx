@@ -20,11 +20,13 @@ import Booking from "../pages/booking/booking";
 import AdminUsers from "../pages/admin/AdminUsers";
 import AdminPendingPosts from "../pages/admin/post/AdminPendingPost";
 import PendingPostsByUser from "../pages/admin/post/AdminPendingPost";
-
-import CardDetails from "../pages/card_details/Card_Details";
 import UserPendingPosts from "../pages/Properties/UserPending";
+import CardDetails from "../pages/card_details/Card_Details"; 
+import AdminDashboardLayout from "../layouts/AdminDashboardLayout";
+import AdminDashboard from "../pages/admin/admindashboard/AdminDashboard"
 import PostDetails from "../pages/Post/PostDetails";
-
+import AllUsers from "../pages/admin/AllUsers";
+import Revenue from "../pages/admin/Revenue";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -58,10 +60,6 @@ export const router = createBrowserRouter([
       {
         path: "/adminUsers",
         element: <AdminUsers />,
-      },
-      {
-        path: "/admin/posts/pending",
-        element: <AdminPendingPosts />,
       },
       {
         path: "/admin/posts/pending/:userId",
@@ -137,4 +135,26 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    element: <AdminDashboardLayout />,
+     children: [
+      {
+        path: "/admin/dashboard",
+        element: < AdminDashboard/>,
+      },
+       {
+        path: "/admin/posts/pending",
+        element: <AdminPendingPosts />,
+      },
+      {
+        path: "/admin/dashboard/manage-users",
+        element: <AllUsers/>,
+      },
+       {
+        path: "/admin/revenue",
+        element: <Revenue/>,
+      },
+    ],
+  },
+
 ]);

@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { CiLocationOn } from "react-icons/ci";
-import { IoHomeOutline } from "react-icons/io5";
+import { IoHomeOutline, IoInformationCircleOutline } from "react-icons/io5";
 import { SlCalender } from "react-icons/sl";
 import { FaBuilding } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { AiOutlineEye } from "react-icons/ai";
 
 function PropertyCard({ places = [], onToggleBookmark }) {
   const totalSlots = 4;
@@ -38,13 +39,9 @@ function PropertyCard({ places = [], onToggleBookmark }) {
             }}
           >
             {/* IMAGE + BOOKMARK */}
+            {/* IMAGE + ACTION BUTTONS */}
             <div style={{ position: "relative" }}>
-              <Link
-              
-             to={`/details/${place._id}`}
-
-                style={{ display: "block" }}
-              >
+              <Link to={`/details/${place._id}`} style={{ display: "block" }}>
                 <img
                   src={place.image}
                   alt={place.title}
@@ -52,6 +49,7 @@ function PropertyCard({ places = [], onToggleBookmark }) {
                 />
               </Link>
 
+              {/* Bookmark Button */}
               {onToggleBookmark && (
                 <div
                   onClick={(e) => {
@@ -64,10 +62,19 @@ function PropertyCard({ places = [], onToggleBookmark }) {
                   {place.bookmarked ? (
                     <BsBookmarkFill size={18} color="#007BFF" />
                   ) : (
-                    <BsBookmark size={18} color="#A1A8B0" />
+                    <BsBookmark size={18} color="#0988E3" />
                   )}
                 </div>
               )}
+
+              {/* Details Button */}
+              <Link
+                to={`/details/${place._id}`}
+                onClick={(e) => e.stopPropagation()}
+                style={styles.detailsBtn}
+              >
+                <IoInformationCircleOutline size={18} color="#0988E3" />
+              </Link>
             </div>
 
             {/* CONTENT */}
@@ -111,8 +118,6 @@ function PropertyCard({ places = [], onToggleBookmark }) {
 }
 
 export default PropertyCard;
-
-
 
 const styles = {
   cardImageHorizontal: {
@@ -175,4 +180,17 @@ const styles = {
     alignItems: "center",
     gap: "4px",
   },
+  detailsBtn: {
+  position: "absolute",
+  top: "52px",       
+  right: "10px",
+  background: "#fff",
+  borderRadius: "50%",
+  padding: "6px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+},
+
 };

@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
-//import camera_icon from "../../assets/camera.png";
-
 function UserInfo() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -52,7 +50,15 @@ function UserInfo() {
     fetchUser();
   }, [user]);
 
-  const hasNID = formData.nidFront && formData.nidBack;
+  // -------------------
+  // AUTO REDIRECT IF NID ALREADY ADDED
+  // -------------------
+  useEffect(() => {
+    if (formData.nidFront && formData.nidBack) {
+      navigate("/post", { replace: true });
+    }
+  }, [formData.nidFront, formData.nidBack, navigate]);
+
   const canReupload = formData.nidStatus === "rejected";
 
   // -------------------
@@ -69,10 +75,15 @@ function UserInfo() {
     }));
   };
 
-// submit nid
+  // -------------------
+  // SUBMIT NID
+  // -------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!files.nidFront || !files.nidBack) return alert("Upload both NID images");
+    if (!files.nidFront || !files.nidBack) {
+      alert("Upload both NID images");
+      return;
+    }
 
     setLoading(true);
     setStatus("Uploading NID...");
@@ -84,20 +95,13 @@ function UserInfo() {
 
       const res = await fetch(`${API_URL}/register/${user._id}`, {
         method: "PUT",
-        body: formDataObj, 
+        body: formDataObj,
       });
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message || "Upload failed");
 
-      setFormData((prev) => ({
-        ...prev,
-        nidFront: data.nidFront || prev.nidFront,
-        nidBack: data.nidBack || prev.nidBack,
-        nidStatus: "pending",
-      }));
-      setStatus("NID submitted. Waiting for approval.");
+      setStatus("NID submitted. Redirecting...");
     } catch (err) {
       console.error(err);
       setStatus("Failed to submit NID");
@@ -121,60 +125,73 @@ function UserInfo() {
       >
         {/* Name */}
         <label className="block mb-2 font-semibold">Full Name</label>
-        <input value={formData.name} readOnly className="w-full mb-4 px-4 py-3 rounded-xl bg-gray-100" />
+        <input
+          value={formData.name}
+          readOnly
+          className="w-full mb-4 px-4 py-3 rounded-xl bg-gray-100"
+        />
 
         {/* Email */}
         <label className="block mb-2 font-semibold">Email</label>
-        <input value={formData.email} readOnly className="w-full mb-4 px-4 py-3 rounded-xl bg-gray-100" />
+        <input
+          value={formData.email}
+          readOnly
+          className="w-full mb-4 px-4 py-3 rounded-xl bg-gray-100"
+        />
 
         {/* Phone */}
         <label className="block mb-2 font-semibold">Phone</label>
-        <input value={formData.phone} readOnly className="w-full mb-4 px-4 py-3 rounded-xl bg-gray-100" />
+        <input
+          value={formData.phone}
+          readOnly
+          className="w-full mb-4 px-4 py-3 rounded-xl bg-gray-100"
+        />
 
-        {/* NID */}
-        {hasNID && !canReupload ? (
-          <>
-            <label className="block mb-2 font-semibold">Your NID Photos</label>
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <img src={formData.nidFront} className="rounded-xl h-32 w-full object-cover" />
-              <img src={formData.nidBack} className="rounded-xl h-32 w-full object-cover" />
-            </div>
+        {/* NID UPLOAD (ONLY WHEN NOT ADDED OR REJECTED) */}
+        <p className="mb-4 text-sm text-gray-500">
+          Upload clear NID front & back images
+        </p>
 
-            <button
-              type="button"
-              onClick={() => navigate("/post")}
-              className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold"
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          {["nidFront", "nidBack"].map((side) => (
+            <label
+              key={side}
+              className="h-32 border-2 border-dashed rounded-xl flex items-center justify-center cursor-pointer"
             >
-              CONTINUE TO ADD PROPERTY
-            </button>
-          </>
-        ) : (
-          <>
-            <p className="mb-4 text-sm text-gray-500">Upload clear NID front & back images</p>
+              {previews[side] ? (
+                <img
+                  src={previews[side]}
+                  className="h-full w-full object-cover rounded-xl"
+                />
+              ) : (
+                <span className="text-xs text-gray-400">
+                  {side === "nidFront" ? "NID FRONT" : "NID BACK"}
+                </span>
+              )}
+              <input
+                type="file"
+                name={side}
+                accept="image/*"
+                hidden
+                onChange={handleImageChange}
+                disabled={loading || (!canReupload && formData.nidStatus === "pending")}
+              />
+            </label>
+          ))}
+        </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              {["nidFront", "nidBack"].map((side) => (
-                <label key={side} className="h-32 border-2 border-dashed rounded-xl flex items-center justify-center cursor-pointer">
-                  {previews[side] ? (
-                    <img src={previews[side]} className="h-full w-full object-cover rounded-xl" />
-                  ) : (
-                    <span className="text-xs text-gray-400">{side === "nidFront" ? "NID FRONT" : "NID BACK"}</span>
-                  )}
-                  <input type="file" name={side} accept="image/*" hidden onChange={handleImageChange} />
-                </label>
-              ))}
-            </div>
+        <button
+          disabled={loading}
+          className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold disabled:opacity-50"
+        >
+          {loading ? "Submitting..." : "SUBMIT NID"}
+        </button>
 
-            <button
-              disabled={loading}
-              className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold disabled:opacity-50"
-            >
-              {loading ? "Submitting..." : "SUBMIT NID"}
-            </button>
-          </>
+        {status && (
+          <p className="mt-4 text-center text-sm font-semibold text-blue-600">
+            {status}
+          </p>
         )}
-
-        {status && <p className="mt-4 text-center text-sm font-semibold text-blue-600">{status}</p>}
       </form>
     </div>
   );

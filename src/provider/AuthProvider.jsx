@@ -94,7 +94,7 @@ const AuthProvider = ({ children }) => {
 
   const userInfo = {
     user,       
-    setUser: setManualUser, // Replaced with persistent setter
+    setUser: setManualUser, 
     firebaseUser,    
     loading,
     createUser,

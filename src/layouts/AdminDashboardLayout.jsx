@@ -1,13 +1,15 @@
 
-import Sidebar from "../pages/sidebar/Sidebar"
+import AdminSidebar from "../pages/admin/sidebar/AdminSidebar";
+import Sidebar from "../pages/admin/sidebar/AdminSidebar"
 
 import Dashboardnav from "../pages/dashboardnav/dashboardnav"
 import { Outlet } from 'react-router';
 
-function DashboardLayout() {
+function AdminDashboardLayout() {
   return (
-   <div  style={styles.dashboardLayout}>
-      <Sidebar />
+  
+        <div  style={styles.dashboardLayout}>
+      <AdminSidebar />
       <div style={styles.mainWrapper}>
         <Dashboardnav/>
         <main style={styles.dashboardContent} >
@@ -19,7 +21,7 @@ function DashboardLayout() {
   );
 }
 
-export default DashboardLayout;
+export default AdminDashboardLayout;
 const styles = {
 dashboardLayout: {
   display: "flex",
