@@ -23,7 +23,9 @@ import PendingPostsByUser from "../pages/admin/post/AdminPendingPost";
 
 import CardDetails from "../pages/card_details/Card_Details"; 
 // adjust path if needed
-
+//admin dashboard layout route
+import AdminDashboardLayout from "../layouts/AdminDashboardLayout";
+import AdminDashboard from "../pages/admin/admindashboard/AdminDashboard"
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -137,4 +139,14 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    element: <AdminDashboardLayout />,
+     children: [
+      {
+        path: "/admindashboard",
+        element: < AdminDashboard/>,
+      },
+    ],
+  },
+
 ]);
