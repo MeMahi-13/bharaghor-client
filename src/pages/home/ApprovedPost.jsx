@@ -13,13 +13,13 @@ function ApprovedPosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // Fetch approved posts
+        //  Fetch approved posts
         const resPosts = await fetch(`${API_URL}/posts`);
         const postsData = await resPosts.json();
 
         let bookmarkedIds = [];
 
-        // Fetch user's bookmarks if logged in
+        //  Fetch user's bookmarks if logged in
         if (user?._id) {
           const resBookmarks = await fetch(
             `${API_URL}/users/${user._id}/bookmarks`
@@ -31,7 +31,7 @@ function ApprovedPosts() {
           }
         }
 
-        // Format posts with bookmarked info
+        //  posts with bookmarked info
         const formattedData = postsData.map((post) => ({
           _id: post._id,
           title: post.title,
@@ -45,7 +45,7 @@ function ApprovedPosts() {
             : "",
           houseType: post.category || "",
           image: post.images?.length
-            ? `${post.images[0]}` // or include full URL if needed
+            ? `${post.images[0]}` 
             : "/no-image.png",
           price: post.rent,
           bookmarked: bookmarkedIds.includes(post._id),
@@ -63,35 +63,37 @@ function ApprovedPosts() {
   }, [user]);
 
   // Toggle bookmark
-  const toggleBookmark = async (postId, index) => {
-    if (!user?._id) return alert("Please login first to bookmark");
+const toggleBookmark = async (postId) => {
+  if (!user?._id) return alert("Please login first to bookmark");
 
-    try {
-      const res = await fetch(
-        `${API_URL}/users/${user._id}/bookmark/${postId}`,
-        { method: "PATCH" }
-      );
+  try {
+    const res = await fetch(
+      `${API_URL}/users/${user._id}/bookmark/${postId}`,
+      { method: "PATCH" }
+    );
 
-      if (!res.ok) throw new Error("Failed to toggle bookmark");
+    if (!res.ok) throw new Error("Failed to toggle bookmark");
 
-      const data = await res.json();
+    const data = await res.json();
 
-      // Update local state
-      setPlaces((prev) => {
-        const updated = [...prev];
-        updated[index].bookmarked = data.bookmarked;
-        return updated;
-      });
-    } catch (err) {
-      console.error("Bookmark toggle error:", err);
-    }
-  };
+    setPlaces(prev =>
+      prev.map(p =>
+        p._id === postId
+          ? { ...p, bookmarked: data.bookmarked }
+          : p
+      )
+    );
+  } catch (err) {
+    console.error("Bookmark toggle error:", err);
+  }
+};
+
 
   if (loading) return <p>Loading approved posts...</p>;
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2 style={{ marginBottom: "20px" }}>Available Properties</h2>
+    
 
       <PropertyCard places={places} onToggleBookmark={toggleBookmark} />
     </div>

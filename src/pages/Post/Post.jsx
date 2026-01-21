@@ -1,8 +1,9 @@
-// @flow strict
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 function Post() {
   const baseUrl = "https://bdapis.vercel.app/geo/v2.0";
+  const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
@@ -19,14 +20,14 @@ function Post() {
     availableDate: "",
     description: "",
     floor: "",
-    furnished: "no",
+    furnished: "",
     parking: "",
     bedroom: "",
     commonBath: "",
     balcony: "",
     water: "",
     electricity: "",
-    gas: "no",
+    gas: "",
     security: "",
   });
 
@@ -38,15 +39,14 @@ function Post() {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedUpazila, setSelectedUpazila] = useState("");
 
-  // Fetch Divisions on mount
+  // Fetch divisions on mount
   useEffect(() => {
     fetch(`${baseUrl}/divisions`)
       .then((res) => res.json())
       .then((res) => setDivisions(res.data || []))
-      .catch((err) => console.error(err));
+      .catch(console.error);
   }, []);
 
-  // Handle Division change
   const handleDivisionChange = (e) => {
     const divisionId = e.target.value;
     const divisionObj = divisions.find((d) => d.id === divisionId);
@@ -69,10 +69,9 @@ function Post() {
     fetch(`${baseUrl}/districts/${divisionId}`)
       .then((res) => res.json())
       .then((res) => setDistricts(res.data || []))
-      .catch((err) => console.error(err));
+      .catch(console.error);
   };
 
-  // Handle District change
   const handleDistrictChange = (e) => {
     const districtId = e.target.value;
     const districtObj = districts.find((d) => d.id === districtId);
@@ -92,42 +91,32 @@ function Post() {
     fetch(`${baseUrl}/upazilas/${districtId}`)
       .then((res) => res.json())
       .then((res) => setUpazilas(res.data || []))
-      .catch((err) => console.error(err));
+      .catch(console.error);
   };
 
-  // Handle Upazila change
   const handleUpazilaChange = (e) => {
     const upazilaName = e.target.value;
     setSelectedUpazila(upazilaName);
     setFormData((prev) => ({ ...prev, upazila: upazilaName }));
   };
 
-  // Handle image upload (max 4)
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setImages((prev) => [...prev, ...files].slice(0, 4));
   };
 
-  // Handle text/select change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const user = JSON.parse(localStorage.getItem("user"));
-    if (!user?._id) {
-      alert("User not logged in");
-      return;
-    }
+    if (!user?._id) return alert("User not logged in");
 
     const data = new FormData();
-    Object.keys(formData).forEach((key) => {
-      data.append(key, formData[key]);
-    });
+    Object.keys(formData).forEach((key) => data.append(key, formData[key]));
     images.forEach((img) => data.append("images", img));
     data.append("userId", user._id);
 
@@ -137,7 +126,12 @@ function Post() {
         body: data,
       });
       const result = await res.json();
-      alert("Post submitted for admin approval");
+      if (result.success) {
+        alert("Post submitted for admin approval");
+        navigate("/");
+      } else {
+        alert("Failed to submit post");
+      }
     } catch (err) {
       console.error(err);
       alert("Something went wrong");
@@ -184,8 +178,6 @@ function Post() {
               onChange={handleChange}
               style={styles.input}
             />
-
-            {/* Division */}
             <select
               value={selectedDivision}
               onChange={handleDivisionChange}
@@ -198,8 +190,6 @@ function Post() {
                 </option>
               ))}
             </select>
-
-            {/* District */}
             <select
               value={selectedDistrict}
               onChange={handleDistrictChange}
@@ -213,8 +203,6 @@ function Post() {
                 </option>
               ))}
             </select>
-
-            {/* Upazila */}
             <select
               value={selectedUpazila}
               onChange={handleUpazilaChange}
@@ -229,25 +217,20 @@ function Post() {
               ))}
             </select>
 
-           
-
-<Link
-  to="/card-details"
-  state={{ locationDetails: formData.location }}
-  style={{
-    ...styles.input,
-    display: "flex",
-    alignItems: "center",
-    textDecoration: "none",
-    color: "#000",
-    cursor: "pointer",
-  }}
->
-  {formData.location || "Location Details"}
-</Link>
-
-            <input name="houseNo" placeholder="House No" value={formData.houseNo} onChange={handleChange} style={styles.input} />
-
+            <input
+              name="location"
+              placeholder="Location"
+              value={formData.location}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              name="houseNo"
+              placeholder="House No"
+              value={formData.houseNo}
+              onChange={handleChange}
+              style={styles.input}
+            />
             <select
               name="category"
               value={formData.category}
@@ -298,6 +281,13 @@ function Post() {
               onChange={handleChange}
               style={styles.input}
             />
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={formData.description}
+              onChange={handleChange}
+              style={{ ...styles.input, minHeight: "80px" }}
+            />
           </section>
         </div>
 
@@ -333,7 +323,6 @@ function Post() {
               onChange={handleChange}
               style={styles.input}
             />
-
             <select
               name="furnished"
               value={formData.furnished}
@@ -344,7 +333,6 @@ function Post() {
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select>
-
             <select
               name="parking"
               value={formData.parking}
@@ -357,6 +345,7 @@ function Post() {
             </select>
           </section>
 
+          {/* UTILITIES */}
           <section style={styles.section}>
             <h3>Utilities</h3>
             {["water", "electricity", "gas", "security"].map((item) => (
@@ -374,15 +363,10 @@ function Post() {
             ))}
           </section>
         </div>
-{/* Post BUTTON */}
-      <Link
-        to="/Card_Details"
-        state={{ place: formData }}
-        className="bg-blue-600 text-white px-6 py-3 rounded inline-block w-full text-center"
-      >
-       POST
-      </Link>
-        {/* <button type="submit" style={styles.button}>POST</button> */}
+
+        <button type="submit" style={styles.button}>
+          POST
+        </button>
       </form>
     </div>
   );
@@ -390,6 +374,7 @@ function Post() {
 
 export default Post;
 
+// STYLES
 const styles = {
   container: {
     maxWidth: "100%",

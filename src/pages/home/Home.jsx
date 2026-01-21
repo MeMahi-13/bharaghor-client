@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Home.css";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -13,9 +13,8 @@ const Home = () => {
   });
   const navigate = useNavigate();
 
-const baseUrl = "https://bdapis.vercel.app/geo/v2.0";
+  const baseUrl = "https://bdapis.vercel.app/geo/v2.0";
 
-  
   const [formData, setFormData] = useState({
     title: "",
     division: "",
@@ -30,24 +29,22 @@ const baseUrl = "https://bdapis.vercel.app/geo/v2.0";
     availableDate: "",
     description: "",
     floor: "",
-    furnished: "no",
+    furnished: "",
     parking: "",
     bedroom: "",
     commonBath: "",
     balcony: "",
     water: "",
     electricity: "",
-    gas: "no",
+    gas: "",
     security: "",
   });
   // Array to track which cards are bookmarked
-  const featuredPlacesInitial = [
-    
-  ];
+  const featuredPlacesInitial = [];
 
   // Add a bookmarked state for each card
   const [featuredPlaces, setFeaturedPlaces] = useState(
-    featuredPlacesInitial.map(place => ({ ...place, bookmarked: false }))
+    featuredPlacesInitial.map((place) => ({ ...place, bookmarked: false })),
   );
 
   const handleChange = (e) => {
@@ -60,136 +57,130 @@ const baseUrl = "https://bdapis.vercel.app/geo/v2.0";
     updatedPlaces[index].bookmarked = !updatedPlaces[index].bookmarked;
     setFeaturedPlaces(updatedPlaces);
   };
-    const [divisions, setDivisions] = useState([]);
-    const [districts, setDistricts] = useState([]);
-    const [upazilas, setUpazilas] = useState([]);
-  
-    const [selectedDivision, setSelectedDivision] = useState("");
-    const [selectedDistrict, setSelectedDistrict] = useState("");
-    const [selectedUpazila, setSelectedUpazila] = useState("");
-  
-    // Fetch Divisions on mount
-    useEffect(() => {
-      fetch(`${baseUrl}/divisions`)
-        .then((res) => res.json())
-        .then((res) => setDivisions(res.data || []))
-        .catch((err) => console.error(err));
-    }, []);
-  
-    // Handle Division change
-    const handleDivisionChange = (e) => {
-      const divisionId = e.target.value;
-      const divisionObj = divisions.find((d) => d.id === divisionId);
-  
-      setSelectedDivision(divisionId);
-      setSelectedDistrict("");
-      setSelectedUpazila("");
-      setDistricts([]);
-      setUpazilas([]);
-  
-      setFormData((prev) => ({
-        ...prev,
-        division: divisionObj?.name || "",
-        district: "",
-        upazila: "",
-      }));
-  
-      if (!divisionId) return;
-  
-      fetch(`${baseUrl}/districts/${divisionId}`)
-        .then((res) => res.json())
-        .then((res) => setDistricts(res.data || []))
-        .catch((err) => console.error(err));
-    };
-  
-    // Handle District change
-    const handleDistrictChange = (e) => {
-      const districtId = e.target.value;
-      const districtObj = districts.find((d) => d.id === districtId);
-  
-      setSelectedDistrict(districtId);
-      setSelectedUpazila("");
-      setUpazilas([]);
-  
-      setFormData((prev) => ({
-        ...prev,
-        district: districtObj?.name || "",
-        upazila: "",
-      }));
-  
-      if (!districtId) return;
-  
-      fetch(`${baseUrl}/upazilas/${districtId}`)
-        .then((res) => res.json())
-        .then((res) => setUpazilas(res.data || []))
-        .catch((err) => console.error(err));
-    };
-  
-    // Handle Upazila change
-    const handleUpazilaChange = (e) => {
-      const upazilaName = e.target.value;
-      setSelectedUpazila(upazilaName);
-      setFormData((prev) => ({ ...prev, upazila: upazilaName }));
-    };
-  
+  const [divisions, setDivisions] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [upazilas, setUpazilas] = useState([]);
+
+  const [selectedDivision, setSelectedDivision] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedUpazila, setSelectedUpazila] = useState("");
+
+  // Fetch Divisions on mount
+  useEffect(() => {
+    fetch(`${baseUrl}/divisions`)
+      .then((res) => res.json())
+      .then((res) => setDivisions(res.data || []))
+      .catch((err) => console.error(err));
+  }, []);
+
+  // Handle Division change
+  const handleDivisionChange = (e) => {
+    const divisionId = e.target.value;
+    const divisionObj = divisions.find((d) => d.id === divisionId);
+
+    setSelectedDivision(divisionId);
+    setSelectedDistrict("");
+    setSelectedUpazila("");
+    setDistricts([]);
+    setUpazilas([]);
+
+    setFormData((prev) => ({
+      ...prev,
+      division: divisionObj?.name || "",
+      district: "",
+      upazila: "",
+    }));
+
+    if (!divisionId) return;
+
+    fetch(`${baseUrl}/districts/${divisionId}`)
+      .then((res) => res.json())
+      .then((res) => setDistricts(res.data || []))
+      .catch((err) => console.error(err));
+  };
+
+  // Handle District change
+  const handleDistrictChange = (e) => {
+    const districtId = e.target.value;
+    const districtObj = districts.find((d) => d.id === districtId);
+
+    setSelectedDistrict(districtId);
+    setSelectedUpazila("");
+    setUpazilas([]);
+
+    setFormData((prev) => ({
+      ...prev,
+      district: districtObj?.name || "",
+      upazila: "",
+    }));
+
+    if (!districtId) return;
+
+    fetch(`${baseUrl}/upazilas/${districtId}`)
+      .then((res) => res.json())
+      .then((res) => setUpazilas(res.data || []))
+      .catch((err) => console.error(err));
+  };
+
+  // Handle Upazila change
+  const handleUpazilaChange = (e) => {
+    const upazilaName = e.target.value;
+    setSelectedUpazila(upazilaName);
+    setFormData((prev) => ({ ...prev, upazila: upazilaName }));
+  };
 
   return (
-    <div className="mx-auto max-w-6xl py-5">
-
-
+    <div className=" mx-auto max-w-6xl py-10">
       <SwiperSlider />
-
-
       <div style={styles.selectrow}>
-       
         {/* Division */}
-            <select
-              value={selectedDivision}
-              onChange={handleDivisionChange}
-             style={styles.select}
-            >
-              <option value=""> Division</option>
-              {divisions.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name}
-                </option>
-              ))}
-            </select>
+        <select
+          value={selectedDivision}
+          onChange={handleDivisionChange}
+          style={styles.select}
+        >
+          <option value=""> Division</option>
+          {divisions.map((d) => (
+            <option key={d.id} value={d.id}>
+              {d.name}
+            </option>
+          ))}
+        </select>
 
-            {/* District */}
-            <select
-              value={selectedDistrict}
-              onChange={handleDistrictChange}
-              disabled={!districts.length}
-             style={styles.select}
-            >
-              <option value=""> District</option>
-              {districts.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name}
-                </option>
-              ))}
-            </select>
+        {/* District */}
+        <select
+          value={selectedDistrict}
+          onChange={handleDistrictChange}
+          disabled={!districts.length}
+          style={styles.select}
+        >
+          <option value=""> District</option>
+          {districts.map((d) => (
+            <option key={d.id} value={d.id}>
+              {d.name}
+            </option>
+          ))}
+        </select>
 
-            {/* Upazila */}
-            <select
-              value={selectedUpazila}
-              onChange={handleUpazilaChange}
-              disabled={!upazilas.length}
-             style={styles.select}
-            >
-              <option value="">Thana</option>
-              {upazilas.map((u) => (
-                <option key={u.id} value={u.name}>
-                  {u.name}
-                </option>
-              ))}
-            </select>
+        {/* Upazila */}
+        <select
+          value={selectedUpazila}
+          onChange={handleUpazilaChange}
+          disabled={!upazilas.length}
+          style={styles.select}
+        >
+          <option value="">Thana</option>
+          {upazilas.map((u) => (
+            <option key={u.id} value={u.name}>
+              {u.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Featured Places */}
       <h5 style={styles.title}>Featured Place</h5>
-      <div style={{ position: "relative" }} >
+      <div style={{ position: "relative" }}>
         <PropertyCard places={featuredPlaces} />
 
         {/* Bookmark layer */}
@@ -251,7 +242,6 @@ const styles = {
     justifyContent: "center",
     fontSize: "20px",
     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-    
   },
   image: {
     width: "100%",
@@ -271,7 +261,6 @@ const styles = {
     display: "flex",
     gap: "15px",
     width: "100%",
-    
   },
   cardImageHorizontal: {
     width: "100%",
@@ -297,8 +286,6 @@ const styles = {
     fontSize: "16px",
     color: "#555",
   },
-
- 
 
   title: {
     paddingTop: "20px",

@@ -21,20 +21,14 @@ function Saved() {
 
         const data = await res.json();
 
-        const formattedData = data.map((post) => ({
+        const formattedData = data.map(post => ({
           _id: post._id,
           title: post.title,
           location: post.location,
           houseNo: post.houseNo,
-          date: post.createdAt
-            ? new Date(post.createdAt).toLocaleDateString()
-            : "",
+          date: post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "",
           houseType: post.houseType,
-          image: post.images?.length
-            ? post.images[0].startsWith("http")
-              ? post.images[0]
-              : `${API_URL}${post.images[0]}`
-            : "/no-image.png",
+          image: post.images?.length ? post.images[0] : "/no-image.png",
           price: post.rent,
           bookmarked: true,
         }));
@@ -51,28 +45,22 @@ function Saved() {
   }, [user]);
 
   // Toggle bookmark
-  const toggleBookmark = async (index) => {
+  const toggleBookmark = async index => {
     const place = featuredPlaces[index];
     if (!user?._id) return;
 
     try {
-      const res = await fetch(
-        `${API_URL}/users/${user._id}/bookmark/${place._id}`,
-        {
-          method: "PATCH",
-        },
-      );
+      const res = await fetch(`${API_URL}/users/${user._id}/bookmark/${place._id}`, {
+        method: "PATCH",
+      });
       if (!res.ok) throw new Error("Failed to toggle bookmark");
 
       const data = await res.json();
 
       // Update frontend
-      setFeaturedPlaces((prev) =>
-        prev
-          .map((p, i) =>
-            i === index ? { ...p, bookmarked: data.bookmarked } : p,
-          )
-          .filter((p) => p.bookmarked),
+      setFeaturedPlaces(prev =>
+        prev.map((p, i) => (i === index ? { ...p, bookmarked: data.bookmarked } : p))
+          .filter(p => p.bookmarked)
       );
     } catch (err) {
       console.error("Failed to toggle bookmark:", err);
@@ -81,12 +69,11 @@ function Saved() {
 
   if (!user) return <p>Please log in to see your bookmarked properties.</p>;
   if (loading) return <p>Loading bookmarked properties...</p>;
-  if (featuredPlaces.length === 0)
-    return <p>No bookmarked properties found.</p>;
+  if (featuredPlaces.length === 0) return <p>No bookmarked properties found.</p>;
 
   return (
     <div>
-      <h2 className="font-medium text-2xl mb-4">Saved Properties</h2>
+      <h2 className='font-medium text-2xl mb-4'>Saved Properties</h2>
 
       <div style={{ position: "relative" }}>
         <PropertyCard places={featuredPlaces} />

@@ -11,7 +11,7 @@ import Dashboardnav from "../pages/dashboardnav/dashboardnav";
 import Profile from "../pages/profile/Profile";
 import UserDetails from "../pages/admin/UserDetails";
 import UpdateUser from "../pages/admin/UpdateUser";
-import Details from "../pages/details/details";
+import Details from "../pages/Properties/UserPending";
 import Saved from "../pages/Saved/Saved";
 import Post from "../pages/Post/Post";
 import Properties from "../pages/Properties/Properties";
@@ -21,8 +21,9 @@ import AdminUsers from "../pages/admin/AdminUsers";
 import AdminPendingPosts from "../pages/admin/post/AdminPendingPost";
 import PendingPostsByUser from "../pages/admin/post/AdminPendingPost";
 
-import CardDetails from "../pages/card_details/Card_Details"; 
-// adjust path if needed
+import CardDetails from "../pages/card_details/Card_Details";
+import UserPendingPosts from "../pages/Properties/UserPending";
+import PostDetails from "../pages/Post/PostDetails";
 
 export const router = createBrowserRouter([
   {
@@ -33,19 +34,14 @@ export const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
-    {
-  path: "/card_details",
-  element: <CardDetails />,
-},
-
-      //   {
-      //   path: "/upload",
-      //   element: <ImageUploader />,
-      // },
-     
       {
-        path: "/details",
-        element: <Details />,
+        path: "/card_details",
+        element: <CardDetails />,
+      },
+
+      {
+        path: "/details/:id",
+        element: <PostDetails />,
       },
       {
         path: "user_information",
@@ -54,6 +50,10 @@ export const router = createBrowserRouter([
       {
         path: "/post",
         element: <Post />,
+      },
+      {
+        path: "/pendingPost",
+        element: <UserPendingPosts />,
       },
       {
         path: "/adminUsers",

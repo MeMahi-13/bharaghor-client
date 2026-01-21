@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
-import camera_icon from "../../assets/camera.png";
+//import camera_icon from "../../assets/camera.png";
 
 function UserInfo() {
   const { user } = useAuth();
@@ -69,9 +69,7 @@ function UserInfo() {
     }));
   };
 
-  // -------------------
-  // SUBMIT NID
-  // -------------------
+// submit nid
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!files.nidFront || !files.nidBack) return alert("Upload both NID images");
@@ -86,7 +84,7 @@ function UserInfo() {
 
       const res = await fetch(`${API_URL}/register/${user._id}`, {
         method: "PUT",
-        body: formDataObj, // FormData automatically sets multipart/form-data
+        body: formDataObj, 
       });
 
       const data = await res.json();

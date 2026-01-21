@@ -1,86 +1,193 @@
-const ProfileCard = ({ user }) => {
-  const backendUrl = "https://yessghor-server.vercel.app";
+import { useState } from "react";
+import Swal from "sweetalert2";
+
+const ProfileCard = ({ user, refetchUser }) => {
+  const API_URL = "https://yessghor-server.vercel.app";
+  const [uploading, setUploading] = useState(false);
+
+  const handleProfileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("profileImage", file); 
+
+    try {
+      setUploading(true);
+
+      const res = await fetch(
+        `${API_URL}/users/${user._id}/profile-image`,
+        {
+          method: "PATCH",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      refetchUser(); 
+
+      Swal.fire({
+        icon: "success",
+        title: "Uploaded!",
+        text: "Your profile image has been updated.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      console.error("Profile upload error:", err.message);
+
+      Swal.fire({
+        icon: "error",
+        title: "Upload Failed",
+        text: err.message || "Something went wrong!",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
-    <div>
-     <div style={styles.container}>
-      <div>
-        <img 
-            src={`${backendUrl}${user.Profileimage}`} 
-            alt="Profile image" 
-            style={{ width: '160px',height:"160px",borderRadius:"100%",border:'1px solid #E9EBF8' }} 
-        />
+    <div style={styles.pageWrapper}>
+      <div style={styles.card}>
+        {/* Profile Image + Upload */}
+        <div style={styles.profileSection}>
+          <img
+            src={user.profileImage || "/avatar.png"} 
+            alt="Profile"
+            style={styles.avatar}
+          />
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleProfileUpload}
+            disabled={uploading}
+            style={styles.fileInput}
+          />
+
+          {uploading && <p style={styles.uploadingText}>Uploading...</p>}
+        </div>
+
+        {/* User Info */}
+        <div style={styles.infoSection}>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Name</label>
+            <input style={styles.input} value={user.name || ""} readOnly />
+          </div>
+
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Email</label>
+            <input style={styles.input} value={user.email || ""} readOnly />
+          </div>
+           <div style={styles.formGroup}>
+            <label style={styles.label}>Phone </label>
+            <input style={styles.input} value={user.phone || ""} readOnly />
+          </div>
+           <div style={styles.formGroup}>
+            <label style={styles.label}>Password</label>
+            <input style={styles.input} value={user.password || ""} readOnly />
+          </div>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Status</label>
+            <input style={styles.input} value={user.nidStatus} readOnly />
+          </div>
+        </div>
+
+        {/* NID Photos */}
+        <h2 style={styles.nidHeading}>Your NID Photos</h2>
+        <div style={styles.nidPhotos}>
+          {user.nidFront && <img src={user.nidFront} style={styles.nidImage} />}
+          {user.nidBack && <img src={user.nidBack} style={styles.nidImage} />}
+        </div>
       </div>
-  <div style={styles.formGroup}>
-    <label style={styles.label} htmlFor="name">Name:</label>
-    <input style={styles.input} type="text" id="name" value={user.name} readOnly />
-  </div>
-
-  <div style={styles.formGroup}>
-    <label style={styles.label} htmlFor="email">Email:</label>
-    <input style={styles.input} type="email" id="email" value={user.email} readOnly />
-  </div>
-
-  <div style={styles.formGroup}>
-    <label style={styles.label} htmlFor="status">Status:</label>
-    <input style={styles.input} type="text" id="status" value={user.nidStatus} readOnly />
-  </div>
-
-  <div style={styles.formGroup}>
-    <label style={styles.label} htmlFor="createdAt">Created At:</label>
-    <input style={styles.input} type="text" id="createdAt" value={user.createdAt} readOnly />
-  </div>
-</div>
-
-<h2>Your NID Photoes</h2>
-<div style={{ display: 'flex', gap: '20px', border: '1px solid #E9EBF8', marginTop: '12px' }}>
-  {user.nidFront && (
-    <img 
-      src={user.nidFront} 
-      alt="Front NID" 
-      style={{ width: '300px', borderRadius: '8px', objectFit: 'cover' }}
-    />
-  )}
-  {user.nidBack && (
-    <img 
-      src={user.nidBack} 
-      alt="Back NID" 
-      style={{ width: '300px', borderRadius: '8px', objectFit: 'cover' }}
-    />
-  )}
-</div>
-
     </div>
   );
 };
- export default ProfileCard;
- const styles = {
-  container: {
+
+export default ProfileCard;
+
+const styles = {
+  pageWrapper: {
+    display: "flex",
+    justifyContent: "center",
+
+  },
+  card: {
+   
+    padding: "30px",
+    width: "100%",
+    maxWidth: "700px",
+  },
+  profileSection: {
     display: "flex",
     flexDirection: "column",
-    maxWidth: "100%",
-    margin: "0 auto",
-    padding: "20px",
-    
-   
+    alignItems: "center",
+    marginBottom: "30px",
+  },
+  avatar: {
+    width: "160px",
+    height: "160px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    border: "2px solid #ddd",
+    marginBottom: "15px",
+  },
+  fileInput: {
+    marginTop: "10px",
+    padding: "8px 12px",
+    borderRadius: "6px",
+    border: "2px solid #101828",
+    backgroundColor: "#101828",
+    color: "#fff",
+    cursor: "pointer",
+    fontWeight: "600",
+    transition: "all 0.2s ease",
+  },
+  uploadingText: {
+    marginTop: "10px",
+    color: "#555",
+    fontStyle: "italic",
+  },
+  infoSection: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
   },
   formGroup: {
     display: "flex",
     flexDirection: "column",
-    marginBottom: "15px",
   },
   label: {
-    marginBottom: "5px",
     fontWeight: "600",
+    marginBottom: "5px",
     color: "#333",
-    fontSize: "14px",
   },
   input: {
     padding: "10px",
-    border: "1px solid #ccc",
     borderRadius: "6px",
-    fontSize: "14px",
-    color: "#333",
-    outline: "none",
+    border: "1px solid #ccc",
+    width: "100%",
   },
-}
+  nidHeading: {
+    marginTop: "30px",
+    marginBottom: "15px",
+    fontSize: "18px",
+    fontWeight: "600",
+    color: "#101828",
+    // textAlign: "center",
+  },
+  nidPhotos: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "20px",
+    flexWrap: "wrap",
+  },
+  nidImage: {
+    width: "300px",
+    height: "auto",
+    borderRadius: "3px",
+    border: "1px solid #ddd",
+  },
+};
