@@ -1,37 +1,32 @@
 import { useEffect, useState, useContext } from "react";
 import PropertyCard from "../../Components/PropertyCard";
+import HouseCategory from "../../Components/HouseCategory";
 import { AuthContext } from "../../context/AuthContext";
 
 function ApprovedPosts() {
   const { user } = useContext(AuthContext);
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedType, setSelectedType] = useState("All");
 
-  const API_URL = "https://yessghor-server.vercel.app";
-
-  // Fetch approved posts and user's bookmarks
+  
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // Fetch approved posts
         const resPosts = await fetch("https://yessghor-server.vercel.app/posts");
         const postsData = await resPosts.json();
 
         let bookmarkedIds = [];
-
-        // 2️⃣ Fetch user's bookmarks if logged in
         if (user?._id) {
           const resBookmarks = await fetch(
             `https://yessghor-server.vercel.app/users/${user._id}/bookmarks`
           );
           if (resBookmarks.ok) {
             const bookmarksData = await resBookmarks.json();
-            // Store only the post IDs
             bookmarkedIds = bookmarksData.map((post) => post._id);
           }
         }
 
-        // 3️⃣ Format posts with bookmarked info
         const formattedData = postsData.map((post) => ({
           _id: post._id,
           title: post.title,
@@ -71,12 +66,9 @@ function ApprovedPosts() {
         `https://yessghor-server.vercel.app/users/${user._id}/bookmark/${postId}`,
         { method: "PATCH" }
       );
-
       if (!res.ok) throw new Error("Failed to toggle bookmark");
-
       const data = await res.json();
 
-      // Update local state
       setPlaces((prev) => {
         const updated = [...prev];
         updated[index].bookmarked = data.bookmarked;
@@ -89,11 +81,31 @@ function ApprovedPosts() {
 
   if (loading) return <p>Loading approved posts...</p>;
 
-  return (
-    <div style={{}}>
-      <h2 style={{ marginBottom: "20px" }}>Available Properties</h2>
+  //  Filter places according to selected category
+  const filteredPlaces =
+    selectedType === "All"
+      ? places
+      : places.filter(
+          (place) =>
+            place.houseType?.toLowerCase() === selectedType.toLowerCase()
+        );
 
-      <PropertyCard places={places} onToggleBookmark={toggleBookmark} />
+  return (
+    <div className="px-6">
+      
+
+      {/* Category Filter */}
+      <HouseCategory 
+        selectedType={selectedType}
+        onSelectType={setSelectedType}
+      />
+
+      {/* Property Cards */}
+      <h2>Featured Place</h2>
+      <PropertyCard
+        places={filteredPlaces}
+        onToggleBookmark={toggleBookmark}
+      />
     </div>
   );
 }

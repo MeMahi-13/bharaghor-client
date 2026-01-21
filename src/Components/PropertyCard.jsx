@@ -89,7 +89,7 @@ maxWidth: "calc(25% - 15px)",
 
               <div className="flex items-center gap-0.5">
                 <IoHomeOutline />
-                <p style={styles.cardText}>{place.home}</p>
+                <p style={styles.cardText}>{place.houseNo}</p>
               </div>
 
               <div className="flex items-center gap-0.5">

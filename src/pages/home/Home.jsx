@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import SwiperSlider from "../../Components/SwiperSlider";
 import ApprovedPosts from "./ApprovedPost";
 import PropertyCard from "../../Components/PropertyCard";
+import HouseCategory from "../../Components/HouseCategory";
 const Home = () => {
   const [values, setValues] = useState({
     city: "",
@@ -140,7 +141,7 @@ const baseUrl = "https://bdapis.vercel.app/geo/v2.0";
       <SwiperSlider />
 
 
-      <div style={styles.selectrow}>
+      <div className="mt-8" style={styles.selectrow}>
        
         {/* Division */}
             <select
@@ -188,8 +189,9 @@ const baseUrl = "https://bdapis.vercel.app/geo/v2.0";
       </div>
 
       {/* Featured Places */}
-      <h5 style={styles.title}>Featured Place</h5>
+      
       <div style={{ position: "relative" }} >
+        
         <PropertyCard places={featuredPlaces} />
 
         {/* Bookmark layer */}
