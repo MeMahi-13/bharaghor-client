@@ -133,6 +133,8 @@ export const router = createBrowserRouter([
         path: "/dashboard/booking",
         element: <Booking />,
       },
+      
+
     ],
   },
   {

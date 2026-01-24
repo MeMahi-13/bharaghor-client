@@ -1,66 +1,109 @@
 // @flow strict
 import * as React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {  Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/pagination";
 
 function SwiperSlider() {
   return (
-    <div>
+    <div className="slider-wrapper">
       <Swiper
-      className="custom-swiper"
+        className="custom-swiper"
         spaceBetween={30}
         slidesPerView={1}
-        
         pagination={{ clickable: true }}
         autoplay={{
-          delay: 3000,
+          delay: 3500,
           disableOnInteraction: false,
         }}
         loop
-        modules={[ Pagination, Autoplay]}
+        modules={[Pagination, Autoplay]}
       >
-        <style>
-{`
-  .custom-swiper .swiper-pagination {
-    bottom: 10px; 
-  }
-`}
-</style>
-        <SwiperSlide style={styles.slide}>
-          <img src="/images/SI5.jpg" alt="" style={styles.image} />
+        <SwiperSlide>
+          <SlideImage src="https://res.cloudinary.com/dycxc9esi/image/upload/v1769066292/pexels-artbovich-6580396_uc0mnb.jpg" />
         </SwiperSlide>
-        <SwiperSlide style={styles.slide}>
-          <img src="/images/SI2.jpg" alt="" style={styles.image} />
+
+        <SwiperSlide>
+          <SlideImage src="https://res.cloudinary.com/dycxc9esi/image/upload/v1768802597/adam-winger-A4U4dEuN-hw-unsplash_f5kz4j.jpg" />
         </SwiperSlide>
-        <SwiperSlide style={styles.slide}>
-          <img src="/images/SI3.jpg" alt="" style={styles.image} />
+
+        <SwiperSlide>
+          <SlideImage src="https://res.cloudinary.com/dycxc9esi/image/upload/v1768802597/adam-winger-A4U4dEuN-hw-unsplash_f5kz4j.jpg" />
         </SwiperSlide>
-        <SwiperSlide style={styles.slide}>
-          <img src="/images/SI4.jpg" alt="" style={styles.image} />
+
+        <SwiperSlide>
+          <SlideImage src="https://res.cloudinary.com/dycxc9esi/image/upload/v1768802597/adam-winger-A4U4dEuN-hw-unsplash_f5kz4j.jpg" />
         </SwiperSlide>
       </Swiper>
+
+      {/* Custom Swiper Styles */}
+      <style>
+        {`
+        .slider-wrapper {
+          width: 100%;
+          max-width: 1200px;
+          margin: auto;
+          padding: 20px 0;
+        }
+
+        .custom-swiper {
+          border-radius: 22px;
+          overflow: hidden;
+          box-shadow: 0 20px 40px rgba(7, 48, 50, 0.18);
+        }
+
+        .custom-swiper .swiper-pagination {
+          bottom: 16px;
+        }
+
+        .custom-swiper .swiper-pagination-bullet {
+          width: 8px;
+          height: 8px;
+          background: #E3D0B3;
+          opacity: 0.6;
+          transition: all 0.3s ease;
+        }
+
+        .custom-swiper .swiper-pagination-bullet-active {
+          width: 22px;
+          border-radius: 20px;
+          background: #217c82;
+          opacity: 1;
+        }
+      `}
+      </style>
     </div>
   );
 }
 
+/* Slide Image Component */
+const SlideImage = ({ src }) => (
+  <div style={styles.slide}>
+    <img src={src} alt="" style={styles.image} />
+    <div style={styles.overlay} />
+  </div>
+);
+
 export default SwiperSlider;
 
+/* Inline Styles */
 const styles = {
   slide: {
-    background: "#ffffff",
-    height: "450px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)", 
+    position: "relative",
+    height: "280px",
+    width: "100%",
   },
   image: {
     width: "100%",
-    height: "350px",
+    height: "100%",
     objectFit: "cover",
-    borderRadius: "10px",
   },
+  // overlay: {
+  //   position: "absolute",
+  //   inset: 0,
+  //   background:
+  //     "linear-gradient(to top, rgba(7,48,50,0.45), rgba(7,48,50,0.05))",
+  // },
 };

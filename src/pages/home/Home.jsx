@@ -1,312 +1,90 @@
-import React, { useState, useEffect } from "react";
-import "./Home.css";
-import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext, useRef, useEffect } from "react";
+import Navbar from "../../Components/Navbar";
 import SwiperSlider from "../../Components/SwiperSlider";
-import ApprovedPosts from "./ApprovedPost";
-import PropertyCard from "../../Components/PropertyCard";
+import HouseCategory from "../../Components/HouseCategory";
+import LocationFilter from "../../Components/LocationFilter";
+import PropertySection from "../../Components/PropertySection";
+import { AuthContext } from "../../context/AuthContext";
+import { usePosts } from "../../hooks/usePosts";
+import "./Home.css"; // Import CSS for loader & animations
+
 const Home = () => {
-  const [values, setValues] = useState({
-    city: "",
-    category: "",
-    price: "",
-  });
-  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  const { places, loading, toggleBookmark } = usePosts(user);
 
-  const baseUrl = "https://bdapis.vercel.app/geo/v2.0";
-
-  const [formData, setFormData] = useState({
-    title: "",
-    division: "",
-    district: "",
-    upazila: "",
-    location: "",
-    houseNo: "",
-    category: "",
-    rent: "",
-    deposit: "",
-    leaseTerm: "",
-    availableDate: "",
-    description: "",
-    floor: "",
-    furnished: "",
-    parking: "",
-    bedroom: "",
-    commonBath: "",
-    balcony: "",
-    water: "",
-    electricity: "",
-    gas: "",
-    security: "",
-  });
-  // Array to track which cards are bookmarked
-  const featuredPlacesInitial = [];
-
-  // Add a bookmarked state for each card
-  const [featuredPlaces, setFeaturedPlaces] = useState(
-    featuredPlacesInitial.map((place) => ({ ...place, bookmarked: false })),
-  );
-
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
-  // Toggle bookmark for a single card
-  const toggleBookmark = (index) => {
-    const updatedPlaces = [...featuredPlaces];
-    updatedPlaces[index].bookmarked = !updatedPlaces[index].bookmarked;
-    setFeaturedPlaces(updatedPlaces);
-  };
-  const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [upazilas, setUpazilas] = useState([]);
-
+  const [selectedType, setSelectedType] = useState("All");
   const [selectedDivision, setSelectedDivision] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedUpazila, setSelectedUpazila] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Fetch Divisions on mount
+  // Ref to property section for scrolling
+  const propertyRef = useRef(null);
+
+  // Filtered places
+  const filtered = places
+    .filter((p) => selectedType === "All" || p.houseType === selectedType)
+    .filter(
+      (p) =>
+        (!selectedDivision || p.division === selectedDivision) &&
+        (!selectedDistrict || p.district === selectedDistrict) &&
+        (!selectedUpazila || p.upazila === selectedUpazila)
+    )
+    .filter(
+      (p) =>
+        !searchQuery ||
+        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.location.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+  // Scroll to PropertySection whenever filters or type change
   useEffect(() => {
-    fetch(`${baseUrl}/divisions`)
-      .then((res) => res.json())
-      .then((res) => setDivisions(res.data || []))
-      .catch((err) => console.error(err));
-  }, []);
+    if (propertyRef.current) {
+      propertyRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [selectedType, selectedDivision, selectedDistrict, selectedUpazila, searchQuery]);
 
-  // Handle Division change
-  const handleDivisionChange = (e) => {
-    const divisionId = e.target.value;
-    const divisionObj = divisions.find((d) => d.id === divisionId);
-
-    setSelectedDivision(divisionId);
-    setSelectedDistrict("");
-    setSelectedUpazila("");
-    setDistricts([]);
-    setUpazilas([]);
-
-    setFormData((prev) => ({
-      ...prev,
-      division: divisionObj?.name || "",
-      district: "",
-      upazila: "",
-    }));
-
-    if (!divisionId) return;
-
-    fetch(`${baseUrl}/districts/${divisionId}`)
-      .then((res) => res.json())
-      .then((res) => setDistricts(res.data || []))
-      .catch((err) => console.error(err));
-  };
-
-  // Handle District change
-  const handleDistrictChange = (e) => {
-    const districtId = e.target.value;
-    const districtObj = districts.find((d) => d.id === districtId);
-
-    setSelectedDistrict(districtId);
-    setSelectedUpazila("");
-    setUpazilas([]);
-
-    setFormData((prev) => ({
-      ...prev,
-      district: districtObj?.name || "",
-      upazila: "",
-    }));
-
-    if (!districtId) return;
-
-    fetch(`${baseUrl}/upazilas/${districtId}`)
-      .then((res) => res.json())
-      .then((res) => setUpazilas(res.data || []))
-      .catch((err) => console.error(err));
-  };
-
-  // Handle Upazila change
-  const handleUpazilaChange = (e) => {
-    const upazilaName = e.target.value;
-    setSelectedUpazila(upazilaName);
-    setFormData((prev) => ({ ...prev, upazila: upazilaName }));
-  };
+  if (loading)
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+        <p className="loader-text">Loading approved posts...</p>
+      </div>
+    );
 
   return (
-    <div className=" mx-auto max-w-6xl py-10">
-      <SwiperSlider />
-      <div style={styles.selectrow}>
-        {/* Division */}
-        <select
-          value={selectedDivision}
-          onChange={handleDivisionChange}
-          style={styles.select}
-        >
-          <option value=""> Division</option>
-          {divisions.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.name}
-            </option>
-          ))}
-        </select>
+    <div className="home-page fade-in">
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-        {/* District */}
-        <select
-          value={selectedDistrict}
-          onChange={handleDistrictChange}
-          disabled={!districts.length}
-          style={styles.select}
-        >
-          <option value=""> District</option>
-          {districts.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.name}
-            </option>
-          ))}
-        </select>
+      <div className="mx-auto max-w-6xl pt-10 px-4">
+        <SwiperSlider />
 
-        {/* Upazila */}
-        <select
-          value={selectedUpazila}
-          onChange={handleUpazilaChange}
-          disabled={!upazilas.length}
-          style={styles.select}
-        >
-          <option value="">Thana</option>
-          {upazilas.map((u) => (
-            <option key={u.id} value={u.name}>
-              {u.name}
-            </option>
-          ))}
-        </select>
-      </div>
+        <HouseCategory
+          selectedType={selectedType}
+          onSelectType={setSelectedType}
+        />
 
-      {/* Featured Places */}
-      <h5 style={styles.title}>Featured Place</h5>
-      <div style={{ position: "relative" }}>
-        <PropertyCard places={featuredPlaces} />
+        <LocationFilter
+          selectedDivision={selectedDivision}
+          selectedDistrict={selectedDistrict}
+          selectedUpazila={selectedUpazila}
+          setSelectedDivision={setSelectedDivision}
+          setSelectedDistrict={setSelectedDistrict}
+          setSelectedUpazila={setSelectedUpazila}
+        />
 
-        {/* Bookmark layer */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            pointerEvents: "none",
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "20px",
-            paddingTop: "10px",
-          }}
-        >
-          {featuredPlaces.map((place, index) => (
-            <div
-              key={index}
-              style={{
-                position: "relative",
-                pointerEvents: "auto",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  top: "10px",
-                  right: "10px",
-                  cursor: "pointer",
-                  background: "#fff",
-                  borderRadius: "50%",
-                  padding: "6px",
-                }}
-                onClick={() => toggleBookmark(index)}
-              >
-                {place.bookmarked ? (
-                  <BsBookmarkFill color="#007BFF" size={18} />
-                ) : (
-                  <BsBookmark color="#A1A8B0" size={18} />
-                )}
-              </div>
-            </div>
-          ))}
+        {/* Scroll target */}
+        <div ref={propertyRef}>
+          <PropertySection
+            className="fade-in"
+            places={filtered}
+            onToggleBookmark={toggleBookmark}
+            animated
+          />
         </div>
       </div>
-      {/* fetch post */}
-      <ApprovedPosts />
     </div>
   );
 };
 
 export default Home;
-
-const styles = {
-  slide: {
-    background: "#ffffff",
-    height: "200px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "20px",
-    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-  },
-  image: {
-    width: "100%",
-    height: "200px",
-    objectFit: "cover",
-    borderRadius: "10px",
-  },
-  select: {
-    flex: 1,
-    height: "40px",
-    padding: "8px 12px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-    fontSize: "14px",
-  },
-  selectrow: {
-    display: "flex",
-    gap: "15px",
-    width: "100%",
-  },
-  cardImageHorizontal: {
-    width: "100%",
-    height: "150px",
-    objectFit: "cover",
-    borderRadius: "10px",
-  },
-  cardContent: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  cardTitle: {
-    marginBottom: "10px",
-    marginTop: "10px",
-    fontWeight: "600",
-    fontSize: "20px",
-    lineHeight: "100%",
-    color: "#101828",
-  },
-  cardText: {
-    fontSize: "16px",
-    color: "#555",
-  },
-
-  title: {
-    paddingTop: "20px",
-    paddingBottom: "20px",
-    fontWeight: "600",
-    fontSize: "24px",
-  },
-  money: {
-    color: "#0988E3",
-    fontWeight: "600",
-    fontSize: "14px",
-  },
-  call: {
-    background: "#0988E3",
-    border: "none",
-    color: "#FFFFFF",
-    borderRadius: "6px",
-    gap: "4px",
-    padding: "4px 9px",
-    fontWeight: "400",
-    fontSize: "14px",
-    cursor: "pointer",
-  },
-};

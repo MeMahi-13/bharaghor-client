@@ -1,16 +1,14 @@
+// Property.jsx
+import ApprovedPosts from "../dashboard/ApprovedPost";
 import UserPendingPosts from "./UserPending";
 
-
-const Property = () => {
-
+const Properties = () => {
   return (
-    <div>
-        <UserPendingPosts/>
+   <div>
+        <UserPendingPosts />
+        <ApprovedPosts />
     </div>
-
   );
 };
 
-export default Property;
-
-
+export default Properties;

@@ -1,25 +1,14 @@
-import React, { useRef, useEffect, useState } from "react";
-import { AiFillAppstore } from "react-icons/ai";
+import React, { useRef, useState } from "react";
 import { LuLogOut } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { FaPlus } from "react-icons/fa6";
 
-const Navbar = () => {
+const Navbar = ({ searchQuery, setSearchQuery }) => {
   const { user, logOut } = useAuth();
   const [showProfileModal, setShowProfileModal] = useState(false);
   const modalRef = useRef(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        setShowProfileModal(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const handleLogout = async () => {
     await logOut();
@@ -29,119 +18,127 @@ const Navbar = () => {
   };
 
   const handleAddProperty = () => {
-    const userInfoCompleted = localStorage.getItem("userInfoCompleted");
-    if (!userInfoCompleted) {
-      navigate("/user_information");
-    } else {
-      navigate("/post");
-    }
+    const completed = localStorage.getItem("userInfoCompleted");
+    completed ? navigate("/post") : navigate("/user_information");
   };
 
-// role based dashboard
   const handleDashboard = () => {
     if (!user) return;
-console.log(user)
-    if (user.role === "admin") {
-      navigate("/admin/dashboard"); 
-    } else {
-      navigate("/dashboard");
-    }
+    user.role === "admin"
+      ? navigate("/admin/dashboard")
+      : navigate("/dashboard");
     setShowProfileModal(false);
   };
 
   return (
-    <div className="fixed z-99" style={styles.container}>
-      {/* Left */}
-      <div className="flex gap-2 items-center">
-        <img className="h-8 w-10" src="src\\assets\\logo bharaghor.png" alt="" />
-        <img className="h-5 w-20" src="src\\assets\\name.png" alt="" />
-      </div>
+    <nav className="fixed top-0 w-full z-50 bg-white shadow-md">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <img
+            src="src/assets/logo bharaghor.png"
+            alt="logo"
+            className="h-8"
+          />
+          <img src="src/assets/name.png" alt="name" className="h-5" />
+        </div>
 
-      {/* Right */}
-      <div className="flex gap-4 items-center">
-        {/* NOT LOGGED IN */}
-        {!user && (
-          <>
-            <a href="/login">Login</a>
-            <a href="/register">Sign Up</a>
-          </>
-        )}
-
-        {/* LOGGED IN */}
-        {user && (
-          <>
-            <button className="primary-btn flex items-center gap-2" onClick={handleAddProperty}>
-              <FaPlus />Add Property
-            </button>
-            <LuLogOut size={22} style={{ cursor: "pointer" }} onClick={handleLogout} />
-
-            <div
-              ref={modalRef}
-              style={{
-                position: "relative",
-                height: "40px",
-                width: "40px",
-              }}
-            >
-              <img
-                className="rounded-full"
-                src={user.photoURL || "/images/Ellipse 116.png"}
-                alt="Profile"
-                style={styles.avatar}
-                onClick={() => setShowProfileModal(!showProfileModal)}
+        {/* Right Side */}
+        <div className="flex items-center gap-4">
+          {user ? (
+            <>
+              {/* Search */}
+              <input
+                type="text"
+                placeholder="Search properties..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-48 h-9 px-3 rounded-lg border
+                  border-[#217c82] text-sm outline-none
+                  focus:ring-2 focus:ring-[#217c82]/40"
               />
 
-              {showProfileModal && (
-                <div style={styles.profileModal}>
-                  <p style={styles.modalItem} onClick={() => navigate("dashboard/profile")}>
-                    My Profile
-                  </p>
-                  <p style={styles.modalItem} onClick={handleDashboard}>
-                    Dashboard
-                  </p>
-                  <p style={styles.modalItem} onClick={handleLogout}>
-                    Logout
-                  </p>
-                </div>
-              )}
-            </div>
-          </>
-        )}
+              {/* Add Property */}
+              <button
+                onClick={handleAddProperty}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold
+                  rounded-lg text-white bg-[#217c82]
+                  hover:bg-[#073032] transition"
+              >
+                <FaPlus size={14} />
+                Add Property
+              </button>
+
+              {/* Logout Icon */}
+              <LuLogOut
+                size={20}
+                onClick={handleLogout}
+                className="cursor-pointer text-[#073032] hover:text-[#217c82] transition"
+              />
+
+              {/* Profile */}
+              <div ref={modalRef} className="relative">
+                <img
+                  src={user.photoURL || "/images/Ellipse 116.png"}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full object-cover cursor-pointer
+                    ring-2 ring-[#E3D0B3]"
+                  onClick={() => setShowProfileModal(!showProfileModal)}
+                />
+
+                {showProfileModal && (
+                  <div
+                    className="absolute right-0 mt-3 w-44 bg-white
+                      rounded-xl shadow-lg border border-[#E3D0B3] overflow-hidden"
+                  >
+                    <MenuItem onClick={() => navigate("dashboard/profile")}>
+                      My Profile
+                    </MenuItem>
+                    <MenuItem onClick={handleDashboard}>
+                      Dashboard
+                    </MenuItem>
+                    <MenuItem onClick={handleLogout} danger>
+                      Logout
+                    </MenuItem>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <a
+                href="/login"
+                className="text-sm font-medium text-[#073032] hover:text-[#217c82]"
+              >
+                Login
+              </a>
+              <a
+                href="/register"
+                className="text-sm font-medium text-[#217c82]"
+              >
+                Sign Up
+              </a>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
-export default Navbar;
+/* Dropdown Item */
+const MenuItem = ({ children, onClick, danger }) => (
+  <p
+    onClick={onClick}
+    className={`px-4 py-2 text-sm cursor-pointer transition
+      ${
+        danger
+          ? "text-red-600 hover:bg-red-50"
+          : "text-[#073032] hover:bg-[#E3D0B3]/40"
+      }`}
+  >
+    {children}
+  </p>
+);
 
-const styles = {
-  container: {
-    width: "100%",
-    backgroundColor: "#ffffff",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "14px 24px",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-    marginBottom: "4px",
-  },
-  input: { width: "100%", padding: "8px", margin: "8px 0" },
-  button: { width: "100%", padding: "8px" },
-  link: { color: "blue", cursor: "pointer" },
-  profileModal: {
-    position: "absolute",
-    top: "50px",
-    right: 0,
-    background: "#fff",
-    border: "1px solid #ddd",
-    borderRadius: "10px",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-    minWidth: "150px",
-    zIndex: 100,
-  },
-  modalItem: {
-    padding: "10px 15px",
-    cursor: "pointer",
-    borderBottom: "1px solid #eee",
-  },
-};
+export default Navbar;
