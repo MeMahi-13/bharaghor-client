@@ -7,6 +7,7 @@ import PropertySection from "../../Components/PropertySection";
 import { AuthContext } from "../../context/AuthContext";
 import { usePosts } from "../../hooks/usePosts";
 import "./Home.css"; // Import CSS for loader & animations
+import Contact from "./Contact";
 
 const Home = () => {
   const { user } = useContext(AuthContext);
@@ -83,6 +84,7 @@ const Home = () => {
           />
         </div>
       </div>
+      <Contact/>
     </div>
   );
 };

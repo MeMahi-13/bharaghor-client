@@ -121,7 +121,7 @@ const styles = {
   heading: {
     fontSize: "28px",
     fontWeight: "700",
-    color: "#217c82",
+    color: "#1b4965",
     marginBottom: "6px",
   },
   subHeading: {

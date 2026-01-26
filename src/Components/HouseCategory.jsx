@@ -15,7 +15,7 @@ const categories = [
   { name: "apartment", icon: <FaBuilding /> },
   { name: "hostel", icon: <FaBed /> },
   { name: "office", icon: <FaBriefcase /> },
-  { name: "duplex", icon: <FaHome /> },
+  // { name: "duplex", icon: <FaHome /> },
   { name: "studio", icon: <FaCity /> },
   { name: "commercial", icon: <FaWarehouse /> },
   { name: "showroom", icon: <FaStore /> },
@@ -69,19 +69,19 @@ function CategoryPill({ icon, label, active, onClick }) {
         border transition-all duration-200
         ${
           active
-            ? "bg-[#E3D0B3]/40 border-[#217c82]"
-            : "bg-[#073032]/5 border-[#073032]/10 hover:bg-[#217c82]/10"
+            ? "bg-[#E3D0B3]/40 border-[#1b4965]"
+            : "bg-[#073032]/5 border-[#073032]/10 hover:bg-[#1b4965]/10"
         }`}
     >
       {/* Accent bar */}
       {active && (
-        <span className="absolute left-0 top-2 bottom-2 w-1 rounded-full bg-[#217c82]" />
+        <span className="absolute left-0 top-2 bottom-2 w-1 rounded-full bg-[#1b4965]" />
       )}
 
       {/* Icon */}
       <div
         className={`text-sm ${
-          active ? "text-[#217c82]" : "text-[#073032]/60"
+          active ? "text-[#1b4965]" : "text-[#073032]/60"
         }`}
       >
         {icon}

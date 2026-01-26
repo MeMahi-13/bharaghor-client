@@ -36,11 +36,11 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         {/* Logo */}
         <div className="flex items-center gap-2">
           <img
-            src="src/assets/logo bharaghor.png"
+            src="https://res.cloudinary.com/dycxc9esi/image/upload/v1769323430/bharaghor_01_iecfzr.png"
             alt="logo"
-            className="h-8"
+            className="h-10"
           />
-          <img src="src/assets/name.png" alt="name" className="h-5" />
+          
         </div>
 
         {/* Right Side */}
@@ -54,15 +54,15 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-48 h-9 px-3 rounded-lg border
-                  border-[#217c82] text-sm outline-none
-                  focus:ring-2 focus:ring-[#217c82]/40"
+                  border-[#1b4965] text-sm outline-none
+                  focus:ring-2 focus:ring-[#1b4965]/40"
               />
 
               {/* Add Property */}
               <button
                 onClick={handleAddProperty}
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold
-                  rounded-lg text-white bg-[#217c82]
+                  rounded-lg text-white bg-[#1b4965]
                   hover:bg-[#073032] transition"
               >
                 <FaPlus size={14} />
@@ -73,7 +73,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
               <LuLogOut
                 size={20}
                 onClick={handleLogout}
-                className="cursor-pointer text-[#073032] hover:text-[#217c82] transition"
+                className="cursor-pointer text-[#073032] hover:text-[#1b4965] transition"
               />
 
               {/* Profile */}
@@ -94,9 +94,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                     <MenuItem onClick={() => navigate("dashboard/profile")}>
                       My Profile
                     </MenuItem>
-                    <MenuItem onClick={handleDashboard}>
-                      Dashboard
-                    </MenuItem>
+                    <MenuItem onClick={handleDashboard}>Dashboard</MenuItem>
                     <MenuItem onClick={handleLogout} danger>
                       Logout
                     </MenuItem>
@@ -108,13 +106,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             <>
               <a
                 href="/login"
-                className="text-sm font-medium text-[#073032] hover:text-[#217c82]"
+                className="text-sm font-medium text-[#073032] hover:text-[#1b4965]"
               >
                 Login
               </a>
               <a
                 href="/register"
-                className="text-sm font-medium text-[#217c82]"
+                className="text-sm font-medium text-[#1b4965]"
               >
                 Sign Up
               </a>

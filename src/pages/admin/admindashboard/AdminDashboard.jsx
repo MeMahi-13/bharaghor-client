@@ -140,10 +140,10 @@ function AdminDashboard() {
               </div>
 
               {/* Join Date */}
-              <div className="flex-1 text-right text-sm text-gray-600">
-  {user.createdAt
-    ? new Date(user.createdAt).toLocaleDateString()
-    : "N/A"}
+<div className="flex-1 text-right">
+  <span className="text-sm text-gray-600">
+    {user.joinDate || "—"}
+  </span>
 </div>
 
             </div>

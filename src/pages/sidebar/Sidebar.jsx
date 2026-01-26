@@ -52,7 +52,7 @@ const Sidebar = () => {
 
           <a href="/dashboard/properties" className="menu-item">
             <span className="icon"><BsBuildings /></span>
-            Propeties
+            Properties
           </a>
 
           <a href="/dashboard/booking"
