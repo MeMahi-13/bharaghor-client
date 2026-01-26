@@ -16,7 +16,7 @@ import Saved from "../pages/Saved/Saved";
 import Post from "../pages/Post/Post";
 import Properties from "../pages/Properties/Properties";
 import UserInfo from "../pages/user_information/UserInfo";
-import Booking from "../pages/booking/booking";
+
 import AdminUsers from "../pages/admin/AdminUsers";
 import AdminPendingPosts from "../pages/admin/post/AdminPendingPost";
 import PendingPostsByUser from "../pages/admin/post/AdminPendingPost";
@@ -27,6 +27,8 @@ import AdminDashboard from "../pages/admin/admindashboard/AdminDashboard"
 import PostDetails from "../pages/Post/PostDetails";
 import AllUsers from "../pages/admin/AllUsers";
 import Revenue from "../pages/admin/Revenue";
+import UserBookings from "../pages/booking/UserBookings";
+import Booking from "../pages/booking/booking";
 export const router = createBrowserRouter([
   {
     path: "/",

@@ -40,8 +40,8 @@ row-gap: 50px;
   font-weight: bold;
   text-transform: uppercase;
   color: #0000;
-  -webkit-text-stroke: 1px #217c82;
-  --g: conic-gradient(#217c82 0 0) no-repeat text;
+  -webkit-text-stroke: 1px #1b4965;
+  --g: conic-gradient(#1b4965 0 0) no-repeat text;
   background: var(--g) 0, var(--g) 100%, var(--g) 0 0, var(--g) 0 100%;
   animation: l5 2s linear infinite;
 }
@@ -84,7 +84,7 @@ row-gap: 50px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 70vh;
+  height: 100vh;
   gap: 15px;
 }
 
@@ -93,7 +93,7 @@ row-gap: 50px;
   width: 60px;
   height: 60px;
   border: 6px solid rgba(33, 124, 130, 0.2);
-  border-top-color: #217c82;
+  border-top-color: #1b4965;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   box-shadow: 0 4px 15px rgba(33, 124, 130, 0.4);

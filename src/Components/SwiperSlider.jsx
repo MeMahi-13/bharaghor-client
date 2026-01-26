@@ -69,7 +69,7 @@ function SwiperSlider() {
         .custom-swiper .swiper-pagination-bullet-active {
           width: 22px;
           border-radius: 20px;
-          background: #217c82;
+          background: #1b4965;
           opacity: 1;
         }
       `}
