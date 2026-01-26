@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { FiUsers } from "react-icons/fi";
 import { BsCurrencyDollar, BsBuildings } from "react-icons/bs";
+import Nidverification from "../../../Components/admin/Nidverification";
+import Pendinguser from "../../../Components/admin/Pendinguser";
 
 function AdminDashboard() {
   const [cards, setCards] = useState([]);
@@ -138,17 +140,22 @@ function AdminDashboard() {
               </div>
 
               {/* Join Date */}
-              <div className="flex-1 text-right">
-                <span className="text-sm text-gray-600">
-                  {new Date(user.createdAt).toLocaleDateString()}
-                </span>
-              </div>
+              <div className="flex-1 text-right text-sm text-gray-600">
+  {user.createdAt
+    ? new Date(user.createdAt).toLocaleDateString()
+    : "N/A"}
+</div>
+
             </div>
           ))
         ) : (
           <p className="p-4 text-center text-gray-500">No users found.</p>
         )}
       </div>
+      {/* NID verification */}
+      <Nidverification/>
+      {/* pending user */}
+      <Pendinguser/>
     </div>
   );
 }
