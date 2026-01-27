@@ -130,7 +130,7 @@ function AdminDashboard() {
               <div className="flex-1 text-center">
                 <span
                   className={`text-sm px-2 py-1 rounded-full ${
-                    user.status === "Active"
+                    user.status === "approved"
                       ? "bg-green-100 text-green-600"
                       : "bg-red-100 text-red-600"
                   }`}

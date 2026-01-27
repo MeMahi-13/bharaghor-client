@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 const Pendinguser = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); 
+  const [actionLoading, setActionLoading] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("https://yessghor-server.vercel.app/admin/posts/pending")
@@ -22,10 +23,37 @@ const Pendinguser = () => {
       });
   }, []);
 
+  const pendingCount = properties.length;
+
+  //  Approve / Reject handler
+  const handleAction = async (postId, status) => {
+    try {
+      setActionLoading(postId);
+
+      await fetch(
+        `https://yessghor-server.vercel.app/admin/posts/${postId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status }),
+        }
+      );
+
+      // remove from pending list
+      setProperties((prev) =>
+        prev.filter((property) => property._id !== postId)
+      );
+    } catch (error) {
+      console.error("Action failed:", error);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   return (
-    <div className="w-full bg-white shadow-lg border border-white rounded-2xl overflow-hidden mt-8 p-3">
+    <div className="w-full bg-white shadow-lg  rounded-2xl mt-8 p-3">
       {/* Header */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex bg-gradient-to-b from-[#FFF7ED] to-[#FFFFFF] justify-between items-center mb-4">
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 bg-[#FFEDD4] flex items-center justify-center rounded-lg text-[#F54900]">
             <FiUserCheck />
@@ -40,15 +68,17 @@ const Pendinguser = () => {
           </div>
         </div>
 
-        <div className="px-10 py-2 bg-[#0988E3] text-white rounded-xl font-semibold">
-          Pending
+        <div className="px-6 py-2 bg-[#0988E3] text-white rounded-xl font-semibold">
+          Pending ({pendingCount})
         </div>
       </div>
 
       {/* Content */}
       {loading ? (
+        <p className="text-center text-gray-500 py-6">Loading...</p>
+      ) : properties.length === 0 ? (
         <p className="text-center text-gray-500 py-6">
-          Loading...
+          No pending posts
         </p>
       ) : (
         <div className="space-y-4">
@@ -80,18 +110,32 @@ const Pendinguser = () => {
 
               {/* Right */}
               <div className="flex items-center gap-2">
-                <button className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <button
+                  disabled={actionLoading === property._id}
+                  onClick={() =>
+                    handleAction(property._id, "approved")
+                  }
+                  className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:opacity-50"
+                >
                   <MdEdit />
                   Approve
                 </button>
 
-                <button className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium bg-green-100 text-green-700 hover:bg-green-200">
+                <button
+                  disabled={actionLoading === property._id}
+                  onClick={() =>
+                    handleAction(property._id, "rejected")
+                  }
+                  className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium bg-red-100 text-red-700 hover:bg-red-200 disabled:opacity-50"
+                >
                   <MdVisibility />
                   Reject
                 </button>
 
                 <button
-                  onClick={() => navigate(`/details/${property._id}`)}
+                  onClick={() =>
+                    navigate(`/details/${property._id}`)
+                  }
                   className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium bg-[#E6F3FC] hover:bg-sky-200"
                 >
                   <FaEye />
