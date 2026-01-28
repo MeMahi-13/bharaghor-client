@@ -1,13 +1,16 @@
 
-
+import Nidverification from "../../Components/admin/Nidverification";
+import Pendinguser from "../../Components/admin/Pendinguser";
 const AllUsers = () => {
+    
     return (
         <div>
-            <div>
-                Total Users
-            </div>
-
+            {/* NID verification */}
+              <Nidverification/>
+              {/* pending user */}
+              <Pendinguser/>
         </div>
+         
     );
 };
 

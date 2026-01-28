@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { FiUsers } from "react-icons/fi";
 import { BsCurrencyDollar, BsBuildings } from "react-icons/bs";
+import Nidverification from "../../../Components/admin/Nidverification";
+import Pendinguser from "../../../Components/admin/Pendinguser";
 
 function AdminDashboard() {
   const [cards, setCards] = useState([]);
@@ -149,6 +151,10 @@ function AdminDashboard() {
           <p className="p-4 text-center text-gray-500">No users found.</p>
         )}
       </div>
+      {/* NID verification */}
+      <Nidverification/>
+      {/* pending user */}
+      <Pendinguser/>
     </div>
   );
 }

@@ -7,6 +7,7 @@ const Profile = () => {
   const { user } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false); // ✅ NEW
 
   const fetchUserInfo = async () => {
     if (!user?._id) return;
@@ -35,15 +36,31 @@ const Profile = () => {
 
   return (
     <div>
-      <div className="flex items-center gap-3">
-        <IoIosArrowBack className="w-5 h-10" />
-        <h2 className="font-medium text-2xl text-[#101828]">
-          Manage Profile
-        </h2>
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-3">
+          <IoIosArrowBack className="w-5 h-10" />
+          <h2 className="font-medium text-2xl text-[#101828]">
+            Manage Profile
+          </h2>
+        </div>
+
+        {/* Edit button */}
+        <button
+          onClick={() => setIsEditing(true)}
+          className="font-medium text-[#0988E3]"
+        >
+          Edit
+        </button>
       </div>
 
-
-      <ProfileCard user={userInfo} refetchUser={fetchUserInfo} />
+      {/* Profile Card */}
+      <ProfileCard
+        user={userInfo}
+        refetchUser={fetchUserInfo}
+        isEditing={isEditing}       
+        setIsEditing={setIsEditing} 
+      />
     </div>
   );
 };
