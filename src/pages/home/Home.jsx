@@ -6,7 +6,7 @@ import LocationFilter from "../../Components/LocationFilter";
 import PropertySection from "../../Components/PropertySection";
 import { AuthContext } from "../../context/AuthContext";
 import { usePosts } from "../../hooks/usePosts";
-import "./Home.css"; // Import CSS for loader & animations
+import "./Home.css";
 import Contact from "./Contact";
 
 const Home = () => {
@@ -37,8 +37,6 @@ const Home = () => {
         p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.location.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-  // Scroll to PropertySection whenever filters or type change
   useEffect(() => {
     if (propertyRef.current) {
       propertyRef.current.scrollIntoView({ behavior: "smooth", block: "start" });

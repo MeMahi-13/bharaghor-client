@@ -10,7 +10,7 @@ function AdminDashboard() {
   const [cards, setCards] = useState([]);
   const [users, setUsers] = useState([]);
 
-  const API_URL = "https://yessghor-server.vercel.app"; 
+  const API_URL = "https://yessghor-server.vercel.app";
 
   // Map card titles to icons
   const iconMap = {
@@ -140,12 +140,11 @@ function AdminDashboard() {
               </div>
 
               {/* Join Date */}
-<div className="flex-1 text-right">
-  <span className="text-sm text-gray-600">
-    {user.joinDate || "—"}
-  </span>
-</div>
-
+              <div className="flex-1 text-right">
+                <span className="text-sm text-gray-600">
+                  {user.joinDate || "—"}
+                </span>
+              </div>
             </div>
           ))
         ) : (

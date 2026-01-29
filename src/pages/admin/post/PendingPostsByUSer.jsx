@@ -24,7 +24,7 @@ function PendingPostsByUser() {
   }, [userId]);
 
   const updatePost = async (postId, action) => {
-    await fetch(`https://yessghor-server.vercel.app//admin/posts/${postId}/${action}`, {
+    await fetch(`https://yessghor-server.vercel.app/admin/posts/${postId}/${action}`, {
       method: "PATCH",
     });
     setPosts(prev => prev.filter(p => p._id !== postId));

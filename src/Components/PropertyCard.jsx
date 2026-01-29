@@ -1,3 +1,4 @@
+// PropertyCard.jsx
 import * as React from "react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
@@ -10,64 +11,62 @@ import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
-function PropertyCard({ places = [], onToggleBookmark }) {
+function PropertyCard({ places = [], onToggleBookmark, showEdit = false }) {
   const { user } = useContext(AuthContext);
 
-const handleBooking = async (placeId) => {
-  if (!user) {
-    return Swal.fire({
-      icon: "warning",
-      title: "Not logged in",
-      text: "Please login first to book a property",
-      confirmButtonColor: "#1b4965",
-    });
-  }
-
-
-  if (!user.name || !user.phone) {
-    return Swal.fire({
-      icon: "error",
-      title: "Profile incomplete",
-      text: "Please add your name and phone number in your profile first.",
-      confirmButtonColor: "#1b4965",
-    });
-  }
-
-  try {
-    const res = await fetch("https://yessghor-server.vercel.app/bookings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        postId: placeId,
-        userId: user._id,
-        name: user.name,    
-        phone: user.phone,   
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || "Booking failed");
+  // Booking handler
+  const handleBooking = async (placeId) => {
+    if (!user) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Not logged in",
+        text: "Please login first to book a property",
+        confirmButtonColor: "#1b4965",
+      });
+    }
+    if (!user.name || !user.phone) {
+      return Swal.fire({
+        icon: "error",
+        title: "Profile incomplete",
+        text: "Please add your name and phone number in your profile first.",
+        confirmButtonColor: "#1b4965",
+      });
     }
 
-    Swal.fire({
-      icon: "success",
-      title: "Booking Request Sent!",
-      text: "The property owner will contact you soon.",
-      confirmButtonColor: "#1b4965",
-    });
-  } catch (err) {
-    console.error(err);
-    Swal.fire({
-      icon: "error",
-      title: "Booking failed",
-      text: err.message,
-      confirmButtonColor: "#1b4965",
-    });
-  }
-};
+    try {
+      const res = await fetch("https://yessghor-server.vercel.app/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          postId: placeId,
+          userId: user._id,
+          name: user.name,
+          phone: user.phone,
+        }),
+      });
 
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Booking failed");
+      }
+
+      Swal.fire({
+        icon: "success",
+        title: "Booking Request Sent!",
+        text: "The property owner will contact you soon.",
+        confirmButtonColor: "#1b4965",
+      });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "Booking failed",
+        text: err.message,
+        confirmButtonColor: "#1b4965",
+      });
+    }
+  };
 
   return (
     <div
@@ -136,7 +135,13 @@ const handleBooking = async (placeId) => {
             <div style={styles.bottomRow}>
               <div style={styles.money}>TK {place.price}</div>
 
-              <div style={{ display: "flex", gap: "8px" }}>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                {showEdit && place.onEdit && (
+                  <button onClick={place.onEdit} style={styles.editBtn}>
+                    Edit
+                  </button>
+                )}
+
                 <button style={styles.messageBtn}>
                   <MdOutlineMessage size={16} />
                   Message
@@ -163,6 +168,7 @@ const handleBooking = async (placeId) => {
 
           .book-btn:hover { background: #8cb300; }
           .message-btn:hover { background: #073032; }
+          .edit-btn:hover { background: #e8f1f5; }
         `}
       </style>
     </div>
@@ -228,4 +234,5 @@ const styles = {
   money: { fontSize: "14px", fontWeight: "600", color: "#1b4965" },
   messageBtn: { display: "flex", alignItems: "center", gap: "6px", background: "#1b4965", color: "#ffffff", border: "none", borderRadius: "8px", padding: "7px 14px", fontSize: "13px", fontWeight: "500", cursor: "pointer", transition: "all 0.3s ease" },
   bookBtn: { background: "#a5be00", color: "#073032", border: "none", borderRadius: "8px", padding: "7px 14px", fontSize: "13px", fontWeight: "600", cursor: "pointer", boxShadow: "0 4px 10px rgba(0,0,0,0.1)", transition: "all 0.3s ease" },
+  editBtn: { background: "#ffffff", color: "#1b4965", border: "1px solid #1b4965", borderRadius: "8px", padding: "7px 14px", fontSize: "13px", fontWeight: "600", cursor: "pointer", transition: "all 0.3s ease" },
 };
