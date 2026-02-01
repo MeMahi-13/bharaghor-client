@@ -125,15 +125,16 @@ function PropertyCard({ places = [], onToggleBookmark, showEdit = false }) {
             <h2 style={styles.cardTitle}>{place.title}</h2>
 
             <div style={styles.infoBlock}>
-              <InfoRow icon={<CiLocationOn />} text={place.location} />
-              <InfoRow icon={<IoHomeOutline />} text={place.houseNo} />
-              <InfoRow icon={<SlCalender />} text={place.date} />
-              <InfoRow icon={<FaBuilding />} text={place.houseType} />
-            </div>
+  <InfoRow icon={<CiLocationOn />} label="Location" text={place.location} />
+  <InfoRow icon={<IoHomeOutline />} label="House No" text={place.houseNo} />
+  <InfoRow icon={<SlCalender />} label="Available Date" text={place.date} />
+  <InfoRow icon={<FaBuilding />} label="House Type" text={place.houseType} />
+</div>
+
 
             {/* FOOTER */}
             <div style={styles.bottomRow}>
-              <div style={styles.money}>TK {place.price}</div>
+              <div style={styles.money}>Rent: {place.price}TK</div>
 
               <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                 {showEdit && place.onEdit && (
@@ -178,12 +179,14 @@ function PropertyCard({ places = [], onToggleBookmark, showEdit = false }) {
 export default PropertyCard;
 
 /* ----------------------- SMALL HELPER COMPONENT ------------------------ */
-const InfoRow = ({ icon, text }) => (
+const InfoRow = ({ icon, label, text }) => (
   <div style={styles.row}>
     <span style={styles.icon}>{icon}</span>
+    <span style={styles.label}>{label}:</span>
     <span style={styles.cardText}>{text}</span>
   </div>
 );
+
 
 /* ======================= STYLES ====================== */
 const styles = {
@@ -197,6 +200,11 @@ const styles = {
     boxShadow: "0 6px 14px rgba(0,0,0,0.08)",
     transition: "transform 0.3s ease, box-shadow 0.3s ease",
   },
+  label: {
+  fontSize: "13px",
+  fontWeight: "600",
+  color: "#757575",
+},
   imageWrapper: { position: "relative" },
   cardImage: {
     width: "100%",
@@ -227,9 +235,15 @@ const styles = {
   cardContent: { display: "flex", flexDirection: "column", padding: "14px 16px", flexGrow: 1 },
   cardTitle: { fontSize: "17px", fontWeight: "600", color: "#073032", marginBottom: "10px", lineHeight: "1.4" },
   infoBlock: { display: "flex", flexDirection: "column", gap: "6px", flexGrow: 1, marginBottom: "10px" },
-  row: { display: "flex", alignItems: "center", gap: "8px" },
-  icon: { fontSize: "14px", color: "#1b4965", minWidth: "16px" },
-  cardText: { fontSize: "13px", color: "#555", lineHeight: "1.4" },
+  row: {  display: "flex",
+  alignItems: "center",
+  gap: "6px"},
+  icon: {  fontSize: "14px",
+  color: "#1b4965",
+  minWidth: "16px" },
+  cardText: {  fontSize: "13px",
+  color: "#555",
+  lineHeight: "1.4" },
   bottomRow: { display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "12px" },
   money: { fontSize: "14px", fontWeight: "600", color: "#1b4965" },
   messageBtn: { display: "flex", alignItems: "center", gap: "6px", background: "#1b4965", color: "#ffffff", border: "none", borderRadius: "8px", padding: "7px 14px", fontSize: "13px", fontWeight: "500", cursor: "pointer", transition: "all 0.3s ease" },
