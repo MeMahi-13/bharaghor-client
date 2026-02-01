@@ -25,10 +25,9 @@ const AuthProvider = ({ children }) => {
   const loginWithGoogle = () =>
     signInWithPopup(auth, new GoogleAuthProvider());
 
-  // --- Updated LogOut (Clears both Firebase and Manual sessions) ---
   const logOut = async () => {
     await signOut(auth);
-    localStorage.removeItem("user"); // Clear manual session
+    localStorage.removeItem("user"); 
     setUser(null);
     setFirebaseUser(null);
   };
