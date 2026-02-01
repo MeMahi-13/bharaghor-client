@@ -12,21 +12,27 @@ export default function UserPending() {
   const [editPost, setEditPost] = useState(null);
   const [formData, setFormData] = useState({});
 
+  // Fetch pending posts
   useEffect(() => {
     if (!user?._id) return;
+
+    setLoading(true);
     fetch(`https://yessghor-server.vercel.app/users/${user._id}/posts/pending`)
       .then((res) => res.json())
       .then((data) => {
         const mappedPosts = data.map((post) => ({
-          _id: post._id,
+          _id: typeof post._id === "object" ? post._id.$oid : post._id,
           image: post.images?.[0] || "/placeholder.png",
-          title: post.title,
-          location: `${post.division}, ${post.district}, ${post.upazila}`,
-          houseNo: post.houseNo,
+          title: post.title || "",
+          location: post.location || "",
+          houseNo: post.houseNo || "",
           date: new Date(post.createdAt).toLocaleDateString(),
-          houseType: post.category,
-          price: post.rent,
-          description: post.description,
+          houseType: post.category || "",
+          price: post.rent || "",
+          description: post.description || "",
+          division: post.division || "",
+          district: post.district || "",
+          upazila: post.upazila || "",
         }));
         setPendingPosts(mappedPosts);
         setLoading(false);
@@ -37,15 +43,18 @@ export default function UserPending() {
       });
   }, [user]);
 
-  // open modal
+  // Open modal
   const handleEditClick = (post) => {
     setEditPost(post);
     setFormData({
-      title: post.title,
-      location: post.location,
-      houseType: post.houseType,
-      price: post.price,
-      description: post.description,
+      title: post.title || "",
+      location: post.location || "",
+      division: post.division || "",
+      district: post.district || "",
+      upazila: post.upazila || "",
+      houseType: post.houseType || "",
+      price: post.price || "",
+      description: post.description || "",
     });
   };
 
@@ -55,46 +64,59 @@ export default function UserPending() {
   };
 
   // submit updated post
-  const handleUpdatePost = async () => {
-    try {
-      const res = await fetch(`https://yessghor-server.vercel.app/posts/${editPost._id}`, {
+const handleUpdatePost = async () => {
+  if (!editPost?._id) return;
+
+  try {
+    const payload = {
+      userId: user._id, 
+      title: formData.title,
+      division: formData.division,
+      district: formData.district || editPost.district,
+      upazila: formData.upazila || editPost.upazila,
+      location: formData.location,
+      category: formData.houseType,
+      rent: Number(formData.price),
+      description: formData.description,
+    };
+
+    const res = await fetch(
+      `https://yessghor-server.vercel.app/posts/${editPost._id}`,
+      {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: formData.title,
-          location: formData.location,
-          division: formData.division,
-          category: formData.houseType,
-          rent: formData.price,
-          description: formData.description,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Update failed");
+        body: JSON.stringify(payload),
+      }
+    );
 
-      Swal.fire({
-        icon: "success",
-        title: "Post Updated",
-        text: "Your post has been updated successfully.",
-        confirmButtonColor: "#1b4965",
-      });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Update failed");
 
-      // update local state
-      setPendingPosts((prev) =>
-        prev.map((p) => (p._id === editPost._id ? { ...p, ...formData } : p))
-      );
+    Swal.fire({
+      icon: "success",
+      title: "Post Updated",
+      text: "Your post has been updated successfully.",
+      confirmButtonColor: "#1b4965",
+    });
 
-      setEditPost(null);
-    } catch (err) {
-      console.error(err);
-      Swal.fire({
-        icon: "error",
-        title: "Update failed",
-        text: err.message,
-        confirmButtonColor: "#1b4965",
-      });
-    }
-  };
+    setPendingPosts((prev) =>
+      prev.map((p) =>
+        p._id === editPost._id ? { ...p, ...formData } : p
+      )
+    );
+
+    setEditPost(null);
+  } catch (err) {
+    console.error(err);
+    Swal.fire({
+      icon: "error",
+      title: "Update failed",
+      text: err.message,
+      confirmButtonColor: "#1b4965",
+    });
+  }
+};
+
 
   if (loading) return <p className="p-6">Loading posts...</p>;
   if (!pendingPosts.length) return <p className="p-6">You have no pending posts.</p>;
@@ -136,8 +158,24 @@ export default function UserPending() {
             <input
               type="text"
               name="division"
-              placeholder="division"
+              placeholder="Division"
               value={formData.division}
+              onChange={handleChange}
+              style={modalStyles.input}
+            />
+            <input
+              type="text"
+              name="district"
+              placeholder="District"
+              value={formData.district}
+              onChange={handleChange}
+              style={modalStyles.input}
+            />
+            <input
+              type="text"
+              name="upazila"
+              placeholder="Upazila"
+              value={formData.upazila}
               onChange={handleChange}
               style={modalStyles.input}
             />
@@ -166,10 +204,16 @@ export default function UserPending() {
             />
 
             <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
-              <button style={modalStyles.cancelBtn} onClick={() => setEditPost(null)}>
+              <button
+                style={modalStyles.cancelBtn}
+                onClick={() => setEditPost(null)}
+              >
                 Cancel
               </button>
-              <button style={modalStyles.saveBtn} onClick={handleUpdatePost}>
+              <button
+                style={modalStyles.saveBtn}
+                onClick={handleUpdatePost}
+              >
                 Save
               </button>
             </div>

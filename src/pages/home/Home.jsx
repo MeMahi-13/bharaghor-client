@@ -1,42 +1,48 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
-import Navbar from "../../Components/Navbar";
+import React, { useState, useContext, useRef, useEffect, useMemo } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import Navbar from "../../Components/css/Navbar";
 import SwiperSlider from "../../Components/SwiperSlider";
 import HouseCategory from "../../Components/HouseCategory";
 import LocationFilter from "../../Components/LocationFilter";
 import PropertySection from "../../Components/PropertySection";
-import { AuthContext } from "../../context/AuthContext";
-import { usePosts } from "../../hooks/usePosts";
-import "./Home.css";
 import Contact from "./Contact";
+import { usePosts } from "../../hooks/usePosts";
 
 const Home = () => {
   const { user } = useContext(AuthContext);
+  const [searchQuery, setSearchQuery] = useState("");
   const { places, loading, toggleBookmark } = usePosts(user);
 
   const [selectedType, setSelectedType] = useState("All");
   const [selectedDivision, setSelectedDivision] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedUpazila, setSelectedUpazila] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
 
-  // Ref to property section for scrolling
   const propertyRef = useRef(null);
 
   // Filtered places
-  const filtered = places
-    .filter((p) => selectedType === "All" || p.houseType === selectedType)
-    .filter(
-      (p) =>
-        (!selectedDivision || p.division === selectedDivision) &&
-        (!selectedDistrict || p.district === selectedDistrict) &&
-        (!selectedUpazila || p.upazila === selectedUpazila)
-    )
-    .filter(
-      (p) =>
-        !searchQuery ||
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.location.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  const filtered = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return places
+      .filter((p) => selectedType === "All" || p.houseType === selectedType)
+      .filter(
+        (p) =>
+          (!selectedDivision || p.division === selectedDivision) &&
+          (!selectedDistrict || p.district === selectedDistrict) &&
+          (!selectedUpazila || p.upazila === selectedUpazila)
+      )
+      .filter((p) => {
+        if (!q) return true;
+        return (
+          p.title?.toLowerCase().includes(q) ||
+          p.division?.toLowerCase().includes(q) ||
+          p.district?.toLowerCase().includes(q) ||
+          p.upazila?.toLowerCase().includes(q)
+        );
+      });
+  }, [places, selectedType, selectedDivision, selectedDistrict, selectedUpazila, searchQuery]);
+
+  // Scroll to property section on filter/search change
   useEffect(() => {
     if (propertyRef.current) {
       propertyRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -52,16 +58,13 @@ const Home = () => {
     );
 
   return (
-    <div className="home-page fade-in">
+    <div className="home-page  fade-in">
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-      <div className="mx-auto max-w-6xl pt-10 px-4">
+      <div className="mx-auto max-w-6xl pt-20 px-4">
         <SwiperSlider />
 
-        <HouseCategory
-          selectedType={selectedType}
-          onSelectType={setSelectedType}
-        />
+        <HouseCategory selectedType={selectedType} onSelectType={setSelectedType} />
 
         <LocationFilter
           selectedDivision={selectedDivision}
@@ -72,7 +75,6 @@ const Home = () => {
           setSelectedUpazila={setSelectedUpazila}
         />
 
-        {/* Scroll target */}
         <div ref={propertyRef}>
           <PropertySection
             className="fade-in"
@@ -82,7 +84,9 @@ const Home = () => {
           />
         </div>
       </div>
-      <Contact/>
+
+
+      <Contact />
     </div>
   );
 };

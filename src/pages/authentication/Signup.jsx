@@ -61,7 +61,7 @@ function SignUp() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
-        <h2 className="text-3xl font-bold text-center text-blue-900 mb-8">
+        <h2 className="text-3xl font-bold text-center text-[#073032] mb-8">
           Create Account
         </h2>
 
@@ -71,7 +71,7 @@ function SignUp() {
             name="name"
             placeholder="Full Name"
             required
-            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#073032] outline-none"
           />
 
           <input
@@ -79,7 +79,7 @@ function SignUp() {
             name="email"
             placeholder="Email Address"
             required
-            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#073032] outline-none"
           />
 
           <input
@@ -87,7 +87,7 @@ function SignUp() {
             name="phone"
             placeholder="Phone Number"
             required
-            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#073032] outline-none"
           />
 
           <input
@@ -95,13 +95,13 @@ function SignUp() {
             name="password"
             placeholder="Password"
             required
-            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#073032] outline-none"
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all disabled:opacity-50"
+            className="w-full py-3 bg-[#073032] hover:bg-[#0c474a] cursor-pointer text-white rounded-xl font-semibold transition-all disabled:opacity-50"
           >
             {loading ? "Creating Account..." : "Register"}
           </button>
@@ -111,7 +111,7 @@ function SignUp() {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-blue-600 font-semibold hover:underline"
+            className="text-[#073032] font-semibold hover:underline"
           >
             Login
           </Link>

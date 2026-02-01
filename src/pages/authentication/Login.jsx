@@ -33,7 +33,7 @@ const handleSignIn = async (e) => {
     }
 
     if (response.ok) {
-      // ✅ Login successful
+      // Login successful
       setUser(data.user);
       Swal.fire({
         icon: "success",
@@ -44,7 +44,7 @@ const handleSignIn = async (e) => {
       });
       navigate("/");
     } else if (response.status === 401) {
-      // ❌ Unauthorized
+      // Unauthorized
       Swal.fire({
         icon: "error",
         title: "Login Failed",
@@ -71,7 +71,7 @@ const handleSignIn = async (e) => {
         </div>
 
         <div className="w-full md:w-1/2 mt-6 md:mt-0">
-          <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">Login</h2>
+          <h2 className="text-4xl font-bold text-center text-[#073032] mb-8">Login</h2>
 
           <form onSubmit={handleSignIn} className="space-y-4">
             {/* Phone input */}
@@ -102,14 +102,14 @@ const handleSignIn = async (e) => {
 
             <button
               type="submit"
-              className="w-full py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition"
+              className="w-full py-3 bg-[#073032] text-white rounded-lg font-bold hover:bg-[#0e5256] transition"
             >
               Login
             </button>
           </form>
 
           <p className="text-center mt-6 text-sm">
-            Don’t have an account? <Link to="/register" className="text-blue-600 font-semibold">Register</Link>
+            Don’t have an account? <Link to="/register" className="text-[#073032] font-semibold">Register</Link>
           </p>
         </div>
       </div>

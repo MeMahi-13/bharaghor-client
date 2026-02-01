@@ -5,11 +5,16 @@ import './index.css'
 import { router } from './router/Routes.jsx'
 import { AuthContext } from './context/AuthContext.jsx'
 import AuthProvider from './provider/AuthProvider.jsx'
+import { LanguageProvider } from './context/LanguageContext.jsx'
+
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
    <AuthProvider>
-     <RouterProvider router={router} />
+    <LanguageProvider>
+       <RouterProvider router={router} />
+    </LanguageProvider>
    </AuthProvider>
   </StrictMode>
 )

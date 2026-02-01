@@ -42,7 +42,6 @@ export const router = createBrowserRouter([
         path: "/card_details",
         element: <CardDetails />,
       },
-
       {
         path: "/details/:id",
         element: <PostDetails />,

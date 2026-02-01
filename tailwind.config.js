@@ -10,6 +10,10 @@ module.exports = {
       animation: {
         fadeInUp: 'fadeInUp 0.6s ease forwards',
       },
+       fontFamily: {
+        sans: ['Roboto', 'sans-serif'], 
+        bangla: ['"Tiro Bangla"', 'sans-serif'], 
+      },
     },
   },
 };

@@ -1,8 +1,9 @@
 import React from 'react';
-import Navbar from '../Components/css/Navbar';
+
 import Footer from '../Components/css/Footer';
 
 import { Outlet } from 'react-router';
+import Navbar from '../Components/css/Navbar';
 
 const HomeLayout = () => {
     return (

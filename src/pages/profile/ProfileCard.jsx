@@ -17,13 +17,12 @@ const ProfileCard = ({ user, refetchUser,isEditing, setIsEditing }) => {
       setUploading(true);
 
       const res = await fetch(
-        `${API_URL}/users/${user._id}/profile-image`,
+        `${API_URL}/users/${user._id}`,
         {
           method: "PATCH",
           body: formData,
         }
       );
-
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
 
