@@ -34,7 +34,7 @@ const Revenue = () => {
 
       {/* Revenue Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="flex items-center gap-4 p-5 bg-white rounded-xl shadow">
+        <div className="flex items-center gap-4 p-5 bg-[#EFF6FF] rounded-xl shadow">
           <FaChartLine className="text-3xl text-blue-600" />
           <div>
             <p className="text-sm text-gray-500">Annual Revenue</p>
@@ -42,7 +42,7 @@ const Revenue = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-4 p-5 bg-white rounded-xl shadow">
+        <div className="flex items-center gap-4 p-5 bg-[#F0FDF4] rounded-xl shadow">
           <FaCalendarAlt className="text-3xl text-green-600" />
           <div>
             <p className="text-sm text-gray-500">Current Month</p>
@@ -50,7 +50,7 @@ const Revenue = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-4 p-5 bg-white rounded-xl shadow">
+        <div className="flex items-center gap-4 p-5 bg-[#FEFBE8] rounded-xl shadow">
           <FaWallet className="text-3xl text-purple-600" />
           <div>
             <p className="text-sm text-gray-500">Avg Monthly Revenue</p>
