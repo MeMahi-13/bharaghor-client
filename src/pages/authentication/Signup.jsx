@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import useAuth from "../../hooks/useAuth"; 
 
 function SignUp() {
   const navigate = useNavigate();
+  const { logIn } = useAuth(); 
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     const formData = new FormData(e.target);
     const { name, email, phone, password } = Object.fromEntries(
       formData.entries()
     );
-
     try {
       const res = await fetch("https://yessghor-server.vercel.app/register", {
         method: "POST",
@@ -25,7 +25,7 @@ function SignUp() {
           name,
           email,
           phone,
-          password,         
+          password,
           role: "user",
           bookmarks: [],
           createdAt: new Date(),
@@ -38,15 +38,28 @@ function SignUp() {
         throw new Error(data.message || "Registration failed");
       }
 
+      // 
+      logIn({
+        _id: data.userId, 
+        name,
+        email,
+        phone,
+        role: "user",
+        bookmarks: [],
+        profileImage: "", 
+        nidStatus: "Not Submitted",
+      });
+
       Swal.fire({
         icon: "success",
         title: "Account Created",
-        text: "Your account has been created successfully!",
+        text: "You are now logged in!",
         timer: 2000,
         showConfirmButton: false,
       });
 
-      navigate("/login");
+      navigate("/");
+
     } catch (error) {
       Swal.fire({
         icon: "error",

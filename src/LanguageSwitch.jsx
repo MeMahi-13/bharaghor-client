@@ -1,5 +1,5 @@
 import React from "react";
-import { useLanguage } from "./context/LanguageContext";
+import useLanguage from "./hooks/useLanguage"; // ✅ default import
 
 export default function LanguageSwitch() {
   const { language, toggleLanguage } = useLanguage();
@@ -8,6 +8,7 @@ export default function LanguageSwitch() {
     const selected = e.target.value;
     if (selected !== language) toggleLanguage();
   };
+
   return (
     <div className="text-right">
       <select

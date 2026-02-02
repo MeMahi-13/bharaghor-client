@@ -118,7 +118,7 @@ const ProfileCard = ({ user, refetchUser,isEditing, setIsEditing }) => {
   <div className="flex justify-center w-full mt-6">
     <button
       onClick={() => setIsEditing(false)}
-      className="bg-[#0988E3] px-[153px] py-4 rounded-xl font-medium text-xl text-white"
+      className="bg-[#0988E3] py-4 rounded-xl font-medium text-xl text-white"
     >
       Save Change
     </button>

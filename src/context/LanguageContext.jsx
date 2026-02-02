@@ -1,11 +1,9 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 
-// Create context
-const LanguageContext = createContext();
+export const LanguageContext = createContext(null);
 
-// Provider component
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState("en"); 
+  const [language, setLanguage] = useState("en");
 
   const toggleLanguage = () => {
     setLanguage((prev) => (prev === "en" ? "bn" : "en"));
@@ -17,6 +15,3 @@ export const LanguageProvider = ({ children }) => {
     </LanguageContext.Provider>
   );
 };
-
-// Custom hook for easy access
-export const useLanguage = () => useContext(LanguageContext);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import axios from "axios";
-import { useLanguage } from "../../context/LanguageContext"; 
+import useLanguage  from "../../hooks/useLanguage"; 
 
 export default function Contact() {
   const { language } = useLanguage();

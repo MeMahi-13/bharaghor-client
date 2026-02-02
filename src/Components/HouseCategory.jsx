@@ -9,7 +9,7 @@ import {
   FaStore,
   FaShoppingBag,
 } from "react-icons/fa";
-import { useLanguage } from "../context/LanguageContext";
+import useLanguage  from "../hooks/useLanguage";
 
 const categories = [
   { name: "apartment", icon: <FaBuilding />, label: { en: "Apartment", bn: "ফ্ল্যাট" } },

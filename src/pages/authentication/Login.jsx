@@ -1,3 +1,4 @@
+
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Lottie from "lottie-react";
@@ -8,60 +9,51 @@ import password_icon from "../../assets/password.png";
 import { AuthContext } from "../../context/AuthContext";
 
 function Login() {
-  const { setUser } = useContext(AuthContext);
+  const { logIn } = useContext(AuthContext); // ✅ FIXED
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-const handleSignIn = async (e) => {
-  e.preventDefault();
+  const handleSignIn = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await fetch("https://yessghor-server.vercel.app/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: phone.trim(), password: password.trim() }),
-    });
-
-    let data;
-    // Try parsing JSON safely
     try {
-      data = await response.json();
-    } catch {
-      // If response is not JSON (HTML error page), throw
-      throw new Error(`Unexpected server response: ${response.status} ${response.statusText}`);
-    }
-
-    if (response.ok) {
-      // Login successful
-      setUser(data.user);
-      Swal.fire({
-        icon: "success",
-        title: "Login Successful!",
-        text: `Welcome back, ${data.user.name}!`,
-        timer: 1500,
-        showConfirmButton: false,
+      const response = await fetch("https://yessghor-server.vercel.app/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: phone.trim(),
+          password: password.trim(),
+        }),
       });
-      navigate("/");
-    } else if (response.status === 401) {
-      // Unauthorized
+
+      const data = await response.json();
+
+      if (response.ok) {
+        logIn(data.user); 
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: `Welcome back, ${data.user.name}!`,
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: data.message || "Invalid phone or password",
+        });
+      }
+    } catch (err) {
       Swal.fire({
         icon: "error",
-        title: "Login Failed",
-        text: data.message || "Invalid phone or password",
+        title: "Server Error",
+        text: err.message,
       });
-    } else {
-      throw new Error(data.message || "Login failed");
     }
-  } catch (err) {
-    console.error("Login error:", err);
-    Swal.fire({
-      icon: "error",
-      title: "Server Error",
-      text: err.message,
-    });
-  }
-};
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4">
