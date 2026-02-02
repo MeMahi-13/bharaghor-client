@@ -73,7 +73,7 @@ function AdminPendingPosts() {
                 {post.title}
               </h3>
               <p className="text-gray-600">
-                <span className="font-medium">Category:</span> {post.category}
+                <span className="font-medium">Category:</span> {post.houseType}
               </p>
               <p className="text-gray-600">
                 <span className="font-medium">Location:</span> {post.location}

@@ -10,6 +10,7 @@ import { BsBuildings } from "react-icons/bs";
 import { PiNotepadLight } from "react-icons/pi";
 import { BsBookmark } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
+import { FiUserCheck } from "react-icons/fi";
 function AdminSidebar() {
   const auth = useAuth();
   //  const user = auth?.user; 
@@ -64,6 +65,10 @@ function AdminSidebar() {
                 <a href="/admin/revenue" className="menu-item">
                   <span className="icon"><BsBuildings /></span>
                   Revenue
+                </a>
+                <a href="/admin/totaluser" className="menu-item">
+                  <span className="icon"><FiUserCheck /></span>
+                  Total Users
                 </a>
                 <a href="/" className="menu-item">
                   <span className="icon"><FaArrowLeft /></span>
