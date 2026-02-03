@@ -30,6 +30,8 @@ import Revenue from "../pages/admin/Revenue";
 import UserBookings from "../pages/booking/UserBookings";
 import Booking from "../pages/booking/booking";
 import TotalUser from "../pages/admin/TotalUser";
+import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -98,7 +100,7 @@ export const router = createBrowserRouter([
 
   {
     path: "/",
-    element: <DashboardLayout />,
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
     children: [
       {
         index: true,
@@ -140,7 +142,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    element: <AdminDashboardLayout />,
+    element: <AdminRoute><AdminDashboardLayout /></AdminRoute>,
      children: [
       {
         path: "/admin/dashboard",
