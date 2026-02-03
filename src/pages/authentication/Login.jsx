@@ -3,13 +3,13 @@ import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import Swal from "sweetalert2";
-import loginAnimation from "../../assets/Secure Login.json";
+import loginAnimation from "../../assets/real estate.json";
 import telephone_icon from "../../assets/telephone.png";
 import password_icon from "../../assets/password.png";
 import { AuthContext } from "../../context/AuthContext";
 
 function Login() {
-  const { logIn } = useContext(AuthContext); // ✅ FIXED
+  const { logIn } = useContext(AuthContext); 
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();

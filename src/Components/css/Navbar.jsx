@@ -153,12 +153,7 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
                 {language === "en" ? "Login" : "লগইন"}
               </Link>
 
-              <Link
-                to="/register"
-                className="text-sm font-medium text-[#1b4965]"
-              >
-                {language === "en" ? "Sign Up" : "সাইন আপ"}
-              </Link>
+             
             </>
           )}
         </div>

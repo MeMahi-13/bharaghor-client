@@ -542,7 +542,7 @@ paddingBottom:"8px",
     display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  justifyContent: "center", // 👈 vertical centering
+  justifyContent: "center", 
   textAlign: "center",
   color: "#667085",
   cursor: "pointer",
