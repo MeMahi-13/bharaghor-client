@@ -24,11 +24,11 @@ function ApprovedPosts({
       try {
         setLoading(true);
 
-        // 1️⃣ Fetch approved posts
+        //  Fetch approved posts
         const resPosts = await fetch(`${API_URL}/posts`);
         const postsData = await resPosts.json();
 
-        // 2️⃣ Fetch bookmarks (if logged in)
+        //  Fetch bookmarks (if logged in)
         let bookmarkedIds = [];
         if (user?._id) {
           const resBookmarks = await fetch(
@@ -40,7 +40,7 @@ function ApprovedPosts({
           }
         }
 
-        // 3️⃣ Normalize data
+        //  Normalize data
         const formattedData = postsData.map((post) => ({
           _id: post._id,
           title: post.title || "",
@@ -171,9 +171,7 @@ function ApprovedPosts({
 
 export default ApprovedPosts;
 
-/* ============================
-   Styles
-============================ */
+
 const styles = {
   heading: {
     fontSize: "28px",

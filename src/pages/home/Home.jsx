@@ -9,21 +9,54 @@ import Contact from "./Contact";
 import { usePosts } from "../../hooks/usePosts";
 
 const Home = () => {
+  const getLS = (key, fallback) => {
+  const value = localStorage.getItem(key);
+  return value !== null ? value : fallback;
+};
+
   const { user } = useContext(AuthContext);
-  const [searchQuery, setSearchQuery] = useState("");
+
+  const [searchQuery, setSearchQuery] = useState(
+    () => localStorage.getItem("searchQuery") || ""
+  );
+  const [selectedType, setSelectedType] = useState(
+    () => localStorage.getItem("selectedType") || "All"
+  );
+  const [selectedDivision, setSelectedDivision] = useState(
+    () => localStorage.getItem("selectedDivision") || ""
+  );
+  const [selectedDistrict, setSelectedDistrict] = useState(
+    () => localStorage.getItem("selectedDistrict") || ""
+  );
+  const [selectedUpazila, setSelectedUpazila] = useState(
+    () => localStorage.getItem("selectedUpazila") || ""
+  );
+  const [sortBy, setSortBy] = useState(() => getLS("sortBy", ""));
+
+  
+
   const { places, loading, toggleBookmark } = usePosts(user);
-
-  const [selectedType, setSelectedType] = useState("All");
-  const [selectedDivision, setSelectedDivision] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedUpazila, setSelectedUpazila] = useState("");
-
   const propertyRef = useRef(null);
 
-  // Filtered places
+  useEffect(() => {
+    localStorage.setItem("searchQuery", searchQuery);
+    localStorage.setItem("selectedType", selectedType);
+    localStorage.setItem("selectedDivision", selectedDivision);
+    localStorage.setItem("selectedDistrict", selectedDistrict);
+    localStorage.setItem("selectedUpazila", selectedUpazila);
+    localStorage.setItem("sortBy", sortBy);
+  }, [
+    searchQuery,
+    selectedType,
+    selectedDivision,
+    selectedDistrict,
+    selectedUpazila,
+     sortBy,
+  ]);
+
+  // 🔹 Filter + Sort
   const filtered = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    return places
+    let result = places
       .filter((p) => selectedType === "All" || p.houseType === selectedType)
       .filter(
         (p) =>
@@ -32,7 +65,8 @@ const Home = () => {
           (!selectedUpazila || p.upazila === selectedUpazila)
       )
       .filter((p) => {
-        if (!q) return true;
+        if (!searchQuery) return true;
+        const q = searchQuery.toLowerCase();
         return (
           p.title?.toLowerCase().includes(q) ||
           p.division?.toLowerCase().includes(q) ||
@@ -40,14 +74,42 @@ const Home = () => {
           p.upazila?.toLowerCase().includes(q)
         );
       });
-  }, [places, selectedType, selectedDivision, selectedDistrict, selectedUpazila, searchQuery]);
 
-  // Scroll to property section on filter/search change
+    // 🔹 SORTING LOGIC
+    if (sortBy === "lowToHigh") {
+      result = [...result].sort((a, b) => a.price - b.price);
+    }
+
+    if (sortBy === "highToLow") {
+      result = [...result].sort((a, b) => b.price - a.price);
+    }
+
+    return result;
+  }, [
+    places,
+    selectedType,
+    selectedDivision,
+    selectedDistrict,
+    selectedUpazila,
+    searchQuery,
+    sortBy,
+  ]);
+
   useEffect(() => {
     if (propertyRef.current) {
-      propertyRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      propertyRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
-  }, [selectedType, selectedDivision, selectedDistrict, selectedUpazila, searchQuery]);
+  }, [
+    selectedType,
+    selectedDivision,
+    selectedDistrict,
+    selectedUpazila,
+    searchQuery,
+    sortBy,
+  ]);
 
   if (loading)
     return (
@@ -58,13 +120,16 @@ const Home = () => {
     );
 
   return (
-    <div className="home-page  fade-in">
+    <div className="home-page fade-in">
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <div className="mx-auto max-w-6xl pt-20 px-4">
         <SwiperSlider />
 
-        <HouseCategory selectedType={selectedType} onSelectType={setSelectedType} />
+        <HouseCategory
+          selectedType={selectedType}
+          onSelectType={setSelectedType}
+        />
 
         <LocationFilter
           selectedDivision={selectedDivision}
@@ -75,6 +140,25 @@ const Home = () => {
           setSelectedUpazila={setSelectedUpazila}
         />
 
+        {/*  SORT UI */}
+        <div className="flex items-center mt-4 justify-end gap-2">
+          <p className="text-black text-xs font-medium md:text-[13px]">
+            Sort by:
+          </p>
+
+          <select
+  value={sortBy}
+  onChange={(e) => setSortBy(e.target.value)
+    
+  } className="border px-2 py-1 rounded text-sm"
+>
+  <option value="">Default</option>
+  <option value="lowToHigh">Price (Low → High)</option>
+  <option value="highToLow">Price (High → Low)</option>
+</select>
+
+        </div>
+
         <div ref={propertyRef}>
           <PropertySection
             className="fade-in"
@@ -84,7 +168,6 @@ const Home = () => {
           />
         </div>
       </div>
-
 
       <Contact />
     </div>

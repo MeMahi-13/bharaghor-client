@@ -288,9 +288,7 @@ function Post() {
             />
             
   </div>
-             </div>
-            
-        
+             </div>  
     <div>
       </div>       
            <div>
@@ -365,6 +363,50 @@ function Post() {
         className="w-full border border-[#0988E3] rounded-md px-3 py-2"
       />
     </div>
+      <div className="flex-1">
+  <label className="block text-sm font-medium mb-1">
+    Advance Rent (Months)
+  </label>
+
+  <select
+    name="AdvanceRent"
+    value={formData.AdvanceRent}
+    onChange={handleChange}
+    style={styles.input}
+  >
+    <option value="">Select advance rent</option>
+
+    {[1, 2, 3, 4, 5, 6].map((month) => (
+      <option key={month} value={month}>
+        {month} Month{month > 1 && "s"}
+      </option>
+    ))}
+  </select>
+</div>
+
+
+     <div className="flex-1">
+  <label className="block text-sm font-medium mb-1">
+    Notice Period (Months)
+  </label>
+
+  <select
+    name=" NoticePeriod"
+    value={formData. NoticePeriod}
+    onChange={handleChange}
+    style={styles.input}
+  >
+    <option value="">Select notice period</option>
+
+    {[1, 2, 3, 4, 5, 6].map((month) => (
+      <option key={month} value={month}>
+        {month} Month{month > 1 && "s"}
+      </option>
+    ))}
+  </select>
+</div>
+
+
   </div>
 
   {/* Full width textarea */}

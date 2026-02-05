@@ -9,6 +9,7 @@ import { FaBuilding } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { AuthContext } from "../context/AuthContext";
+import { LuShare2 } from "react-icons/lu";
 import Swal from "sweetalert2";
 
 function PropertyCard({ places = [], onToggleBookmark, showEdit = false }) {
@@ -118,6 +119,10 @@ function PropertyCard({ places = [], onToggleBookmark, showEdit = false }) {
             <Link to={`/details/${place._id}`} style={styles.detailsBtn}>
               <IoInformationCircleOutline size={20} color="#1b4965" />
             </Link>
+            <Link style={styles.linkBtn}>
+            <LuShare2 size={20} color="#1b4965"  />
+            </Link>
+            
           </div>
 
           {/* CONTENT */}
@@ -226,6 +231,15 @@ const styles = {
   detailsBtn: {
     position: "absolute",
     top: "50px",
+    right: "10px",
+    background: "#ffffff",
+    borderRadius: "50%",
+    padding: "6px",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+  },
+  linkBtn:{
+ position: "absolute",
+    top: "90px",
     right: "10px",
     background: "#ffffff",
     borderRadius: "50%",
