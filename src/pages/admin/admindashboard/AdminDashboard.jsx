@@ -23,7 +23,7 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const res = await fetch(`${API_URL}/admin/cards`);
+        const res = await fetch(`${API_URL}/admin/cards`, {credentials:"include"});
         const data = await res.json();
         if (res.ok) {
           const cardsWithIcons = data.map((card) => ({
@@ -44,7 +44,9 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`${API_URL}/admin/users`);
+        const res = await fetch(`${API_URL}/admin/users` ,{
+          credentials:"include"
+        });
         const data = await res.json();
         if (res.ok) setUsers(data);
       } catch (err) {

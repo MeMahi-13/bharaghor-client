@@ -10,7 +10,9 @@ export default function ApprovedPost() {
   useEffect(() => {
     if (!user?._id) return;
 
-    fetch(`https://yessghor-server.vercel.app/users/${user._id}/posts/approved`)
+    fetch(`https://yessghor-server.vercel.app/users/${user._id}/posts/approved`, {
+      credentials: "include"
+    })
       .then((res) => res.json())
       .then((data) => {
         const mappedPosts = data.map((post) => ({

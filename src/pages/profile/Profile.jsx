@@ -14,7 +14,9 @@ const Profile = () => {
 
     try {
       const res = await fetch(
-        `https://yessghor-server.vercel.app/users/${user._id}`
+        `https://yessghor-server.vercel.app/users/${user._id}`, {
+          credentials: "include"
+        }
       );
       if (!res.ok) throw new Error("Failed to fetch user info");
 

@@ -29,7 +29,9 @@ function UserInfo() {
 
     const fetchUser = async () => {
       try {
-        const res = await fetch(`${API_URL}/users/${user._id}`);
+        const res = await fetch(`${API_URL}/users/${user._id}`, {
+          credentials:"include"
+        });
         const data = await res.json();
 
         if (res.ok && data) {

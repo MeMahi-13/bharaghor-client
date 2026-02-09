@@ -8,7 +8,9 @@ function AdminUsers() {
 
   /* ================= Fetch users ================= */
   useEffect(() => {
-    fetch("https://yessghor-server.vercel.app//admin/users")
+    fetch("https://yessghor-server.vercel.app/admin/users",{
+      credentials: "include"
+    })
       .then((res) => res.json())
       .then((data) => {
         setUsers(data);
@@ -22,8 +24,9 @@ function AdminUsers() {
 
   /* ================= Approve / Reject ================= */
   const updateStatus = async (id, action) => {
-    await fetch(`https://yessghor-server.vercel.app//admin/users/${id}/${action}-nid`, {
+    await fetch(`https://yessghor-server.vercel.app/admin/users/${id}/${action}-nid`, {
       method: "PATCH",
+      credentials:"include"
     });
 
     setUsers((prev) =>

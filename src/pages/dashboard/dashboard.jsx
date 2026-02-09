@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  FaHome,
-  FaCheckCircle,
-  FaClock,
-  FaDollarSign,
-} from "react-icons/fa";
+import { FaHome, FaCheckCircle, FaClock, FaDollarSign } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import Saved from "../Saved/Saved";
 
@@ -21,9 +16,10 @@ const Dashboard = () => {
 
     const fetchStats = async () => {
       try {
-        const res = await fetch(
-          `${API_URL}/dashboard/stats/${user._id}`
-        );
+        const res = await fetch(`${API_URL}/dashboard/stats/${user._id}`, {
+          credentials: "include",
+        });
+
         if (!res.ok) throw new Error("Failed to fetch stats");
         const data = await res.json();
         setStats(data);
@@ -110,9 +106,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">{card.title}</p>
-                <h3 className="text-2xl font-bold mt-2">
-                  {card.value}
-                </h3>
+                <h3 className="text-2xl font-bold mt-2">{card.value}</h3>
               </div>
               <div
                 className={`h-12 w-12 flex items-center justify-center rounded-full ${card.iconBg} ${card.iconColor} text-xl`}

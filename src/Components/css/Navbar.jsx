@@ -54,7 +54,6 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
     const timer = setTimeout(() => {
       setSearchQuery?.(localQuery.trim());
     }, 400);
-
     return () => clearTimeout(timer);
   }, [localQuery, setSearchQuery]);
 
@@ -62,8 +61,8 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
     <nav className="fixed top-0 w-full z-50 bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-6 py-3">
 
-        {/* TOP ROW */}
-        <div className="flex justify-between items-center gap-4">
+        {/* ================= MAIN ROW ================= */}
+        <div className="flex items-center justify-between gap-4">
 
           {/* LOGO */}
           <img
@@ -73,31 +72,36 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
             onClick={() => navigate("/")}
           />
 
+        
           {/* RIGHT SIDE */}
-          <div className="flex flex-wrap items-center gap-3 justify-end">
+          <div className="flex items-center gap-3">
+             <div className="hidden md:flex flex-1 justify-center">
+            <input
+              type="text"
+              placeholder={
+                language === "en"
+                  ? "Search properties..."
+                  : "প্রোপার্টি খুঁজুন..."
+              }
+              value={localQuery}
+              onChange={(e) => setLocalQuery(e.target.value)}
+              className="w-60 h-9 px-3 rounded-lg border border-[#1b4965] text-sm outline-none focus:ring-2 focus:ring-[#1b4965]/40"
+            />
+          </div>
 
-            {/* AUTH */}
+
             {user ? (
               <>
                 {/* ADD POST */}
                 <button
                   onClick={handleAddProperty}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg text-white bg-[#1b4965] hover:bg-[#073032]"
+                  className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg text-white bg-[#1b4965] hover:bg-[#073032] transition"
                 >
                   <FaPlus size={14} />
-                  {language === "en" ? "Add Post"  : "পোস্ট যুক্ত করুন"}
+                  {language === "en" ? "Add To-let" : "ভাড়া দিন"}
                 </button>
 
-                {/* LANGUAGE */}
                 <LanguageSwitch />
-
-                {/* LOGOUT */}
-                <LuLogOut
-                  size={20}
-                  onClick={handleLogout}
-                  className="cursor-pointer text-[#073032] hover:text-[#1b4965]"
-                  title="Logout"
-                />
 
                 {/* PROFILE */}
                 <div ref={modalRef} className="relative">
@@ -105,11 +109,11 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
                     src={user.profileImage || "/images/Ellipse 116.png"}
                     alt="Profile"
                     className="w-10 h-10 rounded-full object-cover cursor-pointer ring-2 ring-[#E3D0B3]"
-                    onClick={() => setShowProfileModal((p) => !p)}
+                    onClick={() => setShowProfileModal((prev) => !prev)}
                   />
 
                   {showProfileModal && (
-                    <div className="absolute right-0 mt-3 w-44 bg-white rounded-xl shadow-lg border border-[#E3D0B3]">
+                    <div className="absolute right-0 mt-3 w-44 bg-white rounded-xl shadow-lg border border-[#E3D0B3] overflow-hidden">
                       <MenuItem onClick={() => navigate("/dashboard/profile")}>
                         {language === "en" ? "My Profile" : "প্রোফাইল"}
                       </MenuItem>
@@ -130,8 +134,7 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
                 <LanguageSwitch />
                 <Link
                   to="/login"
-                  className="text-sm border px-4 py-2 rounded-lg
- font-medium bg-[#073032] text-white hover:text-[#ecf0f3]"
+                  className="text-sm border px-4 py-2 rounded-lg font-medium bg-[#073032] text-white hover:bg-[#1b4965]"
                 >
                   {language === "en" ?"Login"   : "লগইন"}
                 </Link>
@@ -140,8 +143,8 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
           </div>
         </div>
 
-        {/* SEARCH ROW */}
-        <div className="mt-3 sm:mt-0  sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full sm:w-auto">
+        {/* ================= MOBILE SEARCH ================= */}
+        <div className="mt-3 md:hidden">
           <input
             type="text"
             placeholder={
@@ -151,9 +154,10 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
             }
             value={localQuery}
             onChange={(e) => setLocalQuery(e.target.value)}
-            className="w-full sm:w-64 h-9 px-3 rounded-lg border border-[#1b4965] text-sm outline-none focus:ring-2 focus:ring-[#1b4965]/40"
+            className="w-full h-9 px-3 rounded-lg border border-[#1b4965] text-sm outline-none focus:ring-2 focus:ring-[#1b4965]/40"
           />
         </div>
+
       </div>
     </nav>
   );

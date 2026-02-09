@@ -11,7 +11,9 @@ const Nidverification = () => {
 
   //  Fetch ONLY pending NID users
   useEffect(() => {
-    fetch("https://yessghor-server.vercel.app/users")
+    fetch("https://yessghor-server.vercel.app/users", {
+      credentials:"include"
+    })
       .then((res) => res.json())
       .then((data) => {
         const pendingUsers = data.filter(

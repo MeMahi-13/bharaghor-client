@@ -15,7 +15,11 @@ function Saved() {
 
     const fetchBookmarks = async () => {
       try {
-        const res = await fetch(`${API_URL}/users/${user._id}/bookmarks`);
+        const res = await fetch(`${API_URL}/users/${user._id}/bookmarks`,
+          {
+            credentials:"include"
+          }
+        );
         const data = await res.json();
 
         const formatted = data.map(post => ({
@@ -47,6 +51,7 @@ function Saved() {
     try {
       await fetch(`${API_URL}/users/${user._id}/bookmark/${id}`, {
         method: "PATCH",
+        credentials: "include"
       });
 
       setPlaces(prev => prev.filter(p => p._id !== id));
