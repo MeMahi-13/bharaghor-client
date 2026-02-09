@@ -45,9 +45,9 @@ const handleSignIn = async (e) => {
 
       // Conditional navigation based on role
       if (data.user.role === "admin") {
-        navigate("/admin/dashboard"); // admin route
+        navigate("/admin/dashboard"); 
       } else {
-        navigate("/"); // regular user route
+        navigate("/"); 
       }
     } else {
       Swal.fire({

@@ -7,6 +7,8 @@ import LocationFilter from "../../Components/LocationFilter";
 import PropertySection from "../../Components/PropertySection";
 import Contact from "./Contact";
 import { usePosts } from "../../hooks/usePosts";
+import PropertyCardSkeleton from "../../Components/PropertyCardSkeleton";
+
 
 const Home = () => {
   const getLS = (key, fallback) => {
@@ -35,7 +37,7 @@ const Home = () => {
 
   
 
-  const { places, loading, toggleBookmark } = usePosts(user);
+  const { places,loading, toggleBookmark } = usePosts(user);
   const propertyRef = useRef(null);
 
   useEffect(() => {
@@ -54,7 +56,7 @@ const Home = () => {
      sortBy,
   ]);
 
-  // 🔹 Filter + Sort
+  //  Filter + Sort
   const filtered = useMemo(() => {
     let result = places
       .filter((p) => selectedType === "All" || p.houseType === selectedType)
@@ -75,7 +77,7 @@ const Home = () => {
         );
       });
 
-    // 🔹 SORTING LOGIC
+    //  SORTING LOGIC
     if (sortBy === "lowToHigh") {
       result = [...result].sort((a, b) => a.price - b.price);
     }
@@ -111,13 +113,7 @@ const Home = () => {
     sortBy,
   ]);
 
-  if (loading)
-    return (
-      <div className="loader-container">
-        <div className="loader"></div>
-        <p className="loader-text">Loading approved posts...</p>
-      </div>
-    );
+ 
 
   return (
     <div className="home-page fade-in">
@@ -159,14 +155,20 @@ const Home = () => {
 
         </div>
 
-        <div ref={propertyRef}>
-          <PropertySection
-            className="fade-in"
-            places={filtered}
-            onToggleBookmark={toggleBookmark}
-            animated
-          />
-        </div>
+       <div ref={propertyRef}>
+  {loading ? (
+    <PropertyCardSkeleton count={6} />
+  ) : (
+    <PropertySection
+      className="fade-in"
+      places={filtered}
+      onToggleBookmark={toggleBookmark}
+      animated
+    />
+  )}
+</div>
+
+
       </div>
 
       <Contact />

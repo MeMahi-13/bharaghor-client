@@ -50,9 +50,11 @@ const rules=[
     try {
       const res = await fetch("https://yessghor-server.vercel.app/register", {
         method: "POST",
+        credentials:"include",
         headers: {
           "Content-Type": "application/json",
         },
+
         body: JSON.stringify({
           name,
           email,

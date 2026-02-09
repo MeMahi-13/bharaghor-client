@@ -1,24 +1,31 @@
 import React from "react";
-import useLanguage from "./hooks/useLanguage"; // ✅ default import
+import useLanguage from "./hooks/useLanguage";
 
 export default function LanguageSwitch() {
   const { language, toggleLanguage } = useLanguage();
 
-  const handleChange = (e) => {
-    const selected = e.target.value;
-    if (selected !== language) toggleLanguage();
-  };
+  const isEnglish = language === "en";
 
   return (
-    <div className="text-right">
-      <select
-        value={language}
-        onChange={handleChange}
-        className="text-sm px-2 py-2 bg-[#1b4965] text-white rounded-lg font-semibold hover:bg-[#073032] focus:outline-none"
+    <div className="flex justify-end">
+      <button
+        onClick={toggleLanguage}
+        className="relative w-20 h-8 border border-gray-300 rounded-full focus:outline-none"
       >
-        <option value="en">English</option>
-        <option value="bn">বাংলা</option>
-      </select>
+        {/* Toggle knob */}
+        <span
+          className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-gray-700 transition-transform duration-300
+            ${isEnglish ? "translate-x-0" : "translate-x-10"}`}
+        />
+
+        {/* Labels */}
+        <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[11px] font-medium text-gray-600">
+          EN
+        </span>
+        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] font-medium text-gray-600">
+          BN
+        </span>
+      </button>
     </div>
   );
 }
