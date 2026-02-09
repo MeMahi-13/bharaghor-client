@@ -85,7 +85,7 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
                   className="flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg text-white bg-[#1b4965] hover:bg-[#073032]"
                 >
                   <FaPlus size={14} />
-                  {language === "en" ? "Add Post" : "পোস্ট যুক্ত করুন"}
+                  {language === "en" ? "Add Post"  : "পোস্ট যুক্ত করুন"}
                 </button>
 
                 {/* LANGUAGE */}
@@ -133,7 +133,7 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
                   className="text-sm border px-4 py-2 rounded-lg
  font-medium bg-[#073032] text-white hover:text-[#ecf0f3]"
                 >
-                  {language === "en" ? "Login" : "লগইন"}
+                  {language === "en" ?"Login"   : "লগইন"}
                 </Link>
               </>
             )}

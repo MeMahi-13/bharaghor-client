@@ -14,15 +14,15 @@ export default function LanguageSwitch() {
       >
         {/* Toggle knob */}
         <span
-          className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-gray-700 transition-transform duration-300
+          className={`absolute top-1 left-2 w-6 h-6 rounded-full bg-gray-700 transition-transform duration-300
             ${isEnglish ? "translate-x-0" : "translate-x-10"}`}
         />
 
         {/* Labels */}
-        <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[11px] font-medium text-gray-600">
+        <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[11px] font-medium text-gray-700">
           EN
         </span>
-        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] font-medium text-gray-600">
+        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] font-medium text-gray-700">
           BN
         </span>
       </button>

@@ -120,14 +120,7 @@ const Home = () => {
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <div className="mx-auto max-w-6xl pt-20 px-4">
-        <SwiperSlider />
-
-        <HouseCategory
-          selectedType={selectedType}
-          onSelectType={setSelectedType}
-        />
-
-        <LocationFilter
+         <LocationFilter
           selectedDivision={selectedDivision}
           selectedDistrict={selectedDistrict}
           selectedUpazila={selectedUpazila}
@@ -135,6 +128,14 @@ const Home = () => {
           setSelectedDistrict={setSelectedDistrict}
           setSelectedUpazila={setSelectedUpazila}
         />
+        <SwiperSlider />
+
+        <HouseCategory
+          selectedType={selectedType}
+          onSelectType={setSelectedType}
+        />
+
+       
 
         {/*  SORT UI */}
         <div className="flex items-center mt-4 justify-end gap-2">

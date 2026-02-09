@@ -1,199 +1,210 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import useAuth from "../../hooks/useAuth"; 
-import { TiTickOutline } from "react-icons/ti";
+import useAuth from "../../hooks/useAuth";
 import { TiTick } from "react-icons/ti";
-import loginAnimation from "../../assets/real estate.json";
-import { PiEyeLight } from "react-icons/pi";
-import { PiEyeSlash } from "react-icons/pi";
 import { RxCross2 } from "react-icons/rx";
+import { PiEyeLight, PiEyeSlash } from "react-icons/pi";
 import Lottie from "lottie-react";
+import loginAnimation from "../../assets/real estate.json";
+
 function SignUp() {
   const navigate = useNavigate();
-  const { logIn } = useAuth(); 
+  const { logIn } = useAuth();
+
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
-const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-const rules=[
-  {
-  label:"At least 8 character",
-  test:(value)=>value.length>=8
-},
-{
-  label:"At least one Uppercase letter",
-  test:(value)=>/[A-Z]/.test(value)
-},
-{
-  label:"At least one Lowercase letter",
-  test:(value)=>/[a-z]/.test(value)
-},
-{
-  label:"At least one Number",
-  test:(value)=>/[0-9]/.test(value)
-},
-{
-  label:"At least one Special character",
-  test:(value)=>/[!@#$%^&*(){}:"|<>?,.]/.test(value)
-},
+  const rules = [
+    { label: "At least 8 characters", test: (v) => v.length >= 8 },
+    { label: "At least one uppercase letter", test: (v) => /[A-Z]/.test(v) },
+    { label: "At least one lowercase letter", test: (v) => /[a-z]/.test(v) },
+    { label: "At least one number", test: (v) => /[0-9]/.test(v) },
+    {
+      label: "At least one special character",
+      test: (v) => /[!@#$%^&*(){}:"|<>?,.]/.test(v),
+    },
+  ];
 
-
-]
   const handleSignUp = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+
+  console.log("REGISTER CLICKED");
+
+ 
+  const confirm = await Swal.fire({
+    title: "Confirm Registration",
+    text: "Do you want to create your account?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Yes, Register",
+    cancelButtonText: "Cancel",
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  
+  setLoading(true);
+
+  try {
     const formData = new FormData(e.target);
-    const { name, email, phone, password } = Object.fromEntries(
-      formData.entries()
-    );
-    try {
-      const res = await fetch("https://yessghor-server.vercel.app/register", {
+    const body = Object.fromEntries(formData.entries());
+
+    const res = await fetch(
+      "https://yessghor-server.vercel.app/register",
+      {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          password,
-          role: "user",
-          bookmarks: [],
-          createdAt: new Date(),
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Registration failed");
+        credentials:"include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
       }
+    );
 
-      // 
-      logIn({
-        _id: data.userId, 
-        name,
-        email,
-        phone,
-        role: "user",
-        bookmarks: [],
-        profileImage: "", 
-        nidStatus: "Not Submitted",
-      });
+    const data = await res.json();
 
-      Swal.fire({
-        icon: "success",
-        title: "Account Created",
-        text: "You are now logged in!",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+    Swal.fire("Success", "Account created", "success");
+  } catch (err) {
+    Swal.fire("Error", err.message, "error");
+  } finally {
+    setLoading(false);
+  }
+};
 
-      navigate("/");
 
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Registration Failed",
-        text: error.message,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-4xl bg-white rounded-xl shadow-2xl p-8 flex flex-col md:flex-row items-center md:gap-8">
+        {/* Animation */}
         <div className="w-full md:w-1/2">
           <Lottie animationData={loginAnimation} loop />
         </div>
+
+        {/* Form */}
         <div className="w-full md:w-1/2 mt-6 md:mt-0">
-        <h2 className="text-3xl font-bold text-center text-[#073032] mb-8">
-          Create Account
-        </h2>
+          <h2 className="text-3xl font-bold text-center text-[#073032] mb-8">
+            Create Account
+          </h2>
 
-        <form onSubmit={handleSignUp} className="space-y-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            required
-            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#073032] outline-none"
-          />
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              required
+              className="w-full px-4 py-3 border rounded-lg outline-none focus:ring-2 focus:ring-[#073032]"
+            />
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            required
-            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#073032] outline-none"
-          />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              required
+              className="w-full px-4 py-3 border rounded-lg outline-none focus:ring-2 focus:ring-[#073032]"
+            />
 
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number"
-            required
-            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#073032] outline-none"
-          />
-<div>
-   <div className="relative">
-  <input
-    type={showPassword ? "text" : "password"}
-    name="password"
-    placeholder="Password"
-    required
-    onChange={(e) => setPassword(e.target.value)}
-    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#073032] outline-none pr-12"
-  />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone Number"
+              required
+              className="w-full px-4 py-3 border rounded-lg outline-none focus:ring-2 focus:ring-[#073032]"
+            />
 
-  <button
-    type="button"
-    onClick={() => setShowPassword(!showPassword)}
-    className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-gray-500 cursor-pointer"
-  >
-    {showPassword ? <PiEyeLight /> : <PiEyeSlash />}
-  </button>
-</div>
+            {/* Password */}
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                required
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border rounded-lg outline-none pr-12 focus:ring-2 focus:ring-[#073032]"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-gray-500"
+              >
+                {showPassword ? <PiEyeLight /> : <PiEyeSlash />}
+              </button>
+            </div>
 
-          {
-            rules.map((rule,i)=>{
-              const isValid=rule.test(password)
-return(
-  <div key={i}>
-<span className="flex items-center gap-2 mt-1">
-  {isValid?<TiTick className="text-green-900" />:<RxCross2 className="text-red-900" />}
-  {rule.label}
-</span>
-  </div>
-)
-            })
-          }
-</div>
-         
+            {/* Confirm Password */}
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                required
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={`w-full px-4 py-3 border rounded-lg outline-none pr-12 ${
+                  confirmPassword && password !== confirmPassword
+                    ? "border-red-500"
+                    : "focus:ring-2 focus:ring-[#073032]"
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() =>
+                  setShowConfirmPassword(!showConfirmPassword)
+                }
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-gray-500"
+              >
+                {showConfirmPassword ? <PiEyeLight /> : <PiEyeSlash />}
+              </button>
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-[#073032] hover:bg-[#0c474a] cursor-pointer text-white rounded-xl font-semibold transition-all disabled:opacity-50"
-          >
-            {loading ? "Creating Account..." : "Register"}
-          </button>
-        </form>
+            {/* Match indicator */}
+            {confirmPassword && (
+              <div className="flex items-center gap-2 text-sm">
+                {password === confirmPassword ? (
+                  <TiTick className="text-green-700" />
+                ) : (
+                  <RxCross2 className="text-red-700" />
+                )}
+                Passwords must match
+              </div>
+            )}
 
-        <p className="text-center text-sm mt-6">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-[#073032] font-semibold hover:underline"
-          >
-            Login
-          </Link>
-        </p>
+            {/* Rules */}
+            {rules.map((rule, i) => {
+              const isValid = rule.test(password);
+              return (
+                <div key={i} className="flex items-center gap-2 text-sm">
+                  {isValid ? (
+                    <TiTick className="text-green-700" />
+                  ) : (
+                    <RxCross2 className="text-red-700" />
+                  )}
+                  {rule.label}
+                </div>
+              );
+            })}
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-[#073032] hover:bg-[#0c474a] text-white rounded-xl font-semibold transition-all disabled:opacity-50"
+            >
+              {loading ? "Creating Account..." : "Register"}
+            </button>
+          </form>
+
+          <p className="text-center text-sm mt-6">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-[#073032] font-semibold hover:underline"
+            >
+              Login
+            </Link>
+          </p>
         </div>
-        
       </div>
     </div>
   );

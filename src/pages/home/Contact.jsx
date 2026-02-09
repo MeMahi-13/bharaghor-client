@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import axios from "axios";
-import useLanguage  from "../../hooks/useLanguage"; 
+import useLanguage from "../../hooks/useLanguage";
 
 export default function Contact() {
   const { language } = useLanguage();
@@ -31,13 +31,14 @@ export default function Contact() {
         "https://yessghor-server.vercel.app/contact",
         formData
       );
+
       if (res.data.success) {
         setSuccess(
           language === "en"
             ? "Message sent successfully!"
             : "মেসেজ সফলভাবে পাঠানো হয়েছে!"
         );
-        setFormData({ name: "", email: "", message: "" }); // reset form
+        setFormData({ name: "", email: "", message: "" });
       }
     } catch (err) {
       console.error(err);
@@ -84,14 +85,35 @@ export default function Contact() {
 
           <div className="flex items-center gap-4">
             <FaMapMarkerAlt className="text-primary text-lg" />
-            <span className="text-gray-600">Dhaka, Bangladesh</span>
+            <span className="text-gray-600">Block#A, Road#3, House#127 (Green View) (1st Floor), Mirpur#12, Dhaka#1216</span>
           </div>
 
-          <p className="text-gray-500 text-sm pt-4">
+          <p className="text-gray-500 text-sm pt-2">
             {language === "en"
               ? "We usually respond within 24 hours."
               : "আমরা সাধারণত ২৪ ঘণ্টার মধ্যে উত্তর দিই।"}
           </p>
+
+          {/* Google Map */}
+          <div className="pt-4">
+  <h4 className="text-sm font-semibold text-gray-700 mb-2">
+    {language === "en" ? "Our Office Location" : "আমাদের অফিস লোকেশন"}
+  </h4>
+
+  <div className="w-full h-64 rounded-lg overflow-hidden ">
+    <iframe
+      title="Office Location"
+      src="https://www.google.com/maps?q=Block%20A,%20Road%203,%20House%20127,%20Mirpur%2012,%20Dhaka%201216&output=embed"
+      width="100%"
+      height="100%"
+      style={{ border: 0 }}
+      allowFullScreen
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </div>
+</div>
+
         </div>
 
         {/* Contact Form */}
@@ -111,10 +133,8 @@ export default function Contact() {
               type="text"
               value={formData.name}
               onChange={handleChange}
-              placeholder={
-                language === "en" ? "Your name" : "আপনার নাম লিখুন"
-              }
-              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-primary"
             />
           </div>
 
@@ -127,10 +147,8 @@ export default function Contact() {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder={
-                language === "en" ? "your@email.com" : "আপনার ইমেইল লিখুন"
-              }
-              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-primary"
             />
           </div>
 
@@ -143,19 +161,15 @@ export default function Contact() {
               rows="4"
               value={formData.message}
               onChange={handleChange}
-              placeholder={
-                language === "en"
-                  ? "Tell us what you're looking for..."
-                  : "আপনি কী খুঁজছেন তা আমাদের জানান..."
-              }
-              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-primary"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-[#073032] cursor-pointer hover:text-white text-[#073032] border-2 border-[#073032] py-2.5 rounded-lg font-medium hover:opacity-90 transition"
+            className="w-full bg-primary border-2 border-[#073032] py-2.5 rounded-lg font-medium hover:bg-[#073032] hover:text-white transition"
           >
             {loading
               ? language === "en"
