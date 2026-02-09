@@ -98,7 +98,7 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg text-white bg-[#1b4965] hover:bg-[#073032] transition"
               >
                 <FaPlus size={14} />
-                {language === "en" ? "Add Post" : "পোস্ট যুক্ত করুন"}
+                {language === "en" ? "Add To-let" : "ভাড়া দিন"}
               </button>
 
               {/* LANGUAGE */}

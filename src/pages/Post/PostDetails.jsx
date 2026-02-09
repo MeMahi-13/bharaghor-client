@@ -34,7 +34,6 @@ const PostDetails = () => {
 
       await fetch(`https://yessghor-server.vercel.app/posts/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(place),
       });
 

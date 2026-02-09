@@ -14,7 +14,9 @@ const TotalUser = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`${API_URL}/admin/users`);
+        const res = await fetch(`${API_URL}/admin/users` ,
+          {credentials:"include"}
+        );
         const data = await res.json();
         if (res.ok) {
           setUsers(data);

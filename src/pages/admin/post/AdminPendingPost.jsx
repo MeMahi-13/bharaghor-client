@@ -8,7 +8,9 @@ function AdminPendingPosts() {
 
   // Fetch all pending posts
   useEffect(() => {
-    fetch("https://yessghor-server.vercel.app/admin/posts/pending")
+    fetch("https://yessghor-server.vercel.app/admin/posts/pending", {
+      credentials:"include"
+    })
       .then((res) => res.json())
       .then((data) => {
         setPosts(data);

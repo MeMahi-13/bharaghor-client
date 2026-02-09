@@ -1,4 +1,3 @@
-
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Lottie from "lottie-react";
@@ -9,51 +8,63 @@ import password_icon from "../../assets/password.png";
 import { AuthContext } from "../../context/AuthContext";
 
 function Login() {
-  const { logIn } = useContext(AuthContext); 
+  const { logIn } = useContext(AuthContext);
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSignIn = async (e) => {
-    e.preventDefault();
+const handleSignIn = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await fetch("https://yessghor-server.vercel.app/login", {
+  try {
+    const response = await fetch(
+      "https://yessghor-server.vercel.app/login",
+      {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           phone: phone.trim(),
           password: password.trim(),
         }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      logIn(data.user);
+
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful!",
+        text: `Welcome, ${data.user.name}!`,
+        timer: 1500,
+        showConfirmButton: false,
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        logIn(data.user); 
-        Swal.fire({
-          icon: "success",
-          title: "Login Successful!",
-          text: `Welcome, ${data.user.name}!`,
-          timer: 1500,
-          showConfirmButton: false,
-        });
-        navigate("/");
+      // Conditional navigation based on role
+      if (data.user.role === "admin") {
+        navigate("/admin/dashboard"); // admin route
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Login Failed",
-          text: data.message || "Invalid phone or password",
-        });
+        navigate("/"); // regular user route
       }
-    } catch (err) {
+    } else {
       Swal.fire({
         icon: "error",
-        title: "Server Error",
-        text: err.message,
+        title: "Login Failed",
+        text: data.message || "Invalid phone or password",
       });
     }
-  };
+  } catch (err) {
+    Swal.fire({
+      icon: "error",
+      title: "Server Error",
+      text: err.message,
+    });
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4">
@@ -63,12 +74,18 @@ function Login() {
         </div>
 
         <div className="w-full md:w-1/2 mt-6 md:mt-0">
-          <h2 className="text-4xl font-bold text-center text-[#073032] mb-8">Login</h2>
+          <h2 className="text-4xl font-bold text-center text-[#073032] mb-8">
+            Login
+          </h2>
 
           <form onSubmit={handleSignIn} className="space-y-4">
             {/* Phone input */}
             <div className="relative">
-              <img src={telephone_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5" alt="phone" />
+              <img
+                src={telephone_icon}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5"
+                alt="phone"
+              />
               <input
                 type="text"
                 placeholder="Phone Number"
@@ -81,7 +98,11 @@ function Login() {
 
             {/* Password input */}
             <div className="relative">
-              <img src={password_icon} className="absolute left-3 top-1/2 -translate-y-1/2 w-5" alt="password" />
+              <img
+                src={password_icon}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5"
+                alt="password"
+              />
               <input
                 type="password"
                 placeholder="Password"
@@ -101,7 +122,10 @@ function Login() {
           </form>
 
           <p className="text-center mt-6 text-sm">
-            Don’t have an account? <Link to="/register" className="text-[#073032] font-semibold">Register</Link>
+            Don’t have an account?{" "}
+            <Link to="/register" className="text-[#073032] font-semibold">
+              Register
+            </Link>
           </p>
         </div>
       </div>

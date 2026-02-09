@@ -9,19 +9,19 @@ export const usePosts = (user) => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const resPosts = await fetch(`${API_URL}/posts`);
+        const resPosts = await fetch(`${API_URL}/posts`
+        );
         const postsData = await resPosts.json();
-
         let bookmarkedIds = [];
         if (user?._id) {
           const resBookmarks = await fetch(
-            `${API_URL}/users/${user._id}/bookmarks`
+            `${API_URL}/users/${user._id}/bookmarks`,
+            {credentials:"include"}
           );
           if (resBookmarks.ok) {
             bookmarkedIds = (await resBookmarks.json()).map((p) => p._id);
           }
         }
-
         const formatted = postsData.map((p) => ({
           _id: p._id,
           title: p.title,
@@ -52,12 +52,12 @@ export const usePosts = (user) => {
 
   const toggleBookmark = async (postId) => {
     if (!user?._id) return alert("Login to bookmark");
-
     const res = await fetch(
       `${API_URL}/users/${user._id}/bookmark/${postId}`,
-      { method: "PATCH" }
+      { method: "PATCH" ,
+        credentials:"include",
+      }
     );
-
     const data = await res.json();
 
     setPlaces((prev) =>

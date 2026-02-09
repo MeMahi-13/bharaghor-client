@@ -17,7 +17,9 @@ export default function UserPending() {
     if (!user?._id) return;
 
     setLoading(true);
-    fetch(`https://yessghor-server.vercel.app/users/${user._id}/posts/pending`)
+    fetch(`https://yessghor-server.vercel.app/users/${user._id}/posts/pending`,{
+      credentials:"include"
+    })
       .then((res) => res.json())
       .then((data) => {
         const mappedPosts = data.map((post) => ({

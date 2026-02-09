@@ -12,10 +12,8 @@ const ProfileCard = ({ user, refetchUser,isEditing, setIsEditing }) => {
 
     const formData = new FormData();
     formData.append("profileImage", file); 
-
     try {
       setUploading(true);
-
       const res = await fetch(
         `${API_URL}/users/${user._id}`,
         {
@@ -25,9 +23,7 @@ const ProfileCard = ({ user, refetchUser,isEditing, setIsEditing }) => {
       );
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-
       refetchUser(); 
-
       Swal.fire({
         icon: "success",
         title: "Uploaded!",
@@ -37,7 +33,6 @@ const ProfileCard = ({ user, refetchUser,isEditing, setIsEditing }) => {
       });
     } catch (err) {
       console.error("Profile upload error:", err.message);
-
       Swal.fire({
         icon: "error",
         title: "Upload Failed",
@@ -47,7 +42,6 @@ const ProfileCard = ({ user, refetchUser,isEditing, setIsEditing }) => {
       setUploading(false);
     }
   };
-
   return (
     <div style={styles.pageWrapper}>
       <div style={styles.card}>
