@@ -79,7 +79,7 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
             <input
               type="text"
               placeholder={
-                language === "en"
+                language === "bn"
                   ? "Search properties..."
                   : "প্রোপার্টি খুঁজুন..."
               }
@@ -98,7 +98,7 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
                   className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg text-white bg-[#1b4965] hover:bg-[#073032] transition"
                 >
                   <FaPlus size={14} />
-                  {language === "en" ? "Add To-let" : "ভাড়া দিন"}
+                  {language === "bn" ? "Add To-let" : "ভাড়া দিন"}
                 </button>
 
                 <LanguageSwitch />
@@ -115,15 +115,15 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
                   {showProfileModal && (
                     <div className="absolute right-0 mt-3 w-44 bg-white rounded-xl shadow-lg border border-[#E3D0B3] overflow-hidden">
                       <MenuItem onClick={() => navigate("/dashboard/profile")}>
-                        {language === "en" ? "My Profile" : "প্রোফাইল"}
+                        {language === "bn" ? "My Profile" : "প্রোফাইল"}
                       </MenuItem>
 
                       <MenuItem onClick={handleDashboard}>
-                        {language === "en" ? "Dashboard" : "ড্যাশবোর্ড"}
+                        {language === "bn" ? "Dashboard" : "ড্যাশবোর্ড"}
                       </MenuItem>
 
                       <MenuItem onClick={handleLogout} danger>
-                        {language === "en" ? "Logout" : "লগ আউট"}
+                        {language === "bn" ? "Logout" : "লগ আউট"}
                       </MenuItem>
                     </div>
                   )}
@@ -136,7 +136,7 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
                   to="/login"
                   className="text-sm border px-4 py-2 rounded-lg font-medium bg-[#073032] text-white hover:bg-[#1b4965]"
                 >
-                  {language === "en" ?"Login"   : "লগইন"}
+                  {language === "bn" ?"Login"   : "লগইন"}
                 </Link>
               </>
             )}
@@ -148,7 +148,7 @@ const Navbar = ({ searchQuery = "", setSearchQuery }) => {
           <input
             type="text"
             placeholder={
-              language === "en"
+              language === "bn"
                 ? "Search properties..."
                 : "প্রোপার্টি খুঁজুন..."
             }

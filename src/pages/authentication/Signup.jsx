@@ -72,9 +72,6 @@ function SignUp() {
     setLoading(false);
   }
 };
-
-
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-4xl bg-white rounded-xl shadow-2xl p-8 flex flex-col md:flex-row items-center md:gap-8">

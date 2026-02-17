@@ -12,17 +12,17 @@ import {
 import useLanguage  from "../hooks/useLanguage";
 
 const categories = [
-  { name: "apartment", icon: <FaBuilding />, label: { en: "Apartment", bn: "ফ্ল্যাট" } },
-  { name: "hostel", icon: <FaBed />, label: { en: "Hostel", bn: "হোস্টেল" } },
-  { name: "office", icon: <FaBriefcase />, label: { en: "Office", bn: "অফিস" } },
-  { name: "studio", icon: <FaCity />, label: { en: "Studio", bn: "স্টুডিও" } },
-  { name: "commercial", icon: <FaWarehouse />, label: { en: "Commercial", bn: "কমার্শিয়াল" } },
-  { name: "showroom", icon: <FaStore />, label: { en: "Showroom", bn: "শোরুম" } },
-  { name: "shop", icon: <FaShoppingBag />, label: { en: "Shop", bn: "দোকান" } },
+  { name: "apartment", icon: <FaBuilding />, label: { bn: "Apartment", en: "ফ্ল্যাট" } },
+  { name: "hostel", icon: <FaBed />, label: { bn: "Hostel", en: "হোস্টেল" } },
+  { name: "office", icon: <FaBriefcase />, label: { bn: "Office", en: "অফিস" } },
+  { name: "studio", icon: <FaCity />, label: { bn: "Studio", en: "স্টুডিও" } },
+  { name: "commercial", icon: <FaWarehouse />, label: { bn: "Commercial", en: "কমার্শিয়াল" } },
+  { name: "showroom", icon: <FaStore />, label: { bn: "Showroom", en: "শোরুম" } },
+  { name: "shop", icon: <FaShoppingBag />, label: { bn: "Shop", en: "দোকান" } },
 ];
 
 function HouseCategory({ selectedType, onSelectType }) {
-  const { language } = useLanguage(); // get language from context
+  const { language } = useLanguage(); 
 
   return (
     <section className="py-8 mt-6 bg-white">
@@ -30,30 +30,32 @@ function HouseCategory({ selectedType, onSelectType }) {
         {/* Header */}
         <div className="mb-6 text-center">
           <h2 className="text-xl font-semibold text-[#073032]">
-            {language === "en" ? "Property Type" : "সম্পত্তির ধরন"}
+            {language === "bn" ? "Property Type" : "সম্পত্তির ধরন"}
           </h2>
           <p className="text-xs mt-1 text-[#073032]/70">
-            {language === "en" ? "Filter listings by category" : "ক্যাটাগরি অনুযায়ী ফিল্টার করুন"}
+            {language === "bn" ? "Filter listings by category" : "ক্যাটাগরি অনুযায়ী ফিল্টার করুন"}
           </p>
         </div>
 
         {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           <CategoryPill
-            label={language === "en" ? "All" : "সব"}
-            icon={<FaHome />}
-            active={selectedType === "All"}
-            onClick={() => onSelectType("All")}
-          />
-          {categories.map((item, index) => (
-            <CategoryPill
-              key={index}
-              label={item.label[language]}
-              icon={item.icon}
-              active={selectedType === item.name}
-              onClick={() => onSelectType(item.name)}
-            />
-          ))}
+  label={language === "en" ? "সব" : "All"}
+  icon={<FaHome />}
+  active={selectedType === "All"}
+  onClick={() => onSelectType("All")}
+/>
+
+{categories.map((item, index) => (
+  <CategoryPill
+    key={index}
+    label={item.label[language]} 
+    icon={item.icon}
+    active={selectedType === item.name}
+    onClick={() => onSelectType(item.name)}
+  />
+))}
+
         </div>
       </div>
     </section>

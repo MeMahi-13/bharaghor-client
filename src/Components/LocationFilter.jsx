@@ -50,7 +50,7 @@ const LocationFilter = ({
   };
 
   return (
-    <div className="mt-5 flex gap-3">
+    <div className="pb-4 flex gap-3">
       {/* Division */}
       <SelectWrapper>
         <select

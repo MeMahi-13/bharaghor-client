@@ -43,13 +43,13 @@ function SwiperSlider() {
         {`
         .slider-wrapper {
           width: 100%;
-          max-width: 1200px;
+          max-width: 1600px;
           margin: auto;
-          padding: 20px 0;
+          padding: 0px 0;
         }
 
         .custom-swiper {
-          border-radius: 22px;
+          
           overflow: hidden;
           box-shadow: 0 20px 40px rgba(7, 48, 50, 0.18);
         }

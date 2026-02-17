@@ -1,12 +1,20 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState } from "react";
 
 export const LanguageContext = createContext(null);
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState("en");
+  // ✅ Read saved language on FIRST render
+  const [language, setLanguage] = useState(() => {
+    const savedLanguage = localStorage.getItem("language");
+    return savedLanguage ? savedLanguage : "bn"; // default Bangla
+  });
 
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "en" ? "bn" : "en"));
+    setLanguage(prev => {
+      const nextLanguage = prev === "en" ? "bn" : "en";
+      localStorage.setItem("language", nextLanguage); // ✅ persist
+      return nextLanguage;
+    });
   };
 
   return (

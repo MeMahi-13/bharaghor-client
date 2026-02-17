@@ -6,7 +6,10 @@ import { SlCalender } from "react-icons/sl";
 import { FaBuilding } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
-
+import { RiDropLine } from "react-icons/ri";
+import { MdElectricBolt } from "react-icons/md";
+import { FaFire } from "react-icons/fa";
+import { MdOutlineSecurity } from "react-icons/md";
 import "swiper/css";
 import "swiper/css/pagination";
 
@@ -86,7 +89,7 @@ const PostDetails = () => {
       </Swiper>
 
       {/* BASIC INFO */}
-      <div className="border border-gray-300 rounded px-3 py-5 shadow mt-6">
+      <div className=" border-gray-300 rounded px-3 py-5 shadow mt-6">
         <h2 style={{ fontSize: "28px", fontWeight: "600" }}>
           <EditableText
             value={place.title}
@@ -107,7 +110,7 @@ const PostDetails = () => {
       </div>
 
       {/* DESCRIPTION (EDITABLE) */}
-      <div className="border rounded border-gray-300 px-3 py-5 shadow mt-8">
+      <div className=" rounded border-gray-300 px-3 py-5 shadow mt-8">
         <h2 className="font-semibold text-3xl">House Details</h2>
         <EditableTextarea
           value={place.description}
@@ -116,7 +119,7 @@ const PostDetails = () => {
       </div>
 
       {/* RECENT DETAILS (RENT EDITABLE) */}
-      <div className="border rounded border-gray-300 px-3 py-5 shadow mt-8">
+      <div className="   px-3 py-5 shadow mt-8">
         <h2 className="font-semibold text-3xl">Recent Details</h2>
         <div className="flex gap-6 mt-6">
           <Info
@@ -134,15 +137,19 @@ const PostDetails = () => {
       </div>
 
       {/* FEATURES */}
-      <div className="border rounded border-gray-300 px-3 py-5 shadow mt-8">
+      <div className=" rounded border-gray-300 px-3 py-5 shadow mt-8">
         <h2 className="text-2xl font-semibold">Property Features</h2>
-        <div className="grid grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-4 gap-3 mt-4">
           <Feature label="Floor" value={place.floor}
             onSave={v => setPlace(p => ({ ...p, floor: v }))} />
           <Feature label="Bedroom" value={place.bedroom}
             onSave={v => setPlace(p => ({ ...p, bedroom: v }))} />
           <Feature label="Balcony" value={place.balcony}
             onSave={v => setPlace(p => ({ ...p, balcony: v }))} />
+            <Feature label="Common Bathroom" value={place.common_bathroom}
+            onSave={v => setPlace(p => ({ ...p, common_bathroom: v }))} />
+            <Feature label="Attatched Bathroom" value={place.attatched_bathroom}
+            onSave={v => setPlace(p => ({ ...p, attatched_bathroom: v }))} />
           <Feature label="Furnished" value={place.furnished} dropdown
             onSave={v => setPlace(p => ({ ...p, furnished: v }))} />
           <Feature label="Parking" value={place.parking} dropdown
@@ -151,17 +158,47 @@ const PostDetails = () => {
       </div>
 
       {/* UTILITIES */}
-      <div className="border rounded border-gray-300 px-3 py-5 shadow mt-8">
+      <div className=" rounded border-gray-300 px-3 py-5 shadow mt-8">
         <h2 className="font-semibold text-3xl">Utilities & Amenities</h2>
-        <div className="grid grid-cols-3 gap-4 mt-4">
-          <Feature label="Water" value={place.water} dropdown
-            onSave={v => setPlace(p => ({ ...p, water: v }))} />
-          <Feature label="Electricity" value={place.electricity} dropdown
+        <div className="grid grid-cols-4 gap-3 mt-4">
+          <div className="flex flex-col items-center justify-center px-7 py-4 bg-[#EFF6FF] text-center gap-2">
+  <RiDropLine className="text-3xl text-blue-500" />
+  <Feature
+  labelClassName="text-base font-bold text-[#155DFC]"
+    label="Water"
+    valueClassName="text-sm text-[#155DFC] font-medium"
+    value={place.water}
+    dropdown
+    onSave={v => setPlace(p => ({ ...p, water: v }))}
+  />
+</div>
+
+          <div className="flex flex-col items-center justify-center px-7 py-4 bg-[#FEFCE8] text-center gap-2">
+            <MdElectricBolt className="text-3xl text-[#D08700]" />
+            <Feature
+            labelClassName="text-base font-bold text-[#D08700]"
+            valueClassName="text-sm text-[#D08700] font-medium"
+             label="Electricity" value={place.electricity} dropdown
             onSave={v => setPlace(p => ({ ...p, electricity: v }))} />
-          <Feature label="Gas" value={place.gas} dropdown
+          </div>
+          <div className="flex flex-col items-center justify-center px-7 py-4 bg-[#FFF7ED] text-center gap-2">
+           
+           <FaFire className="text-3xl text-[#F54900]" /> 
+           <Feature
+           labelClassName="text-base font-bold text-[#F54900]"
+            valueClassName="text-sm text-[#F54900] font-medium"
+           label="Gas" value={place.gas} dropdown
             onSave={v => setPlace(p => ({ ...p, gas: v }))} />
-          <Feature label="Security" value={place.security} dropdown
+          </div>
+          <div className="flex flex-col items-center justify-center px-7 py-4 bg-[#F0FDF4] text-center gap-2">
+            <MdOutlineSecurity className="text-3xl text-[#00A63E]" />
+            <Feature
+             labelClassName="text-base font-bold text-[#00A63E]"
+            valueClassName="text-sm text-[#00A63E] font-medium"
+            label="Security" value={place.security} dropdown
             onSave={v => setPlace(p => ({ ...p, security: v }))} />
+          </div>
+          
         </div>
       </div>
 
@@ -197,7 +234,7 @@ function EditableText({ value, onSave }) {
         setEdit(false);
         onSave(text);
       }}
-      className="border px-1 rounded w-full"
+      className=" px-1 rounded w-full"
     />
   ) : (
     <span onClick={() => setEdit(true)} className="cursor-pointer">
@@ -220,7 +257,7 @@ function EditableTextarea({ value, onSave }) {
         setEdit(false);
         onSave(text);
       }}
-      className="border p-2 rounded w-full mt-2"
+      className=" p-2 rounded w-full mt-2"
     />
   ) : (
     <p onClick={() => setEdit(true)} className="cursor-pointer mt-2">
@@ -241,7 +278,7 @@ function EditableBoolean({ value, onSave }) {
         setEdit(false);
       }}
       onBlur={() => setEdit(false)}
-      className="border px-1 rounded"
+      className=" px-1 rounded"
     >
       <option value="yes">Yes</option>
       <option value="no">No</option>
@@ -253,13 +290,15 @@ function EditableBoolean({ value, onSave }) {
   );
 }
 
-function Feature({ label, value, onSave, dropdown }) {
+function Feature({ label, value, onSave, dropdown,labelClassName, valueClassName }) {
   return (
-    <div className="border flex justify-between px-3 py-2 rounded-md border-blue-300">
-      <span>{label}</span>
-      {dropdown
-        ? <EditableBoolean value={value} onSave={onSave} />
-        : <EditableText value={value} onSave={onSave} />}
+    <div className="  px-3 py-2 rounded-md ">
+      <span className={labelClassName}>{label}</span>
+      <div className={valueClassName}>
+        {dropdown
+        ? <EditableBoolean value={value} onSave={onSave}  />
+        : <EditableText value={value} onSave={onSave}  />}
+      </div>
     </div>
   );
 }
@@ -276,7 +315,7 @@ function EditableRow({ icon, label, value, onSave }) {
 
 function Info({ label, value }) {
   return (
-    <div className="border flex justify-between rounded-md border-blue-300 px-3 py-2 w-1/3">
+    <div className="    px-3 py-2 w-1/3">
       <p>{label}</p>
       <p>{value}</p>
     </div>

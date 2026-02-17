@@ -9,20 +9,22 @@ export default function LanguageSwitch() {
   return (
     <div className="flex justify-end">
       <button
+        type="button"
         onClick={toggleLanguage}
-        className="relative w-20 h-8 border border-gray-300 rounded-full focus:outline-none"
+        aria-label="Toggle language"
+        className="relative w-20 h-8 border border-gray-300 rounded-full bg-white focus:outline-none"
       >
         {/* Toggle knob */}
         <span
-          className={`absolute top-1 left-2 w-6 h-6 rounded-full bg-gray-700 transition-transform duration-300
-            ${isEnglish ? "translate-x-0" : "translate-x-10"}`}
+          className={`absolute top-1 left-2 w-6 h-6 rounded-full bg-gray-700 transition-transform duration-300 ease-in-out
+            ${isEnglish ? "translate-x-10" : "translate-x-0"}`}
         />
 
         {/* Labels */}
-        <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[11px] font-medium text-gray-700">
+        <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-gray-600">
           EN
         </span>
-        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] font-medium text-gray-700">
+        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-gray-600">
           BN
         </span>
       </button>

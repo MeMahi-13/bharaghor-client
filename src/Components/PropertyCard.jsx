@@ -103,7 +103,7 @@ const [shareLink, setShareLink] = React.useState("");
               <InfoRow icon={<CiLocationOn />} label="Location" text={place.location} />
               <InfoRow icon={<IoHomeOutline />} label="House No" text={place.houseNo} />
               <InfoRow icon={<SlCalender />} label="Available Date" text={place.date} />
-              <InfoRow icon={<FaBuilding />} label="House Type" text={place.houseType} />
+              <InfoRow icon={<FaBuilding />} label="House Type"  text={place.houseType?.toUpperCase()} />
             </div>
 
             {/* FOOTER */}
