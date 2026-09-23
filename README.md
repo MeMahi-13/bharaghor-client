@@ -1,16 +1,114 @@
-# React + Vite
+<h1 align="center">Bharaghor</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+<h3 align="center">A Modern Property & Home Management Platform</h3>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p align="center">
+  Find, explore, and manage properties through a modern and user-friendly web experience.
+</p>
 
-## React Compiler
+<p align="center">
+  <a href="https://bharaghor-321e2.web.app/">Live Demo</a>
+</p>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## About Bharaghor
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Bharaghor** is a modern web-based property platform designed to make finding and managing homes easier.
+
+The project focuses on providing a clean, responsive interface where users can explore available properties, view property details, and interact with the platform through a simple and intuitive experience.
+
+The project was built as a practical full-stack development project to work with modern frontend technologies, backend APIs, authentication, databases, and real-world application workflows.
+
+---
+
+## Live Website
+
+**Live Demo:**
+https://bharaghor-321e2.web.app/
+
+---
+
+## Features
+
+* Modern and responsive user interface
+* Property browsing and exploration
+* Detailed property information
+* User authentication
+* Property listing management
+* Search and filtering
+* Responsive design for desktop, tablet, and mobile
+* Interactive UI components
+* Backend API integration
+* Database-driven property data
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* React
+* JavaScript
+* HTML5
+* CSS3
+* Tailwind CSS
+* React Router
+
+### Backend
+
+* Node.js
+* Express.js
+* REST APIs
+
+### Database
+
+* MongoDB
+
+### Authentication & Services
+
+* Firebase
+* JWT Authentication
+
+### Tools
+
+* Git
+* GitHub
+* VS Code
+* Vercel / Firebase Hosting
+
+---
+
+## Project Structure
+
+```text
+Bharaghor
+│
+├── bharaghor-client
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── layouts
+│   │   ├── routes
+│   │   ├── hooks
+│   │   └── ...
+│   │
+│   ├── public
+│   ├── package.json
+│   └── ...
+│
+└── bharaghor-server
+    ├── controllers
+    ├── routes
+    ├── models
+    ├── middleware
+    ├── config
+    ├── server.js
+    └── package.json
+```
+
+---
+
+
+This project is developed for educational and portfolio purposes.
