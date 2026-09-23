@@ -1,109 +1,207 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { updateProfile, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase/firebase.init";
-import { AuthContext } from "../../context/AuthContext";
+import useAuth from "../../hooks/useAuth";
+import { TiTick } from "react-icons/ti";
+import { RxCross2 } from "react-icons/rx";
+import { PiEyeLight, PiEyeSlash } from "react-icons/pi";
+import Lottie from "lottie-react";
+import loginAnimation from "../../assets/real estate.json";
 
 function SignUp() {
-  const { createUser } = useContext(AuthContext);
-  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const { logIn } = useAuth();
 
-  const handleGoogleSignIn = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      
-      // Save Google User to Backend
-      await fetch("http://localhost:5000/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          name: result.user.displayName, 
-          email: result.user.email, 
-          uid: result.user.uid ,
-          photoURL:result.user.photoURL 
-        }),
-      });
+  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-      navigate("/");
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
+  const rules = [
+    { label: "At least 8 characters", test: (v) => v.length >= 8 },
+    { label: "At least one uppercase letter", test: (v) => /[A-Z]/.test(v) },
+    { label: "At least one lowercase letter", test: (v) => /[a-z]/.test(v) },
+    { label: "At least one number", test: (v) => /[0-9]/.test(v) },
+    {
+      label: "At least one special character",
+      test: (v) => /[!@#$%^&*(){}:"|<>?,.]/.test(v),
+    },
+  ];
 
-const handleSignUp = async (e) => {
+  const handleSignUp = async (e) => {
   e.preventDefault();
-  const formData = new FormData(e.target);
-  const { name, email, password } = Object.fromEntries(formData.entries());
+
+  console.log("REGISTER CLICKED");
+
+ 
+  const confirm = await Swal.fire({
+    title: "Confirm Registration",
+    text: "Do you want to create your account?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Yes, Register",
+    cancelButtonText: "Cancel",
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  
+  setLoading(true);
 
   try {
-    const result = await createUser(email, password);
+    const formData = new FormData(e.target);
+    const body = Object.fromEntries(formData.entries());
 
-    await updateProfile(result.user, {
-      displayName: name,
-      
-    });
-
-    const res = await fetch("http://localhost:5000/register", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        name,
-        email,
-        uid: result.user.uid,
-      }),
-    });
+    const res = await fetch(
+      "https://yessghor-server.vercel.app/register",
+      {
+        method: "POST",
+        credentials:"include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    );
 
     const data = await res.json();
 
-    if (data.insertedId) {
-      Swal.fire({
-        icon: "success",
-        title: "Your Account has been created!",
-        timer: 1500,
-        showConfirmButton: false,
-      });
-
-      navigate("/");
-    }
-  } catch (error) {
-    console.error(error);
+    Swal.fire("Success", "Account created", "success");
+  } catch (err) {
+    Swal.fire("Error", err.message, "error");
+  } finally {
+    setLoading(false);
   }
 };
-
-
-
   return (
-    <div className="p-10 flex items-center justify-center bg-gray-100 min-h-screen">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-        <h2 className="text-3xl font-bold text-center text-blue-900 mb-8">Create Account</h2>
-
-        <form onSubmit={handleSignUp} className="space-y-4">
-          <input type="text" name="name" placeholder="Full Name" required className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-          <input type="email" name="email" placeholder="Email Address" required className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-          <input type="password" name="password" placeholder="Password" required className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-
-          {errors.api && <p className="text-red-500 text-sm">{errors.api}</p>}
-
-          <button type="submit" className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all">
-            Register
-          </button>
-        </form>
-
-        <div className="flex items-center my-6">
-          <hr className="grow border-gray-300" /><span className="mx-3 text-gray-400 text-xs">OR</span><hr className="grow border-gray-300" />
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-4xl bg-white rounded-xl shadow-2xl p-8 flex flex-col md:flex-row items-center md:gap-8">
+        {/* Animation */}
+        <div className="w-full md:w-1/2">
+          <Lottie animationData={loginAnimation} loop />
         </div>
 
-        <button onClick={handleGoogleSignIn} className="w-full py-3 border border-gray-300 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 transition">
-          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" className="w-5 h-5" />
-          Continue with Google
-        </button>
+        {/* Form */}
+        <div className="w-full md:w-1/2 mt-6 md:mt-0">
+          <h2 className="text-3xl font-bold text-center text-[#073032] mb-8">
+            Create Account
+          </h2>
 
-        <p className="text-center text-sm mt-6">
-          Already have an account? <Link to="/login" className="text-blue-600 font-semibold hover:underline">Login</Link>
-        </p>
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              required
+              className="w-full px-4 py-3 border rounded-lg outline-none focus:ring-2 focus:ring-[#073032]"
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              required
+              className="w-full px-4 py-3 border rounded-lg outline-none focus:ring-2 focus:ring-[#073032]"
+            />
+
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone Number"
+              required
+              className="w-full px-4 py-3 border rounded-lg outline-none focus:ring-2 focus:ring-[#073032]"
+            />
+
+            {/* Password */}
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                required
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border rounded-lg outline-none pr-12 focus:ring-2 focus:ring-[#073032]"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-gray-500"
+              >
+                {showPassword ? <PiEyeLight /> : <PiEyeSlash />}
+              </button>
+            </div>
+
+            {/* Confirm Password */}
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                required
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={`w-full px-4 py-3 border rounded-lg outline-none pr-12 ${
+                  confirmPassword && password !== confirmPassword
+                    ? "border-red-500"
+                    : "focus:ring-2 focus:ring-[#073032]"
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() =>
+                  setShowConfirmPassword(!showConfirmPassword)
+                }
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-gray-500"
+              >
+                {showConfirmPassword ? <PiEyeLight /> : <PiEyeSlash />}
+              </button>
+            </div>
+
+            {/* Match indicator */}
+            {confirmPassword && (
+              <div className="flex items-center gap-2 text-sm">
+                {password === confirmPassword ? (
+                  <TiTick className="text-green-700" />
+                ) : (
+                  <RxCross2 className="text-red-700" />
+                )}
+                Passwords must match
+              </div>
+            )}
+
+            {/* Rules */}
+            {rules.map((rule, i) => {
+              const isValid = rule.test(password);
+              return (
+                <div key={i} className="flex items-center gap-2 text-sm">
+                  {isValid ? (
+                    <TiTick className="text-green-700" />
+                  ) : (
+                    <RxCross2 className="text-red-700" />
+                  )}
+                  {rule.label}
+                </div>
+              );
+            })}
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-[#073032] hover:bg-[#0c474a] text-white rounded-xl font-semibold transition-all disabled:opacity-50"
+            >
+              {loading ? "Creating Account..." : "Register"}
+            </button>
+          </form>
+
+          <p className="text-center text-sm mt-6">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-[#073032] font-semibold hover:underline"
+            >
+              Login
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

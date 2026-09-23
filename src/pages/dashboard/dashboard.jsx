@@ -1,209 +1,129 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { FaHome, FaCheckCircle, FaClock, FaDollarSign } from "react-icons/fa";
+import useAuth from "../../hooks/useAuth";
+import Saved from "../Saved/Saved";
 
-const dashboard = () => {
+const API_URL = "https://yessghor-server.vercel.app";
+
+const Dashboard = () => {
+  const { user } = useAuth();
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch dashboard stats
+  useEffect(() => {
+    if (!user?._id) return;
+
+    const fetchStats = async () => {
+      try {
+        const res = await fetch(`${API_URL}/dashboard/stats/${user._id}`, {
+          credentials: "include",
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch stats");
+        const data = await res.json();
+        setStats(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="py-20 text-center text-gray-500">
+        Loading dashboard...
+      </div>
+    );
+  }
+
+  if (!stats) {
+    return (
+      <div className="py-20 text-center text-red-500">
+        Failed to load dashboard data
+      </div>
+    );
+  }
+
+  const cards = [
+    {
+      title: "Total Properties",
+      value: stats.total,
+      icon: <FaHome />,
+      bg: "bg-blue-50",
+      iconBg: "bg-blue-100",
+      iconColor: "text-blue-600",
+    },
+    {
+      title: "Active Listings",
+      value: stats.active,
+      icon: <FaCheckCircle />,
+      bg: "bg-green-50",
+      iconBg: "bg-green-100",
+      iconColor: "text-green-600",
+    },
+    {
+      title: "Pending Requests",
+      value: stats.pending,
+      icon: <FaClock />,
+      bg: "bg-yellow-50",
+      iconBg: "bg-yellow-100",
+      iconColor: "text-yellow-600",
+    },
+    {
+      title: "Sold Properties",
+      value: stats.sold,
+      icon: <FaDollarSign />,
+      bg: "bg-red-50",
+      iconBg: "bg-red-100",
+      iconColor: "text-red-600",
+    },
+  ];
+
   return (
-    <>
-  <section id="sidebar">
-		<a href="#" className="brand">
-			<i class='bx bxs-smile'></i>
-			<span class="text">AdminHub</span>
-		</a>
-		<ul class="side-menu top">
-			<li class="active">
-				<a href="#">
-					<i class='bx bxs-dashboard' ></i>
-					<span class="text">Dashboard</span>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<i class='bx bxs-shopping-bag-alt' ></i>
-					<span class="text">My Store</span>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<i class='bx bxs-doughnut-chart' ></i>
-					<span class="text">Analytics</span>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<i class='bx bxs-message-dots' ></i>
-					<span class="text">Message</span>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<i class='bx bxs-group' ></i>
-					<span class="text">Team</span>
-				</a>
-			</li>
-		</ul>
-		<ul class="side-menu">
-			<li>
-				<a href="#">
-					<i class='bx bxs-cog' ></i>
-					<span class="text">Settings</span>
-				</a>
-			</li>
-			<li>
-				<a href="#" class="logout">
-					<i class='bx bxs-log-out-circle' ></i>
-					<span class="text">Logout</span>
-				</a>
-			</li>
-		</ul>
-	</section>
-	
+    <div className="max-w-7xl mx-auto px-4 py-10">
+      {/* Header */}
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          Welcome back, {user?.name || "User"}
+        </h2>
+        <p className="text-gray-500 mt-1">
+          Here’s what’s happening with your properties today
+        </p>
+      </div>
 
+      {/* Stats Cards */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map((card, index) => (
+          <div
+            key={index}
+            className={`${card.bg} p-6 rounded-xl shadow-sm hover:shadow-md transition`}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">{card.title}</p>
+                <h3 className="text-2xl font-bold mt-2">{card.value}</h3>
+              </div>
+              <div
+                className={`h-12 w-12 flex items-center justify-center rounded-full ${card.iconBg} ${card.iconColor} text-xl`}
+              >
+                {card.icon}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
 
+      {/* Saved Properties */}
+      <div className="mt-14">
+        <Saved />
+      </div>
+    </div>
+  );
+};
 
-	
-	<section id="content">
-		
-		
-		
-		<main>
-			<div class="head-title">
-				<div class="left">
-					<h1>Dashboard</h1>
-					<ul class="breadcrumb">
-						<li>
-							<a href="#">Dashboard</a>
-						</li>
-						<li><i class='bx bx-chevron-right' ></i></li>
-						<li>
-							<a class="active" href="#">Home</a>
-						</li>
-					</ul>
-				</div>
-				<a href="#" class="btn-download">
-					<i class='bx bxs-cloud-download' ></i>
-					<span class="text">Download PDF</span>
-				</a>
-			</div>
-
-			<ul class="box-info">
-				<li>
-					<i class='bx bxs-calendar-check' ></i>
-					<span class="text">
-						<h3>1020</h3>
-						<p>New Order</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-group' ></i>
-					<span class="text">
-						<h3>2834</h3>
-						<p>Visitors</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-dollar-circle' ></i>
-					<span class="text">
-						<h3>$2543</h3>
-						<p>Total Sales</p>
-					</span>
-				</li>
-			</ul>
-
-
-			<div class="table-data">
-				<div class="order">
-					<div class="head">
-						<h3>Recent Orders</h3>
-						<i class='bx bx-search' ></i>
-						<i class='bx bx-filter' ></i>
-					</div>
-					<table>
-						<thead>
-							<tr>
-								<th>User</th>
-								<th>Date Order</th>
-								<th>Status</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<img src="img/people.png"/>
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status completed">Completed</span></td>
-							</tr>
-							<tr>
-								<td>
-									<img src="img/people.png"/>
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>
-							<tr>
-								<td>
-									<img src="img/people.png"/>
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status process">Process</span></td>
-							</tr>
-							<tr>
-								<td>
-									<img src="img/people.png"/>
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>
-							<tr>
-								<td>
-									<img src="img/people.png"/>
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status completed">Completed</span></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="todo">
-					<div class="head">
-						<h3>Todos</h3>
-						<i class='bx bx-plus' ></i>
-						<i class='bx bx-filter' ></i>
-					</div>
-					<ul class="todo-list">
-						<li class="completed">
-							<p>Todo List</p>
-							<i class='bx bx-dots-vertical-rounded' ></i>
-						</li>
-						<li class="completed">
-							<p>Todo List</p>
-							<i class='bx bx-dots-vertical-rounded' ></i>
-						</li>
-						<li class="not-completed">
-							<p>Todo List</p>
-							<i class='bx bx-dots-vertical-rounded' ></i>
-						</li>
-						<li class="completed">
-							<p>Todo List</p>
-							<i class='bx bx-dots-vertical-rounded' ></i>
-						</li>
-						<li class="not-completed">
-							<p>Todo List</p>
-							<i class='bx bx-dots-vertical-rounded' ></i>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</main>
-		
-	</section>
-	
-</>
-  )
-}
-
-export default dashboard
+export default Dashboard;

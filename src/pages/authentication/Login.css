@@ -36,7 +36,7 @@
     border-radius: 9px;
 }
 .inputs{
-    margin-top: 55px;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 25px;
@@ -48,7 +48,7 @@
     align-items: center;
     margin: auto;
     width: 420px;
-    height: 80px;
+    height: 53px;
     background: #eaeaea;
     border-radius: 6px;
 }

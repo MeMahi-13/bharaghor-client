@@ -1,44 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-  GoogleAuthProvider,
-} from "firebase/auth";
-import { auth } from "../firebase/firebase.init";
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-  const createUser = (email, password) =>
-    createUserWithEmailAndPassword(auth, email, password);
-  const signInUser = (email, password) =>
-    signInWithEmailAndPassword(auth, email, password);
-  const logOut = () => signOut(auth);
-  const loginWithGoogle = () => signInWithPopup(auth, new GoogleAuthProvider());
+  const logIn = (userData) => {
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
+  };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      console.log("Auth state changed:", currentUser); 
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const userInfo = {
-    user,
-    setUser,
-    createUser,
-    signInUser,
-    logOut,
-    loginWithGoogle,
+  const logOut = () => {
+    setUser(null);
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={userInfo}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, logIn, logOut }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
